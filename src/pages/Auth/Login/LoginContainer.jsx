@@ -35,7 +35,7 @@ function LoginContainer() {
               >
                 <Typography
                   sx={{
-                    fontFamily: "Encode Sans, sans-serif",
+                    fontFamily: "Encode Sans",
                     fontSize: "35px",
                     fontWeight: "700",
                     marginTop: "60px",
@@ -47,7 +47,7 @@ function LoginContainer() {
                 <Typography
                   sx={{
                     minWidth: "50%",
-                    fontFamily: "Encode Sans, sans-serif",
+                    fontFamily: "Encode Sans",
                     fontSize: "25px",
                     fontWeight: "500",
                     marginTop: "70px",
@@ -56,7 +56,7 @@ function LoginContainer() {
                   Selecciona tu tipo de usuario
                 </Typography>
                 <Typography sx={{ fontSize: "20px",
-                    fontFamily: "Encode Sans, sans-serif",fontWeight:"300", mt: "20px", width: "70%" }}>
+                    fontFamily: "Encode Sans",fontWeight:"300", mt: "20px", width: "70%" }}>
                   Inicia sesión para acceder a un sistema intuitivo que te
                   permitirá gestionar tus reclamos de manera rápida y efectiva.
                   No dejes que tus preocupaciones se acumulen, estamos aquí para
@@ -98,7 +98,7 @@ function LoginContainer() {
                     backgroundColor: "#666",
                     color: "#FFF",
                     padding: "9px 30px",
-                    fontFamily: "Encode Sans, sans-serif",
+                    fontFamily: "Encode Sans",
                     fontSize: "15px",
                     fontWeight: "400",
                     width: "180px",
@@ -135,7 +135,7 @@ function LoginContainer() {
                     backgroundColor: "#666",
                     color: "#FFF",
                     padding: "9px 30px",
-                    fontFamily: "Encode Sans, sans-serif",
+                    fontFamily: "Encode Sans",
                     fontSize: "15px",
                     fontWeight: "400",
                     width: "180px",
@@ -171,7 +171,7 @@ function LoginContainer() {
                     backgroundColor: "#666",
                     color: "#FFF",
                     padding: "9px 30px",
-                    fontFamily: "Encode Sans, sans-serif",
+                    fontFamily: "Encode Sans",
                     fontSize: "15px",
                     fontWeight: "400",
                     width: "180px",

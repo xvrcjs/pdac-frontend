@@ -93,16 +93,21 @@ function LoginComponent(props) {
       >
         <Box sx={{ width: "50%" }}>
           <Box sx={{ width: "80%" }}>
+            <img
+              alt="logo-pba"
+              src="../../logo-pba.png"
+              style={{ height: "100px", width: "100px" }}
+            />
             <h1>
               <span style={{ color: "#03AAC0" }}>Inicio de sesión</span> de
               gestión administrativa.
             </h1>
             <h1
-              style={{ fontSize: "30px", fontWeight: "500", marginTop: "50px" }}
+              style={{ fontSize: "30px", marginTop: "50px" }}
             >
-              Defensa al consumidor
+              Defensa de las y los consumidores
               <br />
-              de la Provincia de Buenos Aires.
+              de la <span style={{ color: "#03AAC0" }}>Provincia de Buenos Aires.</span>
             </h1>
           </Box>
           <Box sx={{ width: "350px", marginTop: "80px" }}>
@@ -110,7 +115,7 @@ function LoginComponent(props) {
               <Box sx={{ marginBottom: "20px" }}>
                 <Typography
                   sx={{
-                    fontFamily: "Encode Sans, sans-serif",
+                    fontFamily: "Encode Sans",
                     fontWeight: "700",
                     fontSize: "24px",
                     marginBottom: "20px",
@@ -141,6 +146,7 @@ function LoginComponent(props) {
                         {
                           borderColor: "unset",
                         },
+                      fontFamily:"Encode Sans !important",
                     }}
                     onChange={handleChange}
                     startAdornment={
@@ -164,7 +170,7 @@ function LoginComponent(props) {
               <Box sx={{ marginBottom: "20px", marginBottom: "5px" }}>
                 <Typography
                   sx={{
-                    fontFamily: "Encode Sans, sans-serif",
+                    fontFamily: "Encode Sans",
                     fontWeight: "700",
                     fontSize: "24px",
                     marginBottom: "20px",
@@ -192,6 +198,7 @@ function LoginComponent(props) {
                         {
                           borderColor: "unset",
                         },
+                      fontFamily:"Encode Sans !important"
                     }}
                     name="password"
                     onChange={handleChange}
@@ -239,7 +246,7 @@ function LoginComponent(props) {
                   backgroundColor: "#04AAC0",
                   color: "#FFF",
                   padding: "9px 30px",
-                  fontFamily: "Encode Sans, sans-serif",
+                  fontFamily: "Encode Sans",
                   fontSize: "16px",
                   width: "100%",
                   marginTop: "90px",

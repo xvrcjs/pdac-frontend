@@ -23,7 +23,7 @@ const SearchBar = ({ onSearch }) => {
       fullWidth
       placeholder="busqueda"
       sx={{
-        fontFamily: "Encode Sans, sans-serif",
+        fontFamily: "Encode Sans",
         fontSize: "16px",
         width: "400px",
         backgroundColor:"#fff",

@@ -117,7 +117,7 @@ function ListUserComponent(props) {
               // },
               "& .MuiDataGrid-columnHeaders": {
                 backgroundColor: "#B1B1B1",
-                fontFamily: "Encode Sans, sans-serif",
+                fontFamily: "Encode Sans",
                 fontSize: "12px",
                 fontWeight: 700,
                 lineHeight: "18px",

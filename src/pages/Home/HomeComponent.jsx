@@ -17,8 +17,11 @@ function HomeComponent(props) {
             <Divider></Divider>
             <Box sx={{display:'flex',flexDirection:'row',justifyContent:"space-between",marginTop:'30px'}}>
                 <Box sx={{width:"600px"}}>
+                    <Typography sx={{fontWeight:"600",fontSize:"15px",}}>
+                       Eficiencia
+                    </Typography>
                     <Typography sx={{fontWeight:"700",fontSize:"48px",margin:"30px 0px"}}>
-                        Beneficios del ERP para ciudadanos y administradores
+                        Beneficios del CRM para ciudadanos y administradores
                     </Typography>
                     <Typography sx={{fontWeight:"400",fontSize:"18px"}}>
                         Nuestro ERP mejora la trazabilidad de los reclamos, garantizando un seguimiento claro y efectivo. Además, optimiza la resolución de problemas, facilitando la comunicación entre usuarios.
@@ -47,7 +50,7 @@ function HomeComponent(props) {
                             borderRadius: "1px",
                             color: "#000",
                             padding: "9px 30px",
-                            fontFamily: "Encode Sans, sans-serif",
+                            fontFamily: "Encode Sans",
                             fontSize: "16px",
                             marginTop: "100px",
                             textTransform: "capitalize",
