@@ -1,0 +1,82 @@
+.swt-topbar{
+    background: #F5F5F5;
+    display: flex;
+    flex-direction: row;
+    font-family: 'Poppins';
+
+    .MuiOutlinedInput-input{
+        padding: 10px;
+    }
+    .Mui-focused {
+        border-color: unset;
+    }
+    .MuiOutlinedInput-root {
+        font-family: 'Poppins';
+    }
+    .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+        border-color: unset;
+        border:unset;
+        font-family: 'Poppins';
+    }
+    .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+        border-color: unset;
+        font-family: 'Poppins';
+    }
+    .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
+        border-color: unset;
+        font-family: 'Poppins';
+    }
+    &-links{
+        height: 100px;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        background-color: #417099;
+        margin-right: 10px;
+        border-radius: 10px;
+        a{
+            height: 100px !important;
+            width: 100%;
+            margin: auto;
+        }
+        cursor: pointer;
+        &.ps-active{
+            background-color: #E81F76;
+        }
+        .ps-menu-button:hover{
+            background-color: unset !important;
+            box-shadow: none !important;
+        }
+        &-title{
+            color: #fff;
+            font-family: "Poppins" !important;
+            font-weight: 500 !important;
+            font-size: 20px !important;
+        }
+        &-content{
+            justify-content: center;
+            display: flex;
+        }
+        &.nav-hv{
+            background-color: #000;
+            p{
+                color:#FFEA00
+            }
+        }
+        &-sub-item{
+            // position: absolute;
+            background-color: #272727;
+            &-title{
+                color: #fff;
+            }
+            .ps-menu-button:hover{
+                background-color: unset !important;
+                box-shadow: none !important;
+            }
+            &.ps-active  &-title{
+                color: #02ABC1;
+            }
+        }
+    }
+}
+

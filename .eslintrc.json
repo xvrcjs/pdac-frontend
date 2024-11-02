@@ -1,0 +1,6 @@
+{
+  "rules": {
+    // Otras reglas pueden estar aquí...
+    "no-unused-vars": "off"
+  }
+}

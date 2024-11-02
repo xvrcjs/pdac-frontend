@@ -1,0 +1,210 @@
+import React, { useContext,useState} from "react";
+import ArchivedComponent from "./ArchivedComponent";
+import { AppContext } from "context/AppContext";
+
+function ArchivedContainer() {
+  const { api, account } = useContext(AppContext);
+
+  const [archived, setArchived] = useState([
+    {
+      id: 0,
+      claim_id: "#F38928",
+      assigned: "OMIC VARELA",
+      status: "Archivado",
+      assigned_role: "Usuario municipal",
+      status_id: "error",
+      details: {
+        date: "Archivado el: 23/08/2020 a las 19:34hs",
+        more_details:"El reclamo fue archivado bajo la resolución: SIN ACUERDO ENTRE LAS PARTES."
+      }
+    },
+    {
+      id: 1,
+      claim_id: "#F3478422",
+      assigned: "DP",
+      status: "Archivado",
+      assigned_role: "ADMIN 1",
+      status_id: "error",
+    },
+    {
+      id: 2,
+      claim_id: "#A3478422",
+      assigned: "Usuario Municipal",
+      status: "Archivado",
+      assigned_role: "ADMIN 1",
+      status_id: "error",
+    },
+    {
+      id: 3,
+      claim_id: "#B3892843",
+      assigned: "OMIC VARELA",
+      status: "Archivado",
+      assigned_role: "Usuario municipal",
+      status_id: "error",
+    },
+    {
+      id: 4,
+      claim_id: "#C2847822",
+      assigned: "DP",
+      status: "Archivado",
+      assigned_role: "ADMIN 2",
+      status_id: "error",
+    },
+    {
+      id: 5,
+      claim_id: "#D3489322",
+      assigned: "Usuario Municipal",
+      status: "Archivado",
+      assigned_role: "ADMIN 1",
+      status_id: "error",
+    },
+    {
+      id: 6,
+      claim_id: "#E3478422",
+      assigned: "OMIC LA PLATA",
+      status: "Archivado",
+      assigned_role: "Usuario municipal",
+      status_id: "error",
+    },
+    {
+      id: 7,
+      claim_id: "#F8483921",
+      assigned: "OMIC BERAZATEGUI",
+      status: "Archivado",
+      assigned_role: "ADMIN 2",
+      status_id: "error",
+    },
+    {
+      id: 8,
+      claim_id: "#G9234785",
+      assigned: "DP",
+      status: "Archivado",
+      assigned_role: "Usuario municipal",
+      status_id: "error",
+    },
+    {
+      id: 9,
+      claim_id: "#H9374682",
+      assigned: "OMIC FLORENCIO VARELA",
+      status: "Archivado",
+      assigned_role: "ADMIN 3",
+      status_id: "error",
+    },
+    {
+      id: 10,
+      claim_id: "#I9384723",
+      assigned: "Usuario Municipal",
+      status: "Archivado",
+      assigned_role: "ADMIN 1",
+      status_id: "error",
+    },
+    {
+      id: 11,
+      claim_id: "#J9384722",
+      assigned: "DP",
+      status: "Archivado",
+      assigned_role: "ADMIN 2",
+      status_id: "error",
+    },
+    {
+      id: 12,
+      claim_id: "#K9384721",
+      assigned: "OMIC QUILMES",
+      status: "Archivado",
+      assigned_role: "Usuario municipal",
+      status_id: "error",
+    },
+    {
+      id: 13,
+      claim_id: "#L8423782",
+      assigned: "OMIC SAN ISIDRO",
+      status: "Archivado",
+      assigned_role: "ADMIN 1",
+      status_id: "error",
+    },
+    {
+      id: 14,
+      claim_id: "#M8472392",
+      assigned: "Usuario Municipal",
+      status: "Archivado",
+      assigned_role: "ADMIN 3",
+      status_id: "error",
+    },
+    {
+      id: 15,
+      claim_id: "#N9384722",
+      assigned: "DP",
+      status: "Archivado",
+      assigned_role: "Usuario municipal",
+      status_id: "error",
+    },
+    {
+      id: 16,
+      claim_id: "#O7483921",
+      assigned: "OMIC AVELLANEDA",
+      status: "Archivado",
+      assigned_role: "ADMIN 2",
+      status_id: "error",
+    },
+    {
+      id: 17,
+      claim_id: "#P9384722",
+      assigned: "OMIC VARELA",
+      status: "Archivado",
+      assigned_role: "ADMIN 3",
+      status_id: "error",
+    },
+    {
+      id: 18,
+      claim_id: "#Q8329847",
+      assigned: "DP",
+      status: "Archivado",
+      assigned_role: "Usuario municipal",
+      status_id: "error",
+    },
+    {
+      id: 19,
+      claim_id: "#R3847239",
+      assigned: "Usuario Municipal",
+      status: "Archivado",
+      assigned_role: "ADMIN 1",
+      status_id: "error",
+    },
+    {
+      id: 20,
+      claim_id: "#S2983478",
+      assigned: "OMIC LA PLATA",
+      status: "Archivado",
+      assigned_role: "ADMIN 2",
+      status_id: "error",
+    },
+    {
+      id: 21,
+      claim_id: "#T3984721",
+      assigned: "OMIC BERAZATEGUI",
+      status: "Archivado",
+      assigned_role: "Usuario municipal",
+      status_id: "error",
+    },
+    {
+      id: 22,
+      claim_id: "#U9384723",
+      assigned: "DP",
+      status: "Archivado",
+      assigned_role: "ADMIN 3",
+      status_id: "error",
+    },
+    {
+      id: 23,
+      claim_id: "#V2983472",
+      assigned: "OMIC VARELA",
+      status: "Archivado",
+      assigned_role: "Usuario municipal",
+      status_id: "error",
+    },
+  ]);
+
+  return <ArchivedComponent archived={archived}/>;
+}
+
+export default ArchivedContainer;

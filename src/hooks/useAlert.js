@@ -1,0 +1,68 @@
+import React ,{ useState, useCallback} from 'react';
+import { Snackbar, Box } from '@mui/material/';
+import MuiAlert from '@mui/material/Alert';
+
+const useAlert = () => {
+  const [alerts, setAlerts] = useState([]);
+  const [ state, setState ] = useState({
+    open: false,
+    vertical:"top",
+    horizontal:"center",
+  })
+
+  const {vertical, horizontal,open} = state;
+
+  const Alert = React.forwardRef(function Alert(props,ref){
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props}/>;
+  });
+
+  const alert = useCallback(({ id, type, title, detail,life }) => {
+    setAlerts((prevAlerts) => [...prevAlerts, { id, type, title, detail ,life}]);
+    setState({...state,open: true})
+  }, [state]);
+
+  const removeAlert = useCallback(() => {
+    setAlerts((prevAlerts) => {
+      const [firstAlert, ...restAlerts] = prevAlerts;
+      return restAlerts;
+    });
+  }, []);
+
+  const handleClose = (event,reaseon) =>{
+    if (reaseon === 'clickaway') {
+      return;
+    }
+    setState({...state,open: false})
+    removeAlert()
+  }
+
+  const alertNode = (
+    <>
+      <div className={`p-toast p-component p-toast-top-right`} style={{ zIndex: 1350 }}>
+        {alerts.map((alert,index) => (   
+            <Snackbar
+            anchorOrigin={{vertical,horizontal}}
+            open={open}
+            onClose={handleClose}
+            key={index}
+            autoHideDuration={alert.life}
+          >
+            <Box className={`swt-alert ${alert.type}`}>
+              <img
+                  src={`../../assets/${alert.type}.svg`} 
+                  alt="stage-complete"
+                />
+              <div>
+                <span>{alert.title}</span>
+              </div>
+            </Box>
+          </Snackbar>
+        ))}
+      </div>
+    </>
+  );
+
+  return { alert, alertNode };
+};
+
+export default useAlert;
