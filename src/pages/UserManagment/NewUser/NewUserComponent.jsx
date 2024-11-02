@@ -440,7 +440,7 @@ function NewUserComponent(props) {
               backgroundColor: "#CCCCCC",
               color: "#171717",
               padding: "9px 30px",
-              fontFamily: "Poppins",
+              fontFamily: "Encode Sans, sans-serif",
               fontSize: "16px",
               fontWeight: "500",
               width: "250px",
@@ -463,7 +463,7 @@ function NewUserComponent(props) {
               backgroundColor: "#969494",
               color: "#171717",
               padding: "9px 30px",
-              fontFamily: "Poppins",
+              fontFamily: "Encode Sans, sans-serif",
               fontSize: "16px",
               fontWeight: "500",
               ml: "20px",
@@ -489,14 +489,14 @@ function NewUserComponent(props) {
         sx={{ '&.MuiDialog-root .MuiDialog-paper':{padding: "10px 60px"} }}
       >
         <DialogTitle
-          sx={{ fontFamily: "Poppins", fontSize: "22px", fontWeight: "300" }}
+          sx={{ fontFamily: "Encode Sans, sans-serif", fontSize: "22px", fontWeight: "300" }}
           id="alert-dialog-title"
         >
           ¿Quiere confirmar la creación de este nuevo usuario?
         </DialogTitle>
         <DialogContent>
           <DialogContentText
-            sx={{ fontFamily: "Poppins", fontSize: "16px", fontWeight: "300" }}
+            sx={{ fontFamily: "Encode Sans, sans-serif", fontSize: "16px", fontWeight: "300" }}
             id="alert-dialog-description"
           >
             Sed tortor, sed velit ridiculus ipsum pharetra lacus odio gravida
@@ -510,7 +510,7 @@ function NewUserComponent(props) {
               backgroundColor: "#CCCCCC",
               color: "#171717",
               padding: "9px 30px",
-              fontFamily: "Poppins",
+              fontFamily: "Encode Sans, sans-serif",
               fontSize: "12px",
               fontWeight: "500",
               width: "100px",
@@ -531,7 +531,7 @@ function NewUserComponent(props) {
               backgroundColor: "#969494",
               color: "#171717",
               padding: "9px 30px",
-              fontFamily: "Poppins",
+              fontFamily: "Encode Sans, sans-serif",
               fontSize: "12px",
               fontWeight: "500",
               ml: "20px",
@@ -558,7 +558,7 @@ function NewUserComponent(props) {
         sx={{ '&.MuiDialog-root .MuiDialog-paper':{padding: "10px 60px",border: '1px solid orange',borderRadius:'20px'} }}
       >
         <DialogTitle
-          sx={{ fontFamily: "Poppins", fontSize: "18px", fontWeight: "300" }}
+          sx={{ fontFamily: "Encode Sans, sans-serif", fontSize: "18px", fontWeight: "300" }}
           id="alert-dialog-title"
         >
           Se ha enviado un email a la casilla del nuevo usuario,
@@ -566,7 +566,7 @@ function NewUserComponent(props) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText
-            sx={{ fontFamily: "Poppins", fontSize: "16px", fontWeight: "300" }}
+            sx={{ fontFamily: "Encode Sans, sans-serif", fontSize: "16px", fontWeight: "300" }}
             id="alert-dialog-description"
           >
             En caso de no recibirlo, presionar reenviar. 
@@ -579,7 +579,7 @@ function NewUserComponent(props) {
               backgroundColor: "#CCCCCC",
               color: "#171717",
               padding: "9px 30px",
-              fontFamily: "Poppins",
+              fontFamily: "Encode Sans, sans-serif",
               fontSize: "12px",
               fontWeight: "500",
               width: "100px",
@@ -600,7 +600,7 @@ function NewUserComponent(props) {
               backgroundColor: "#969494",
               color: "#171717",
               padding: "9px 30px",
-              fontFamily: "Poppins",
+              fontFamily: "Encode Sans, sans-serif",
               fontSize: "12px",
               fontWeight: "500",
               ml: "20px",

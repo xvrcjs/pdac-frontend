@@ -218,7 +218,7 @@ function ClaimsHVComponent(props) {
               // },
               "& .MuiDataGrid-columnHeaders": {
                 backgroundColor: "#B1B1B1",
-                fontFamily: "Roboto",
+                fontFamily: "Encode Sans, sans-serif",
                 fontSize: "12px",
                 fontWeight: 700,
                 lineHeight: "18px",

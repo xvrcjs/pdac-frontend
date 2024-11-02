@@ -47,7 +47,7 @@ function HomeComponent(props) {
                             borderRadius: "1px",
                             color: "#000",
                             padding: "9px 30px",
-                            fontFamily: "Roboto",
+                            fontFamily: "Encode Sans, sans-serif",
                             fontSize: "16px",
                             marginTop: "100px",
                             textTransform: "capitalize",

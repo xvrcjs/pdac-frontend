@@ -100,7 +100,7 @@ const Item = ({ title, to, icon, colors, isActive, subItems }) => {
                   >
                     <Box sx={{ display: "flex", alignItems: "center" }}>
                       <Typography
-                        sx={{ fontFamily: "Poppins" }}
+                        sx={{ fontFamily: "Encode Sans, sans-serif" }}
                         className="swt-topbar-links-sub-item-title"
                       >
                         {subItem.title}
@@ -225,7 +225,7 @@ function Topbar(props) {
               sx={{
                 fontSize: "14px",
                 fontWeight: "400",
-                fontFamily: "Poppins",
+                fontFamily: "Encode Sans, sans-serif",
               }}
               color="#000"
             >
@@ -246,7 +246,7 @@ function Topbar(props) {
                 fontSize: "14px",
                 fontWeight: "400",
                 marginRight: "10px",
-                fontFamily: "Poppins",
+                fontFamily: "Encode Sans, sans-serif",
               }}
               color="#000"
             >
@@ -271,7 +271,7 @@ function Topbar(props) {
           }}
         >
           <Typography
-            sx={{ fontSize: "22px", ml:"10px",fontWeight: "600", fontFamily: "Poppins" }}
+            sx={{ fontSize: "22px", ml:"10px",fontWeight: "600", fontFamily: "Encode Sans, sans-serif" }}
             color="#fff"
           >
             Tablero de gestión administrativa
@@ -306,12 +306,12 @@ function Topbar(props) {
           }}
         >
           <Typography
-            sx={{ fontFamily: "Poppins", fontWeight: "600", fontSize: "22px" }}
+            sx={{ fontFamily: "Encode Sans, sans-serif", fontWeight: "600", fontSize: "22px" }}
           >
             {headerTitle}
           </Typography>
           <Typography
-            sx={{ fontFamily: "Poppins", fontWeight: "300", fontSize: "16px" }}
+            sx={{ fontFamily: "Encode Sans, sans-serif", fontWeight: "300", fontSize: "16px" }}
           >
             {headerSubTitle}
           </Typography>

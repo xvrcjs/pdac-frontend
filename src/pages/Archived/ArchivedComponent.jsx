@@ -163,7 +163,7 @@ function ArchivedComponent(props) {
         sx={{ "&.MuiDialog-root .MuiDialog-paper": { padding: "40px 60px" } }}
       >
         <DialogTitle
-          sx={{ fontFamily: "Poppins", fontSize: "22px", fontWeight: "300" }}
+          sx={{ fontFamily: "Encode Sans, sans-serif", fontSize: "22px", fontWeight: "300" }}
           id="alert-dialog-title"
         >
           ¿Está seguro de querer reabrir el reclamo?
@@ -171,7 +171,7 @@ function ArchivedComponent(props) {
         <DialogContent>
           <DialogContentText
             sx={{
-              fontFamily: "Poppins",
+              fontFamily: "Encode Sans, sans-serif",
               fontSize: "16px",
               fontWeight: "300",
               mb: "50px",
@@ -188,7 +188,7 @@ function ArchivedComponent(props) {
               backgroundColor: "#CCCCCC",
               color: "#171717",
               padding: "9px 30px",
-              fontFamily: "Poppins",
+              fontFamily: "Encode Sans, sans-serif",
               fontSize: "12px",
               fontWeight: "500",
               width: "100px",
@@ -209,7 +209,7 @@ function ArchivedComponent(props) {
               backgroundColor: "#969494",
               color: "#171717",
               padding: "9px 30px",
-              fontFamily: "Poppins",
+              fontFamily: "Encode Sans, sans-serif",
               fontSize: "12px",
               fontWeight: "500",
               ml: "20px",

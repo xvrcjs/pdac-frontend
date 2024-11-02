@@ -2,7 +2,7 @@
     background: #F5F5F5;
     display: flex;
     flex-direction: row;
-    font-family: 'Poppins';
+    font-family: "Encode Sans, sans-serif";
 
     .MuiOutlinedInput-input{
         padding: 10px;
@@ -11,20 +11,20 @@
         border-color: unset;
     }
     .MuiOutlinedInput-root {
-        font-family: 'Poppins';
+        font-family: "Encode Sans, sans-serif";
     }
     .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
         border-color: unset;
         border:unset;
-        font-family: 'Poppins';
+        font-family: "Encode Sans, sans-serif";
     }
     .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
         border-color: unset;
-        font-family: 'Poppins';
+        font-family: "Encode Sans, sans-serif";
     }
     .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
         border-color: unset;
-        font-family: 'Poppins';
+        font-family: "Encode Sans, sans-serif";
     }
     &-links{
         height: 100px;
@@ -49,7 +49,7 @@
         }
         &-title{
             color: #fff;
-            font-family: "Poppins" !important;
+            font-family: "Encode Sans, sans-serif" !important;
             font-weight: 500 !important;
             font-size: 20px !important;
         }

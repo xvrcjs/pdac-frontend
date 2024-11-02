@@ -110,7 +110,7 @@ function LoginComponent(props) {
               <Box sx={{ marginBottom: "20px" }}>
                 <Typography
                   sx={{
-                    fontFamily: "Roboto",
+                    fontFamily: "Encode Sans, sans-serif",
                     fontWeight: "700",
                     fontSize: "24px",
                     marginBottom: "20px",
@@ -164,7 +164,7 @@ function LoginComponent(props) {
               <Box sx={{ marginBottom: "20px", marginBottom: "5px" }}>
                 <Typography
                   sx={{
-                    fontFamily: "Roboto",
+                    fontFamily: "Encode Sans, sans-serif",
                     fontWeight: "700",
                     fontSize: "24px",
                     marginBottom: "20px",
@@ -239,7 +239,7 @@ function LoginComponent(props) {
                   backgroundColor: "#04AAC0",
                   color: "#FFF",
                   padding: "9px 30px",
-                  fontFamily: "Roboto",
+                  fontFamily: "Encode Sans, sans-serif",
                   fontSize: "16px",
                   width: "100%",
                   marginTop: "90px",
