@@ -278,7 +278,6 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit }) => {
                         backgroundColor: colIndex === 0 ? "#CCC" : "",
                     }}
                     >
-                      {console.log(column)}
                     {column.renderCell
                       ? column.renderCell({
                           value: row[column.field],

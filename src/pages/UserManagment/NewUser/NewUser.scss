@@ -1,0 +1,45 @@
+.swt-user-select{
+    background-color: #00AEC3;
+    color: #FFF;
+    font-family: "Encode Sans";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    width: 100%;
+    padding: 15px 20px;
+    justify-content: space-between;
+
+    &-content{
+        border-radius: 15px;
+        background: var(--Schemes-Surface, #FEF7FF);
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        p{
+            color: #000;
+            font-family: "Encode Sans";
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            cursor: pointer;
+            padding: 15px 20px;
+
+        }
+        .selected{
+            color:#00AEC3 !important;
+            font-weight: 700;
+        }
+        .MuiFormControlLabel-root{
+            margin-left: 0px;
+            margin-right: 0px;
+            width: 90%;
+            .MuiTypography-root{
+                font-size: 14px;
+            }
+        }
+    }
+}
+.Mui-focused .MuiOutlinedInput-notchedOutline{
+    border: 1px solid rgba(0, 0, 0, 0.23) !important; 
+}
+    
