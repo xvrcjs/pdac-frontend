@@ -13,6 +13,9 @@ table{
     td{
         border-bottom: 1px solid #ccc;
     }
+    tr{
+        height: 50px;
+    }
     .selected{
         background-color: #56D2FF;
     }
@@ -33,7 +36,7 @@ table{
     
         .btn{
             background-color: #FFF;
-            box-shadow: -3px 4px 5px 0px #00000033;
+            box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.20), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
             border-color: unset;
             border-radius: 4px;
             padding: 0px 6px;
@@ -41,11 +44,14 @@ table{
             height: 32px;
             margin: 0 3px;
             transition: color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-            border: 1px solid rgba(0, 0, 0, 0.23);
+            border: unset;
         }
         .btn-primary{
-            background-color: #626262;
+            background-color: #E81F76;
             color: #fff;
+        }
+        .btn-secondary{
+            width: 32px;
         }
     }
     &-filter-status{

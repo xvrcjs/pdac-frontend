@@ -112,14 +112,14 @@ const MenuFilterStatus = ({ filterStatusOpen, setFilterStatusOpen }) => {
   );
 };
 
-const DataGrid = ({ columns, rows, pageSize = 10, handleEdit }) => {
+const DataGrid = ({ columns, rows, pageSize = 10, handleEdit,hasFilter }) => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [sortField, setSortField] = useState(null);
   const [sortDirection, setSortDirection] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRows, setExpandedRows] = useState({});
   const [filterStatusOpen, setFilterStatusOpen] = useState(false);
-
+  
   const sortedRows = [...rows].sort((a, b) => {
     if (!sortField) return 0;
     if (sortDirection === "asc") {
@@ -155,6 +155,7 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit }) => {
   };
 
   const totalPages = Math.ceil(rows.length / pageSize);
+
   const handlePageChange = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
@@ -163,9 +164,9 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit }) => {
 
   return (
     <Box className="data-grid" sx={{ width: "100%", overflowX: "auto" }}>
-      <table style={{ width: "100%", backgroundColor: "#fff" }}>
+      <table style={{ width: "100%", backgroundColor: "#D9D9D9" }}>
         <thead>
-          <tr style={{ width: "100%", backgroundColor: "#CCC" }}>
+          <tr style={{ width: "100%", backgroundColor: "#F3F3F3" }}>
             {columns.map((column, index) => (
               <th
                 key={column.field}
@@ -174,6 +175,7 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit }) => {
                   height: column.height || "50px",
                   padding: "10px",
                   cursor: "pointer",
+                  color:"#868FA0"
                 }}
               >
                 <Box
@@ -182,15 +184,45 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit }) => {
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "center",
+                    fontSize: "12px",
                   }}
                 >
+                  <Box sx={{ flex: 1, textAlign: "center" }}>
                   {column.renderHeader
                     ? column.renderHeader({
                         value: "error",
                       })
                     : column.headerName}
-                  {index != 0 ? (
-                    <Box>
+                  </Box>
+                  {(index == 0 && hasFilter)  ? (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        contain: "layout",
+                        mr: "-10px",
+                        ml: "-25px",
+                      }}
+                    >
+                      <IconButton
+                        onClick={() => setFilterStatusOpen(!filterStatusOpen)}
+                        aria-label="expand row"
+                        size="small"
+                      >
+                        {filterStatusOpen ? (
+                          <KeyboardArrowUpIcon />
+                        ) : (
+                          <KeyboardArrowDownIcon />
+                        )}
+                      </IconButton>
+                      {filterStatusOpen && (
+                        <MenuFilterStatus
+                          filterStatusOpen={filterStatusOpen}
+                          setFilterStatusOpen={setFilterStatusOpen}
+                        />
+                      )}
+                    </Box>
+                  ):(
+                    <Box sx={{justifyContent:"right"}}>
                       <Box
                         sx={{
                           marginLeft: "2px",
@@ -224,33 +256,6 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit }) => {
                         />
                       </Box>
                     </Box>
-                  ) : (
-                    <Box
-                      sx={{
-                        display: "flex",
-                        contain: "layout",
-                        mr: "-10px",
-                        ml: "-25px",
-                      }}
-                    >
-                      <IconButton
-                        onClick={() => setFilterStatusOpen(!filterStatusOpen)}
-                        aria-label="expand row"
-                        size="small"
-                      >
-                        {filterStatusOpen ? (
-                          <KeyboardArrowUpIcon />
-                        ) : (
-                          <KeyboardArrowDownIcon />
-                        )}
-                      </IconButton>
-                      {filterStatusOpen && (
-                        <MenuFilterStatus
-                          filterStatusOpen={filterStatusOpen}
-                          setFilterStatusOpen={setFilterStatusOpen}
-                        />
-                      )}
-                    </Box>
                   )}
                 </Box>
               </th>
@@ -274,8 +279,8 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit }) => {
                         padding: "8px",
                         wordBreak: "break-word",
                         width: column.width || "auto",
-                        borderBottom: colIndex === 0 ? "unset" : "",
-                        backgroundColor: colIndex === 0 ? "#CCC" : "",
+                        borderBottom: (colIndex === 0 && hasFilter) ? "unset" : "",
+                        backgroundColor: (colIndex === 0 && hasFilter)? "#F3F3F3" : "",
                     }}
                     >
                     {column.renderCell
@@ -324,15 +329,15 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit }) => {
                     selectedRow === row ? "selected" : ""
                   }`}
                 >
-                  <td
+                  {hasFilter && <td
                     colSpan="1"
                     style={{
                       border: "unset !important",
                       backgroundColor: "#ccc",
                     }}
-                  ></td>
+                  ></td>}
                   <td colSpan="3">{row.details.date}</td>
-                  <td colSpan="2">{row.details.more_details}</td>
+                  <td colSpan="2" style={{maxWidth:"300px"}}>{row.details.more_details}</td>
                 </tr>
               )}
             </React.Fragment>
@@ -353,7 +358,7 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit }) => {
           disabled={currentPage === 1}
           onClick={() => handlePageChange(currentPage - 1)}
         >
-          <KeyboardArrowLeftIcon />
+          <KeyboardArrowLeftIcon sx={{color:"#000"}}/>
         </IconButton>
 
         {[...Array(totalPages)].map((_, index) => (
@@ -374,7 +379,7 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit }) => {
           disabled={currentPage === totalPages}
           onClick={() => handlePageChange(currentPage + 1)}
         >
-          <KeyboardArrowRightIcon />
+          <KeyboardArrowRightIcon sx={{color:"#000"}}/>
         </IconButton>
       </Box>
     </Box>

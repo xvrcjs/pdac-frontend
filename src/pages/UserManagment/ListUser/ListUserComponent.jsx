@@ -12,7 +12,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import SearchIcon from "@mui/icons-material/Search";
 import {
-  DataGrid,
   GridRow,
   esES,
   gridPageCountSelector,
@@ -20,13 +19,13 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
-
+import DataGrid from "components/DataGrid"
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 import { useNavigate } from "react-router-dom";
 
 function ListUserComponent(props) {
-  const { users,setUsers } = props;
+  const { users } = props;
   const [rows,setRows] = useState([])
   const [originalRows, setOriginalRows] = useState([])
   const theme = useTheme();
@@ -36,69 +35,48 @@ function ListUserComponent(props) {
 
   const columns = [
     {
-      field: "name",
+      field: "full_name",
       headerName: "NOMBRE",
       flex: 1,
       headerAlign: "center",
       align: "center",
       renderCell: (params) => (
-        <div className="swt-table-field-name">{params.value}</div>
+        <div className="swt-table-field-name" style={{textTransform:"uppercase"}}>{params.value}</div>
       ),
     },
     {
-      field: "rol",
+      field: "roles",
       headerName: "ROL",
       flex: 1,
       headerAlign: "center",
       align: "center",
+      renderCell: (params) => (
+        <div className="swt-table-field-name" style={{textTransform:"uppercase"}}>{params.value && params.value.length > 0 ? "Usuario "+params.value[0].name : "Sin rol"}</div>
+      ),
     },
     {
-      field: "status",
+      field: "is_active",
       headerName: "ESTADO",
       flex: 1,
       headerAlign: "center",
       align: "center",
+      renderCell: (params) => (
+        <div className="swt-table-field-name" style={{textTransform:"uppercase"}}>{params.value === true ? "Activo":"Desactivado"}</div>
+      ),
     },
     {
-      field: "email",
+      field: "user",
       headerName: "EMAIL",
       flex: 1,
       headerAlign: "center",
       align: "center",
-    },
-    {
-      field: "actions",
-      headerName: "",
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-      sortable: false,
+      width: "500px",
       renderCell: (params) => (
-        <Box sx={{display:'flex',flexDirection:'row'}}>
-        <IconButton
-          onClick={() => handleExpandClick(params.id)}
-          aria-label="expand row"
-          size="small"
-        >
-          <ExpandMoreIcon
-            style={{
-              transform: expandedRowId === params.id ? "rotate(180deg)" : "rotate(0deg)",
-              transition: "transform 0.3s",
-            }}
-          />
-        </IconButton>
-        <IconButton
-          onClick={() => handleEdit(params.id)}
-          aria-label="expand row"
-          size="small"
-          sx={{ml:'10px'}}
-        >
-        <EditIcon/>
-      </IconButton>
-      </Box>
+        <div className="swt-table-field-name">{params.value?.email}</div>
       ),
     },
   ];
+
   const themeTable = createTheme(
     {
       components: {
@@ -158,7 +136,7 @@ function ListUserComponent(props) {
   const handleFilter = (e) => {
     const text = e.target.value;
     const filteredRows = users.filter((c) => {
-      return c.name.toLowerCase().includes(text.toLowerCase());
+      return c.full_name.toLowerCase().includes(text.toLowerCase());
     });
     setRows(filteredRows);
   };
@@ -171,24 +149,6 @@ function ListUserComponent(props) {
     navigate(`/gestion-de-usuarios/editar-usuario/${id}`)
   };
 
-  const CollapsableRow = ({ row }) => {
-    if (expandedRowId !== row.id) return null;
-    return (
-      <Accordion expanded={expandedRowId === row.id} style={{ width: "100%" }}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls={`panel-${row.id}-content`}
-          id={`panel-${row.id}-header`}
-        >
-          Detalles adicionales
-        </AccordionSummary>
-        <AccordionDetails sx={{display:'flex',flexDirection:'row'}}>
-          <div>Ultimo acceso: {row.last_login ? row.last_login : '-'}</div>
-          <div style={{marginLeft: '40px'}}>Permisos de admin municipal por default activos.</div>
-        </AccordionDetails>
-      </Accordion>
-    );
-  };
 
   function CustomPagination() {
     const apiRef = useGridApiContext();
@@ -234,6 +194,7 @@ function ListUserComponent(props) {
             display: "flex",
             justifyContent: "space-between",
             mb: 5,
+            borderRadius: "5px",
           }}
         >
           <TextField
@@ -247,32 +208,30 @@ function ListUserComponent(props) {
                   }}
                 />
               ),
-              sx: {
-                borderRadius: "5px",
-              },
             }}
             sx={{
               m: 0,
               p: 0,
               backgroundColor: "#FFF",
               borderRadius: "5px",
+              border: "1px solid rgba(61, 62, 64, 0.50)",
+              background:"#fff",
+              boxShadow: "0px 4px 4px 0px #00AEC3",
               "& fieldset": {
                 borderRadius: "5px",
               },
               "& input": {
                 paddingY: "12px",
+                fontFamily: "Encode Sans",
               },
               width: "100%",
-              maxWidth: "390px",
+              maxWidth: "500px",
             }}
             onChange={handleFilter}
           />
         </Box>
 
         <ThemeProvider theme={themeTable}>
-          {rows.map((row) => (
-              <CollapsableRow key={row.id} row={row} />
-            ))}
           <DataGrid
             rows={rows}
             columns={columns}

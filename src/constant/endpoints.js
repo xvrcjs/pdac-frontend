@@ -10,3 +10,4 @@ export const CREATE_PASSWORD_ENDPOINT = "auth/v1/create-password/";
 export const GET_PROFILE_ENDPOINT = "auth/v1/profile";
 export const GET_USER_PERMISSIONS = "auth/v1/permissions";
 export const CREATE_USER = "auth/v1/account";
+export const GET_USERS = "auth/v1/account";

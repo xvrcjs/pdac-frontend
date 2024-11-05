@@ -153,7 +153,7 @@ function ArchivedComponent(props) {
   return (
     <Content className="swt-dashboard" isLoaded="true">
       <Box sx={{ margin: "50px 50px" }}>
-        <DataGrid rows={rows} columns={columns} handleEdit={handleEdit} />
+        <DataGrid rows={rows} columns={columns} handleEdit={handleEdit} hasFilter={true}/>
       </Box>
       <Dialog
         open={showConfirmReOpenClaim}
