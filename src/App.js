@@ -3,7 +3,7 @@ import Router from "./components/Router/RouterContainer";
 import { AppContext } from "./context/AppContext.js";
 import { Box } from "@mui/material"
 import useApi from './hooks/useApi';
-import { GET_PROFILE_ENDPOINT, GET_USER_PERMISSIONS } from "./constant/endpoints";
+import { GET_PROFILE_ENDPOINT, GET_PERMISSIONS } from "./constant/endpoints";
 import { CircularProgress } from "@mui/material";
 import "./App.scss";
 import useAlert from './hooks/useAlert';
@@ -47,7 +47,7 @@ function App() {
   }
 
   const getPermissions = useCallback(() => {
-    api(GET_USER_PERMISSIONS)
+    api(GET_PERMISSIONS)
       .then(({ ok, body }) => {
         if (ok) {
           setPermissions(body)

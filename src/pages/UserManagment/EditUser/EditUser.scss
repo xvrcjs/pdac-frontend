@@ -1,0 +1,8 @@
+.edit_mode{
+    cursor: pointer;
+    right: 0;
+    position: absolute;
+}
+.edit_mode:hover{
+    transform: scale(1.1);
+}

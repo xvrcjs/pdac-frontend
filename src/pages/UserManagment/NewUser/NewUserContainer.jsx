@@ -2,11 +2,12 @@ import React, { useContext, useState } from "react";
 import NewUserComponent from "./NewUserComponent";
 import { AppContext } from "context/AppContext";
 import { useFormik } from "formik";
-import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 import { CREATE_USER } from "constant/endpoints";
 
 function NewUserContainer() {
   const { api, account } = useContext(AppContext);
+  const navigate = useNavigate();
   const [roles, setRoles] = useState([
     { label: "Usuario Administrador", value: "admin" },
     { label: "Usuario Municipal", value: "omic" },
@@ -110,7 +111,7 @@ function NewUserContainer() {
             }
         }).then(({ok,body}) => {
             if(ok){
-
+              
             } else {
                 console.log("not ok");
             }

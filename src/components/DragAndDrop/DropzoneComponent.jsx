@@ -20,7 +20,7 @@ const DropzoneComponent = (props) => {
     
     return (
         <Box {...getRootProps()} className="dropzone" 
-            sx={{width:"100%", height:"100%", position:"absolute"}} >
+            sx={{ height:"100%", width: "100%",position:"absolute"}} >
             <input {...getInputProps()} />
         </Box>
     );

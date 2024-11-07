@@ -137,6 +137,15 @@ function NewUserComponent(props) {
       [permissionValue]: !prevPermissions[permissionValue],
     }));
   };
+  
+  const handleCloseConfirmReSendEmail = () =>{
+    setShowConfirmSendEmail(!showConfirmSendEmail)                    
+    navigate("/gestion-de-usuarios/listado-de-usuarios")
+  }
+
+  const handleReSendEmail = () =>{
+    setShowConfirmSendEmail(!showConfirmSendEmail)
+  }
 
   return (
     <Content className="swt-dashboard" isLoaded="true">
@@ -224,7 +233,7 @@ function NewUserComponent(props) {
                         ) : (
                           <>
                             <img
-                              src="../assets/image-default.svg"
+                              src="../../assets/image-default.svg"
                               style={{
                                 borderRadius: "8px",
                                 width: "43px",
@@ -271,17 +280,8 @@ function NewUserComponent(props) {
                   onChange={handleOnChange}
                 />
                 {files.length > 0 && (
-                  <Button
-                    variant="text"
-                    sx={{
-                      color: "#FF7272",
-                      textTransform: "capitalize",
-                    }}
-                    startIcon={<DeleteOutlineOutlinedIcon />}
-                    onClick={handleRemoveImage}
-                  >
-                    Eliminar imagen
-                  </Button>
+                  <DeleteOutlineOutlinedIcon sx={{color:"#fff",backgroundColor:"#00AEC3",borderRadius:"50%",p:"5px",position:"relative",left:"-110px",top: "-40px"
+                  }} onClick={handleRemoveImage}/>
                 )}
               </Box>
               <Box
@@ -302,6 +302,12 @@ function NewUserComponent(props) {
                   sx={{
                     mb: "10px",
                     width: "90%",
+                    "& .MuiOutlinedInput-notchedOutline":{
+                    borderColor:"#00AEC3 !important"
+                    },
+                    "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":{
+                      borderColor:"#00AEC3 !important"
+                    },
                   }}
                   InputProps={{
                     startAdornment: values.fullname === "" && (
@@ -327,6 +333,12 @@ function NewUserComponent(props) {
                   sx={{
                     mb: "10px",
                     width: "90%",
+                    "& .MuiOutlinedInput-notchedOutline":{
+                      borderColor:"#00AEC3 !important"
+                    },
+                    "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":{
+                      borderColor:"#00AEC3 !important"
+                    },
                   }}
                   InputProps={{
                     startAdornment: values.email === "" && (
@@ -351,6 +363,12 @@ function NewUserComponent(props) {
                   sx={{
                     mb: "10px",
                     width: "90%",
+                    "& .MuiOutlinedInput-notchedOutline":{
+                      borderColor:"#00AEC3 !important"
+                    },
+                    "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":{
+                      borderColor:"#00AEC3 !important"
+                    },
                   }}
                   InputProps={{
                     startAdornment: values.dni === "" && (
@@ -375,6 +393,12 @@ function NewUserComponent(props) {
                   sx={{
                     mb: "10px",
                     width: "90%",
+                    "& .MuiOutlinedInput-notchedOutline":{
+                      borderColor:"#00AEC3 !important"
+                    },
+                    "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":{
+                      borderColor:"#00AEC3 !important"
+                    },
                   }}
                   InputProps={{
                     startAdornment: values.phone === "" && (
@@ -533,7 +557,7 @@ function NewUserComponent(props) {
             <Button
               onClick={() => setShowConfirmCreate(!showConfirmCreate)}
               type="submit"
-              disabled={!(isValid && dirty)}
+              disabled={!(isValid && dirty && rolSelected)}
               sx={{
                 borderRadius: "50px",
                 backgroundColor: "#04AAC0",
@@ -708,7 +732,7 @@ function NewUserComponent(props) {
                 borderColor: "Blue",
               },
             }}
-            onClick={() => setShowConfirmSendEmail(!showConfirmSendEmail)}
+            onClick={handleReSendEmail}
           >
             Reenviar
           </Button>
@@ -731,7 +755,7 @@ function NewUserComponent(props) {
                 borderColor: "Blue",
               },
             }}
-            onClick={() => setShowConfirmSendEmail(!showConfirmSendEmail)}
+            onClick={handleCloseConfirmReSendEmail}
             autoFocus
           >
             Aceptar

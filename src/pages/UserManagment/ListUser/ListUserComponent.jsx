@@ -235,28 +235,8 @@ function ListUserComponent(props) {
           <DataGrid
             rows={rows}
             columns={columns}
-            sx={{ minHeight: "600px" }}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  page: 0,
-                  pageSize: 10,
-                },
-              },
-            }}
-            // disableRowSelectionOnClick
-            disableColumnMenu
-            pageSizeOptions={[10, 15, 30]}
-            slots={
-              {
-                pagination: CustomPagination,
-                // toolbar: CustomToolbar,
-                // noResultsOverlay: CustomNoRowsOverlay,
-                // noRowsOverlay: CustomNoRowsOverlay,
-              }
-            }
+            handleEdit={handleEdit}
           />
-          
         </ThemeProvider>
       </div>
     </Content>
