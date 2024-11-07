@@ -253,8 +253,9 @@ function Topbar(props) {
               Bienvenido nuevamente
             </Typography>
             <div style={{cursor:'pointer'}} onClick={()=> setMenuOpen(!isMenuOpen)}>
-              <img alt="user-profile" src={`../../assets/examples/user-profile.png`} style={{ width: "50px",height:"35px",borderRadius:"20px" }} />
+              <img alt="user-profile" src={account.profile_image ? process.env.REACT_APP_BACKEND_URL+account.profile_image : `../../assets/examples/user-profile.png`} style={{ width: "50px",height:"35px",borderRadius:"20px" }} />
             </div>
+            {console.log(account)}
             <ProfileMenuContainer isMenuOpen={isMenuOpen}
             setMenuOpen={setMenuOpen}/>
           </Box>

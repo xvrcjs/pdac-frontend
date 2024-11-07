@@ -137,7 +137,7 @@ function NewUserComponent(props) {
       [permissionValue]: !prevPermissions[permissionValue],
     }));
   };
-  
+
   const handleCloseConfirmReSendEmail = () =>{
     setShowConfirmSendEmail(!showConfirmSendEmail)                    
     navigate("/gestion-de-usuarios/listado-de-usuarios")
@@ -290,7 +290,7 @@ function NewUserComponent(props) {
                   flexDirection: "column",
                   width: "100%",
                   alignItems: "center",
-                  mb: "150px",
+                  mb: "50px",
                 }}
               >
                 <TextField
@@ -414,6 +414,11 @@ function NewUserComponent(props) {
                   name="phone"
                   onChange={handleChange}
                 />
+                <Box sx={{display:"flex",justifyContent:"end",width:"100%",mr:"50px"}}>
+                  <Typography sx={{color:"#9F0000",mt:"80px"}}>
+                    <span style={{color:"#F80000"}}>*</span> Campos obligatorios
+                  </Typography>
+                </Box>
               </Box>
             </Box>
 

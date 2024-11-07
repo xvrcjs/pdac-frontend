@@ -99,7 +99,15 @@ function Navbar(props) {
     <>
       <div className={`swt-navbar ${isNavbarCollapsed ? "collapsed" : ""}`}>
         <Box className="swt-navbar-logo">
-          <img alt="logo" src={`../../logo.svg`} style={{ width: "100%" }} />
+          <a href="/" style={{display: "flex", justifyContent:"center", alignItems:"center"}}>
+              <img
+                alt="logo"
+                src={`../../logo.svg`}
+                style={{
+                  maxWidth: "100%",
+                }}
+              />
+          </a>
         </Box>
         <Menu iconShape="square">
           <Box sx={{ backgroundColor: "#417099" }}>

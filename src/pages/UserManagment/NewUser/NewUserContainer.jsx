@@ -1,9 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState,useEffect } from "react";
 import NewUserComponent from "./NewUserComponent";
 import { AppContext } from "context/AppContext";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import { CREATE_USER } from "constant/endpoints";
+import { CREATE_USER,GET_PERMISSIONS } from "constant/endpoints";
 
 function NewUserContainer() {
   const { api, account } = useContext(AppContext);
@@ -13,83 +13,7 @@ function NewUserContainer() {
     { label: "Usuario Municipal", value: "omic" },
     { label: "Usuario de Soporte", value: "support" },
   ]);
-  const [permissions, setPermissions] = useState([
-    {
-      type: "admin",
-      permissions: [
-        {
-          value: "gestion_reclamos",
-          label: "Gestión de Reclamos",
-        },
-        {
-          value: "gestion_usuarios",
-          label: "Gestión de Usuarios",
-        },
-        {
-          value: "acceso_reportes_estadisticas",
-          label: "Acceso a Reportes y Estadísticas",
-        },
-        {
-          value: "configuracion_sistema",
-          label: "Configuración del Sistema",
-        },
-        {
-          value: "interaccion_soporte_tecnico",
-          label: "Interacción con Soporte Técnico",
-        },
-        {
-          value: "visualizacion_manejo_documentos",
-          label: "Visualización y Manejo de Documentos",
-        },
-        {
-          value: "trazabilidad_auditoria",
-          label: "Trazabilidad y Auditoría",
-        },
-      ],
-    },
-    {
-      type: "omic",
-      permissions: [
-        {
-          value: "gestion_reclamos",
-          label: "Gestión de Reclamos",
-        },
-        {
-          value: "acceso_reportes_estadisticas",
-          label: "Acceso a Reportes y Estadísticas",
-        },
-        {
-          value: "visualizacion_edicion_reclamos",
-          label: "Visualización y Edición de Reclamos",
-        },
-        {
-          value: "interaccion_soporte_tecnico",
-          label: "Interacción con Soporte Técnico",
-        },
-        {
-          value: "trazabilidad_auditoria",
-          label: "Trazabilidad y Auditoría",
-        },
-      ],
-    },
-    {
-      type: "support",
-      permissions: [
-        {
-          value: "gestion_tickets",
-          label: "Gestión de Tickets",
-        },
-        {
-          value: "visualizacion_manejo_documentos",
-          label: "Visualización y Manejo de Documentos",
-        },
-        {
-          value: "trazabilidad_auditoria",
-          label: "Trazabilidad y Auditoría",
-        },
-      ],
-    },
-  ]);
+  const [permissions, setPermissions] = useState([]);
 
   const handleOnSubmit = (values) => {
     const { fullname, email, profile_image, dni, phone,rol, permissions} = values;       
@@ -169,6 +93,15 @@ function NewUserContainer() {
       return errors;
     },
   });
+
+  useEffect(() => {
+    api(GET_PERMISSIONS).then(({ ok, body }) => {
+      if (ok) {
+        setPermissions(body.data);
+      }
+    });
+  }, []);
+  
   return (
     <NewUserComponent
       values={values}

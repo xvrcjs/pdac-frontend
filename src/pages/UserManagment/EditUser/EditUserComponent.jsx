@@ -309,7 +309,7 @@ function EditUserComponent(props) {
                 type="file"
                 onChange={handleOnChange}
               />
-              {files.length > 0 && (
+              {files.length > 0 && isEditing && (
                 <DeleteOutlineOutlinedIcon
                   sx={{
                     color: "#fff",
@@ -652,6 +652,7 @@ function EditUserComponent(props) {
                   maxRows={Infinity}
                   minRows={7}
                   multiline
+                  disabled={!isEditing}
                   value={values.comments}
                   onChange={handleChange}
                   name="comments"
