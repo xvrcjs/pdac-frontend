@@ -37,7 +37,9 @@ export const MenuData:Menu[] = [{
         {
             title: "Listado general de usuarios",
             path: "gestion-de-usuarios/listado-de-usuarios",
-            rolesAllowed: ["Admin"]
+            rolesAllowed: ["Admin"],
+            headerTitle:"Te damos la bienvenida a tu tablero de gestión administrativa",
+            headerSubTitle:"A continuación podrás ver el listado general de usuarios."
         },
         {
             title: "Configuracion de roles",
