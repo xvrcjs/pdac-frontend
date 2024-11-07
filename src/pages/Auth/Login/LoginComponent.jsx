@@ -96,7 +96,7 @@ function LoginComponent(props) {
             <img
               alt="logo-pba"
               src="../../logo-pba.png"
-              style={{ height: "100px", width: "100px" }}
+              style={{ height: "100px", width: "auto" }}
             />
             <h1>
               <span style={{ color: "#03AAC0" }}>Inicio de sesión</span> de

@@ -12,21 +12,7 @@ function ForgotPasswordContainer() {
 
     return (
         <div className="container">
-            {/* <div className="back-image">
-                <img src={`../../background_login.svg`} loading="lazy"/>
-                <div className="screen"></div>
-            </div> */}
-            <Box
-             className="container-component"
-                sx={{
-                    margin: "0 auto",
-                    height: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                }}
-            >
-                <ForgotPasswordComponent />
-            </Box>
+            <ForgotPasswordComponent />
         </div>
     );
 }
