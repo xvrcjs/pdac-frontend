@@ -20,12 +20,13 @@ import "./ForgotPasswordStyles.scss";
 import "utils/MainStyles.scss";
 import { useFormik } from "formik";
 import { FORGOT_PASSWORD_ENDPOINT } from "constant/endpoints";
+import { useNavigate } from "react-router-dom";
 
 function ForgotPasswordComponent(props) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { api, setAuthToken, setIsInitialized } = useContext(AppContext);
-
+  const navigate = useNavigate()
   const { values,handleSubmit, handleChange, touched, errors,handleBlur } = useFormik({
     initialValues: {
       email: "",
@@ -53,8 +54,7 @@ function ForgotPasswordComponent(props) {
       },
     }).then(({ ok, body }) => {
       if (ok) {
-        setIsInitialized(false);
-        setAuthToken(body.access_token, body.expires_in);
+        navigate("/login")
       } 
     });
   }
