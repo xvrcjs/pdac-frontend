@@ -183,6 +183,7 @@ function EditUserComponent(props) {
               borderRadius: "50px",
               background: "#F5F5F5",
               boxShadow: "0px 4px 30px 0px rgba(0, 0, 0, 0.50)",
+              height: "fit-content"
             }}
           >
             <Box>

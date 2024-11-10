@@ -31,7 +31,7 @@
         justify-content: center;
         display: flex;
         align-items: center;
-        background-color: #417099;
+        background-color: #00AEC3;
         margin-right: 10px;
         border-radius: 10px;
         a{
@@ -40,6 +40,7 @@
             margin: auto;
         }
         cursor: pointer;
+        
         &.ps-active{
             background-color: #E81F76;
         }
@@ -60,7 +61,7 @@
         &.nav-hv{
             background-color: #000;
             p{
-                color:#FFEA00
+                color:#fff
             }
         }
         &-sub-item{

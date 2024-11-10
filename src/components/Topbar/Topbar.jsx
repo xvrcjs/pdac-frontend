@@ -6,8 +6,6 @@ import { tokens } from "../../theme";
 import Navbar from "components/Navbar";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ContactSupportIcon from "@mui/icons-material/ContactSupport";
-import PersonIcon from "@mui/icons-material/Person";
-import { styled, alpha } from "@mui/material/styles";
 import SearchBar from "./SearchComponent";
 import { MenuData } from "./MenuData.ts";
 import ProfileMenuContainer from "components/ProfileMenu";
@@ -22,7 +20,7 @@ const Item = ({ title, to, icon, colors, isActive, subItems }) => {
     navigate(to);
   };
   let location = useLocation();
-  const currentPath = location.pathname;
+
   return (
     <>
       {!subItems ? (
@@ -60,10 +58,8 @@ const Item = ({ title, to, icon, colors, isActive, subItems }) => {
             active={isActive}
             className="swt-topbar-links"
             onClick={() => {
-              handleTo();
               setIsOpen(!isOpen);
             }}
-            component={<Link to={to} />}
             rel="noopener noreferrer"
           >
             <div className="swt-topbar-links-content">
@@ -95,6 +91,7 @@ const Item = ({ title, to, icon, colors, isActive, subItems }) => {
                     onClick={() => {
                       if (!isEditUserRoute) {
                         navigate(subItem.path);
+                        setIsOpen(!isOpen)
                       }
                     }}
                   >
@@ -255,7 +252,6 @@ function Topbar(props) {
             <div style={{cursor:'pointer'}} onClick={()=> setMenuOpen(!isMenuOpen)}>
               <img alt="user-profile" src={account.profile_image ? process.env.REACT_APP_BACKEND_URL+account.profile_image : `../../assets/examples/user-profile.png`} style={{ width: "50px",height:"35px",borderRadius:"20px" }} />
             </div>
-            {console.log(account)}
             <ProfileMenuContainer isMenuOpen={isMenuOpen}
             setMenuOpen={setMenuOpen}/>
           </Box>

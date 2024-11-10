@@ -110,7 +110,7 @@ function Navbar(props) {
           </a>
         </Box>
         <Menu iconShape="square">
-          <Box sx={{ backgroundColor: "#417099" }}>
+          <Box sx={{ backgroundColor: "#00AEC3" }}>
             {navMenuData.map((elem, index) => {
               const isActive = elem.path.split("/")[0] === currentPath;
               return (

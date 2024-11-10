@@ -267,7 +267,7 @@ function LoginComponent(props) {
         <img
           alt="item-2"
           src={`../../assets/login/img-2.png`}
-          style={{ height: "700px", borderRadius: "20px" }}
+          style={{ height: "800px", borderRadius: "20px" }}
         />
       </Box>
       <Box
