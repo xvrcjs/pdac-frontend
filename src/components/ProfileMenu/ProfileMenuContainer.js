@@ -34,7 +34,7 @@ function ProfileMenuContainer(props) {
                 Cookies.remove("token")
                 localStorage.removeItem('lastVisitedUrl')
                 setIsInitialized(true)
-                navigate("/login")
+                navigate("/")
             }
         })
     }

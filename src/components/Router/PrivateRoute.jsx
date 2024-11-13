@@ -13,7 +13,7 @@ const PrivateRoute = () => {
   }, [location.pathname, setLastUrl]);
   
   if (!account) {
-    return <Navigate to={"/login"} replace />;
+    return <Navigate to={"/"} replace />;
   }
 
   return (

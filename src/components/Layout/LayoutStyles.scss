@@ -4,13 +4,9 @@
   background-color: var(--bw-color-white);
 
   .swt-layout-content {
-    // height: calc(100% - 90px);
-    -webkit-transition: margin-left 0.5s;
-    -moz-transition: margin-left 0.5s;
-    -o-transition: margin-left 0.5s;
     transition: margin-left 0.5s;
     // overflow: auto;
-
+    height: auto;
     &.collapsed{
       margin-left: 130px;;
     }
@@ -18,9 +14,6 @@
 
     .swt-layout-content-blank {
       margin-left: 300px;
-      -webkit-transition: margin-left 0.5s;
-      -moz-transition: margin-left 0.5s;
-      -o-transition: margin-left 0.5s;
       transition: margin-left 0.5s;
       overflow: auto;
       background: linear-gradient(61deg, #0287FD -8.58%, #0C60FF 45.66%, #0450FE 106.44%);

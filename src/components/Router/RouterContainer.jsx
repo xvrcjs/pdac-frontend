@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import LoginPage from "../../pages/Auth/Login";
+import WelcomePage from "../../pages/Auth/Welcome";
 import HomePage from "../../pages/Home";
 import NewUserPage from "../../pages/UserManagment/NewUser";
 import ListUserPage from "../../pages/UserManagment/ListUser";
@@ -24,7 +25,7 @@ function RouterContainer() {
                 <Route exact path="*" element={<HomePage />} />
                 <Route
                     exact
-                    path="/"
+                    path="/home"
                     element={<HomePage />}
                 />
                 <Route
@@ -59,6 +60,7 @@ function RouterContainer() {
                 />
             </Route>
             <Route element={<PublicRoute />}>
+                <Route exact path="/" element={<WelcomePage />} />
                 <Route exact path="/login" element={<LoginPage />} />
                 <Route
                     exact

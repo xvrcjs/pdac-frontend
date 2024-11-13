@@ -63,7 +63,7 @@ function ProfileMenuComponent(props) {
       transformOrigin={{ horizontal: "right", vertical: "top" }}
       anchorOrigin={{ horizontal: "right", vertical: "top" }}
     >
-      <MenuItem onClick={signout} >
+      <MenuItem >
         {account.full_name}
       </MenuItem>
       <Divider />
