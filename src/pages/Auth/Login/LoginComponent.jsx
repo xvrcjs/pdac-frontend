@@ -99,7 +99,7 @@ function LoginComponent(props) {
               style={{ height: "100px", width: "auto" }}
             />
             <h1>
-              <span style={{ color: "#03AAC0" }}>Inicio de sesión</span> de
+              <span style={{ color: "#00AEC3" }}>Inicio de sesión</span> de
               gestión administrativa.
             </h1>
             <h1
@@ -107,7 +107,7 @@ function LoginComponent(props) {
             >
               Defensa de las y los consumidores
               <br />
-              de la <span style={{ color: "#03AAC0" }}>Provincia de Buenos Aires.</span>
+              de la <span style={{ color: "#00AEC3" }}>Provincia de Buenos Aires.</span>
             </h1>
           </Box>
           <Box sx={{ width: "350px", marginTop: "80px" }}>
