@@ -587,6 +587,9 @@ function EditUserComponent(props) {
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
+                      maxHeight:"400px",
+                      overflow:"scroll",
+                      p:"10px 0px"
                     }}
                   >
                     {filteredPermissions.map((permission, index) => (
@@ -602,6 +605,7 @@ function EditUserComponent(props) {
                               handleTogglePermission(permission.value)
                             }
                             sx={{
+                              marginRight: "5px",
                               "&.MuiButtonBase-root.MuiCheckbox-root.Mui-checked":
                                 {
                                   color: "#027A48",
