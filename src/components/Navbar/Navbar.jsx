@@ -99,7 +99,7 @@ function Navbar(props) {
     <>
       <div className={`swt-navbar ${isNavbarCollapsed ? "collapsed" : ""}`}>
         <Box className="swt-navbar-logo">
-          <a href="/" style={{display: "flex", justifyContent:"center", alignItems:"center"}}>
+          <a href="/home" style={{display: "flex", justifyContent:"center", alignItems:"center"}}>
               <img
                 alt="logo"
                 src={`../../logo.svg`}

@@ -3,6 +3,9 @@
     display: flex;
     flex-direction: row;
     font-family: "Encode Sans";
+    width: 100%;
+    padding-bottom: 10px;
+    height: 410px;
 
     .MuiOutlinedInput-input{
         padding: 10px;
@@ -34,6 +37,7 @@
         background-color: #00AEC3;
         margin-right: 10px;
         border-radius: 10px;
+        
         a{
             height: 100px !important;
             width: 100%;
@@ -66,7 +70,12 @@
         }
         &-sub-item{
             // position: absolute;
+            position: absolute;
+            left: 0;
+            top: 100%;
+            z-index: 10;
             background-color: #272727;
+            
             &-title{
                 color: #fff;
             }

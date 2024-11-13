@@ -12,7 +12,7 @@ interface Menu{
 
 export const MenuData:Menu[] = [{
     title: "Home",
-    path: "",
+    path: "home",
     icon: "",
     rolesAllowed: ["Admin"],
     headerTitle:"Te damos la bienvenida a tu tablero de gestión administrativa",
