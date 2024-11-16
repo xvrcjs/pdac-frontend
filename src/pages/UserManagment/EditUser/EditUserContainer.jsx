@@ -31,7 +31,7 @@ function EditUserContainer() {
     formData.append("roles", rol);
     formData.append("is_active",active)
     formData.append("comments", comments)
-    console.log(profile_image)
+    
     if (typeof profile_image[0] !== "string" && profile_image.length > 0) {
       formData.append("profile_image", profile_image[0]);
     }else if (profile_image.length === 0){

@@ -106,7 +106,7 @@ function EditUserComponent(props) {
   } = props;
 
   const [files, setFiles] = useState([
-    process.env.REACT_APP_BACKEND_URL + values.profile_image,
+    process.env.REACT_APP_BACKEND_URL_MEDIA + values.profile_image,
   ]);
   const [isEditing, setIsEditing] = useState(false);
   const [isDragActive, setIsDragActive] = useState(false);
