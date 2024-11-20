@@ -256,7 +256,7 @@ function CreatePasswordComponent(props) {
                 disabled={!(isValid && dirty) || loading}
                 sx={{
                   borderRadius: "20px",
-                  backgroundColor: "#04AAC0",
+                  backgroundColor: "#00AEC3",
                   color: "#FFF",
                   padding: "9px 30px",
                   fontFamily: "Encode Sans",
@@ -265,7 +265,7 @@ function CreatePasswordComponent(props) {
                   textTransform: "capitalize",
                   ":hover": {
                     color: "#FFF",
-                    backgroundColor: "#04AAC0",
+                    backgroundColor: "#00AEC3",
                     borderColor: "Blue",
                     transform: "scale(1.01)",
                   },

@@ -739,7 +739,7 @@ function EditUserComponent(props) {
             disabled={!(isValid)}
             sx={{
               borderRadius: "50px",
-              backgroundColor: "#04AAC0",
+              backgroundColor: "#00AEC3",
               boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
               color: "#fff",
               padding: "9px 30px",
@@ -829,7 +829,7 @@ function EditUserComponent(props) {
           <Button
             sx={{
               borderRadius: "50px",
-              backgroundColor: "#04AAC0",
+              backgroundColor: "#00AEC3",
               boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
               color: "#fff",
               padding: "9px 0px",
@@ -894,7 +894,7 @@ function EditUserComponent(props) {
           <Button
             sx={{
               borderRadius: "50px",
-              backgroundColor: "#04AAC0",
+              backgroundColor: "#00AEC3",
               boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
               color: "#fff",
               padding: "9px 0px",

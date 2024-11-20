@@ -570,7 +570,7 @@ function NewUserComponent(props) {
               disabled={!(isValid && dirty && rolSelected)}
               sx={{
                 borderRadius: "50px",
-                backgroundColor: "#04AAC0",
+                backgroundColor: "#00AEC3",
                 boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
                 color: "#fff",
                 padding: "9px 30px",
@@ -661,7 +661,7 @@ function NewUserComponent(props) {
           <Button
             sx={{
               borderRadius: "50px",
-              backgroundColor: "#04AAC0",
+              backgroundColor: "#00AEC3",
               boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
               color: "#fff",
               padding: "9px 0px",
@@ -749,7 +749,7 @@ function NewUserComponent(props) {
           <Button
             sx={{
               borderRadius: "50px",
-              backgroundColor: "#04AAC0",
+              backgroundColor: "#00AEC3",
               boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
               color: "#fff",
               padding: "9px 0px",

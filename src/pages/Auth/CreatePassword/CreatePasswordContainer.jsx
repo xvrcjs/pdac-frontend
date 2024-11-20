@@ -130,7 +130,7 @@ function CreatePasswordContainer() {
                         <Button
                             sx={{
                             borderRadius: "20px",
-                            backgroundColor: "#04AAC0",
+                            backgroundColor: "#00AEC3",
                             color: "#fff",
                             padding: "9px 30px",
                             fontFamily: "Encode Sans",

@@ -50,7 +50,7 @@ function WelcomeComponent(props) {
                 marginTop: "60px",
               }}
             >
-              Te damos la <span style={{ color: "#04AAC0" }}>bienvenida</span>.
+              Te damos la <span style={{ color: "#00AEC3" }}>bienvenida</span>.
             </Typography>
             <Typography
               sx={{
@@ -125,7 +125,7 @@ function WelcomeComponent(props) {
                 textTransform: "capitalize",
                 "&:hover": {
                   color: "#FFF",
-                  backgroundColor: "#04AAC0",
+                  backgroundColor: "#00AEC3",
                   boxShadow: "0px 4px 4px 0px #00000040",
                 },
               }}
@@ -168,7 +168,7 @@ function WelcomeComponent(props) {
                 textTransform: "capitalize",
                 "&:hover": {
                   color: "#FFF",
-                  backgroundColor: "#04AAC0",
+                  backgroundColor: "#00AEC3",
                   boxShadow: "0px 4px 4px 0px #00000040",
                 },
               }}
@@ -210,7 +210,7 @@ function WelcomeComponent(props) {
                 textTransform: "capitalize",
                 "&:hover": {
                   color: "#FFF",
-                  backgroundColor: "#04AAC0",
+                  backgroundColor: "#00AEC3",
                   boxShadow: "0px 4px 4px 0px #00000040",
                 },
               }}
