@@ -1,3 +1,3 @@
-import ClaimsHVContainer from "./ClaimsHVContainer";
+import ClaimHVContainer from "./ClaimHVContainer";
 
-export default ClaimsHVContainer;
+export default ClaimHVContainer;

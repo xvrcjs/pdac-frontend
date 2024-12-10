@@ -24,7 +24,6 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { tokens } from "../../theme";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import {
-  esES,
   // DataGrid,
   gridPageCountSelector,
   gridPageSelector,

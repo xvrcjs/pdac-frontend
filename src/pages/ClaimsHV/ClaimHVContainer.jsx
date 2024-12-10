@@ -1,8 +1,8 @@
 import React, { useContext,useState} from "react";
-import ClaimsHVComponent from "./ClaimsHVComponent";
+import ClaimHVComponent from "./ClaimHVComponent";
 import { AppContext } from "context/AppContext";
 
-function ClaimsHVContainer() {
+function ClaimHVContainer() {
   const { api, account } = useContext(AppContext);
 
   const [claims, setClaims] = useState([
@@ -200,7 +200,7 @@ function ClaimsHVContainer() {
     },
   ]);
 
-  return <ClaimsHVComponent claims={claims}/>;
+  return <ClaimHVComponent claims={claims}/>;
 }
 
-export default ClaimsHVContainer;
+export default ClaimHVContainer;

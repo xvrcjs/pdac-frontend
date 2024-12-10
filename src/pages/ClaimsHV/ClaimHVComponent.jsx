@@ -17,7 +17,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import {
   DataGrid,
   GridRow,
-  esES,
   gridPageCountSelector,
   gridPageSelector,
   useGridApiContext,
@@ -26,7 +25,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-function ClaimsHVComponent(props) {
+function ClaimHVComponent(props) {
   const { claims } = props;
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -252,7 +251,6 @@ function ClaimsHVComponent(props) {
         },
       },
     },
-    esES
   );
 
   useEffect(() => {
@@ -292,4 +290,4 @@ function ClaimsHVComponent(props) {
   );
 }
 
-export default ClaimsHVComponent;
+export default ClaimHVComponent;
