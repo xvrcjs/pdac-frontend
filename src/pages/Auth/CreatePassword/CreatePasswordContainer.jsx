@@ -94,7 +94,7 @@ function CreatePasswordContainer() {
       }
     return (
         <div className="container">
-            {showSuccessMessage ?
+            {!showSuccessMessage ?
             
             <CreatePasswordComponent 
                 handleSubmit={handleSubmit}

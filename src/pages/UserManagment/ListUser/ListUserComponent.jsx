@@ -13,7 +13,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import SearchIcon from "@mui/icons-material/Search";
 import {
   GridRow,
-  esES,
   gridPageCountSelector,
   gridPageSelector,
   useGridApiContext,
@@ -129,7 +128,6 @@ function ListUserComponent(props) {
         },
       },
     },
-    esES
   );
 
 

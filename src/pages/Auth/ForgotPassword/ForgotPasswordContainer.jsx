@@ -13,7 +13,7 @@ function ForgotPasswordContainer() {
 
     const { api, setAuthToken, setIsInitialized } = useContext(AppContext);
     const navigate = useNavigate()
-    const [showSuccessMessage,setShowSuccessMessage] = useState(true)
+    const [showSuccessMessage,setShowSuccessMessage] = useState(false)
     const { values,handleSubmit, handleChange, touched, errors,handleBlur } = useFormik({
         initialValues: {
           email: "",

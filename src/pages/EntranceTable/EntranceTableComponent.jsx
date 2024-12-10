@@ -17,7 +17,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import {
   DataGrid,
   GridRow,
-  esES,
   gridPageCountSelector,
   gridPageSelector,
   useGridApiContext,
@@ -238,7 +237,6 @@ const CircularItem = ({ status }) => {
         },
       },
     },
-    esES
   );
 
   useEffect(() => {
