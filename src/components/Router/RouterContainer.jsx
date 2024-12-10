@@ -7,12 +7,14 @@ import NewUserPage from "../../pages/UserManagment/NewUser";
 import ListUserPage from "../../pages/UserManagment/ListUser";
 import EditUserPage from "../../pages/UserManagment/EditUser";
 import EntranceTablePage from "../../pages/EntranceTable";
-import ClaimsHVPage from "../../pages/ClaimsHV";
+import ClaimHVPage from "../../pages/ClaimsHV";
 import ArchivedPage from "../../pages/Archived";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 import ForgotPassword from "../../pages/Auth/ForgotPassword";
 import CreatePassword from "../../pages/Auth/CreatePassword";
+import ClaimsHomePage from "../../pages/ClaimsForm/Home"
+import ClaimFormPage from "../../pages/ClaimsForm/Claim"
 import { AppContext } from "../../context/AppContext";
 
 function RouterContainer() {
@@ -56,7 +58,7 @@ function RouterContainer() {
                 <Route
                     exact
                     path="/reclamos-hv"
-                    element={<ClaimsHVPage />}
+                    element={<ClaimHVPage />}
                 />
             </Route>
             <Route element={<PublicRoute />}>
@@ -71,6 +73,21 @@ function RouterContainer() {
                     exact
                     path="/create-password"
                     element={<CreatePassword />}
+                />
+                <Route
+                    exact
+                    path="/genera-tu-reclamo"
+                    element={<ClaimsHomePage />}
+                />
+                <Route
+                    exact
+                    path="/genera-tu-reclamo/formulario-comun"
+                    element={<ClaimFormPage />}
+                />
+                <Route
+                    exact
+                    path="/genera-tu-reclamo/formulario-ive"
+                    element={<ClaimsHomePage />}
                 />
             </Route>
         </Routes>

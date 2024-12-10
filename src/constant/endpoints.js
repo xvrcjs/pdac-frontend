@@ -11,3 +11,6 @@ export const GET_PROFILE_ENDPOINT = "/v1/profile";
 export const GET_PERMISSIONS = "/v1/permissions";
 export const CREATE_USER = "/v1/account";
 export const GET_USERS = "/v1/account";
+
+// FORMULARIO DE RECLAMO
+export const VALIDATE_RECAPTCHA = "/v1/validate-recaptcha";
