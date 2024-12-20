@@ -41,14 +41,26 @@ function SupplierFormComponent(props) {
     handleAddSupplier,
     isNew
   } = props;
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-
-    setNewSupplier((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value, // Maneja checkbox y otros inputs
-    }));
+    setNewSupplier((prev) => {
+      if (name === "has_cuil_sp") {
+        return {
+          ...prev,
+          has_cuil_sp: checked,
+          cuil_sp: checked ? "No sé el CUIL/CUIT del proveedor" : "",
+        };
+      }
+      
+      return {
+        ...prev,
+        [name]: type === "checkbox" ? checked : value,
+      };
+    });
   };
+
+  console.log(newSupplier);
 
   return (
     <Box
@@ -77,7 +89,7 @@ function SupplierFormComponent(props) {
         variant="outlined"
         placeholder="CUIL/CUIT"
         className="input-field"
-        disabled={isNew}
+        disabled={isNew || newSupplier.has_cuil_sp}
         value={newSupplier.cuil_sp}
         onBlur={handleBlur}
         sx={{
@@ -89,39 +101,47 @@ function SupplierFormComponent(props) {
           "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
             borderColor: "#AAA !important",
           },
+          "& .Mui-disabled":{
+            borderRadius: "8px",
+            background: "#E7E5E4 "
+          }
         }}
-        slotProps={{
-          input: {
-            inputComponent: CuitMaskCustom,
-          },
-        }}
+        // slotProps={{
+        //   input: {
+        //     inputComponent: CuitMaskCustom,
+        //   },
+        // }}
         name="cuil_sp"
         // error={!newSupplier.cuil_sp}
         // helperText={!newSupplier.cuil_sp && "El campo CUIL/CUIT es requerido"}
         onChange={handleChange}
       />
       {!isNew &&
-      <FormControlLabel
+      <Box 
         sx={{
-          color: "#E81F76",
-          fontSize: "1rem",
-          fontWeight: "400",
           display: "flex",
-          justifyContent: "end !important",
-        }}
-        control={
-          <Checkbox
-            onChange={handleChange}
-            checked={newSupplier.has_cuil_sp}
-            name="checked"
-            sx={{ "&.MuiButtonBase-root.MuiCheckbox-root.Mui-checked":
-              {
-                color: "#E81F76",
-              }, }}
-          />
-        }
-        label="No sé el CUIL/CUIT del proveedor"
-      />
+          justifyContent: "end !important"
+        }}>
+        <FormControlLabel
+          sx={{
+            color: "#E81F76",
+            fontSize: "1rem",
+            fontWeight: "400",
+          }}
+          control={
+            <Checkbox
+              onChange={handleChange}
+              checked={newSupplier.has_cuil_sp}
+              name="has_cuil_sp"
+              sx={{ "&.MuiButtonBase-root.MuiCheckbox-root.Mui-checked":
+                {
+                  color: "#E81F76",
+                }, }}
+            />
+          }
+          label="No sé el CUIL/CUIT del proveedor"
+        />
+      </Box>
         }
       <Typography
         sx={{
@@ -148,6 +168,10 @@ function SupplierFormComponent(props) {
           "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
             borderColor: "#AAA !important",
           },
+          "& .Mui-disabled":{
+            borderRadius: "8px",
+            background: "#E7E5E4 "
+          }
         }}
         error={Boolean(touched.fullname_sp && errors.fullname_sp)}
         helperText={errors.fullname_sp}
@@ -183,6 +207,10 @@ function SupplierFormComponent(props) {
                 {
                   borderColor: "#AAA !important",
                 },
+              "& .Mui-disabled":{
+                borderRadius: "8px",
+                background: "#E7E5E4 "
+              }
             }}
             name="address_sp"
             onChange={handleChange}
@@ -216,6 +244,10 @@ function SupplierFormComponent(props) {
                 {
                   borderColor: "#AAA !important",
                 },
+              "& .Mui-disabled":{
+                borderRadius: "8px",
+                background: "#E7E5E4 "
+              }
             }}
             name="num_address_sp"
             onChange={handleChange}
@@ -263,6 +295,10 @@ function SupplierFormComponent(props) {
                   {
                     borderColor: "#AAA !important",
                   },
+                "& .Mui-disabled":{
+                  borderRadius: "8px",
+                  background: "#E7E5E4 "
+                }
               }}/>
             )}
             renderOption={(props, option) => (
@@ -302,6 +338,10 @@ function SupplierFormComponent(props) {
                 {
                   borderColor: "#AAA !important",
                 },
+              "& .Mui-disabled":{
+                borderRadius: "8px",
+                background: "#E7E5E4 "
+              }
             }}
             inputProps={{
               maxLength: 5,
@@ -320,19 +360,16 @@ function SupplierFormComponent(props) {
                   onClick={() => handleAddSupplier()}
                   sx={{
                     borderRadius: "50px",
-                    backgroundColor: "#00AEC3",
-                    color: "#FFF",
+                    color: "#E81F76",
                     fontFamily: "Encode Sans",
                     p:"5px 10px",
                     fontSize: "0.8rem",
-                    fontWeight: "400",
+                    fontWeight: "700",
                     whiteSpace: "nowrap",
                     textTransform: "capitalize",
-                    maxWidth: "180px",
                     "&:hover": {
-                      color: "#FFF",
-                      backgroundColor: "#00AEC3",
-                      boxShadow: "0px 4px 4px 0px #00000040",
+                      color: "#E81F76",
+                      transform: "scale(1.01)"
                     },
                     "&.Mui-disabled": {
                       backgroundColor: "#8F8881",
@@ -340,7 +377,7 @@ function SupplierFormComponent(props) {
                     },
                   }}
                 >
-                Agregar proveedor
+                Agregar otro proveedor en el reclamo
               </Button>
               
             </Box>

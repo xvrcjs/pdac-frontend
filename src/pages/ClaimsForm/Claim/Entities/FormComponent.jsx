@@ -63,7 +63,6 @@ function FormComponent(props) {
     zip_code_sp: "",
   });
 
-
   const handleAddSupplier = () => {
     setFieldValue("suppliers", [...values.suppliers, newSupplier]);
 
@@ -97,7 +96,7 @@ function FormComponent(props) {
       const validFiles = uploadedFiles.filter((file) =>
         allowedExtensions.includes(file.name.split(".").pop().toLowerCase())
       );
-  
+
       if (validFiles.length > 0) {
         setFieldValue("files", [...values.files, ...validFiles]);
       } else {
@@ -105,7 +104,7 @@ function FormComponent(props) {
       }
     }
   };
-  
+
   const handleFileDelete = (index) => {
     const updatedFiles = values.files.filter((_, i) => i !== index);
     setFieldValue("files", updatedFiles);
@@ -119,7 +118,7 @@ function FormComponent(props) {
       if (ok) {
         setValidateCaptcha(true);
       } else {
-        setValidateCaptcha(false)
+        setValidateCaptcha(false);
       }
     });
   };
@@ -347,7 +346,7 @@ function FormComponent(props) {
               <Button
                 onClick={() => setStep(1)}
                 disabled={
-                  Object.keys(errors).length !== 0 || 
+                  Object.keys(errors).length !== 0 ||
                   Object.keys(touched).length === 0
                 }
                 sx={{
@@ -445,6 +444,7 @@ function FormComponent(props) {
                       alignItems: "start",
                       marginBottom: "20px",
                     }}
+                    key={index}
                   >
                     <Box sx={{ width: "100%" }}>
                       <Typography sx={{ mb: "5px" }}>
@@ -722,9 +722,13 @@ function FormComponent(props) {
                 aria-label="maximum height"
                 placeholder="Describa aquí su problema.."
               />
-              {errors.comments && 
-                <Typography sx={{color:"#B42318",textAlign:"end",mt:"10px"}}>*{errors.comments}</Typography>
-              }
+              {errors.comments && (
+                <Typography
+                  sx={{ color: "#B42318", textAlign: "end", mt: "10px" }}
+                >
+                  *{errors.comments}
+                </Typography>
+              )}
             </Grid>
             <Grid
               item="true"
@@ -792,7 +796,7 @@ function FormComponent(props) {
                     width: "100%",
                     minHeight: "200px",
                     borderRadius: "8px",
-                    borderColor:"#D6D3D1",
+                    borderColor: "#D6D3D1",
                     borderStyle: "dashed",
                     display: "flex",
                     flexDirection: "row",
@@ -853,42 +857,44 @@ function FormComponent(props) {
                       ))}
                     </Grid>
                   )}
-                  <Button
-                    variant="outlined"
-                    component="label"
-                    sx={{
-                      border: "unset",
-                      color: "#5E5E5E",
-                      fontFamily: "Encode Sans",
-                      fontSize: values.files.length > 0 ? "0.65rem" : "1rem",
-                      fontStyle: "normal",
-                      fontWeight: "400",
-                      textAlign: "center",
-                      whiteSpace: "nowrap",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      ".MuiOutlinedInput-notchedOutline": { border: 0 },
-                      "&:hover": {
-                        backgroundColor: "unset",
+                  {values.files.length !== 10 && (
+                    <Button
+                      variant="outlined"
+                      component="label"
+                      sx={{
                         border: "unset",
-                      },
-                    }}
-                  >
-                    <input
-                      type="file"
-                      accept=".pdf,.jpg,.png"
-                      hidden
-                      onChange={handleFileUpload}
-                    />
-                    <img
-                      width={values.files.length > 0 ? 34 : 70}
-                      src="../../icons/cloud-upload.png"
-                    />
-                    {values.files.length > 0
-                      ? "Subir archivo"
-                      : "Click acá para subir archivos"}
-                  </Button>
+                        color: "#5E5E5E",
+                        fontFamily: "Encode Sans",
+                        fontSize: values.files.length > 0 ? "0.65rem" : "1rem",
+                        fontStyle: "normal",
+                        fontWeight: "400",
+                        textAlign: "center",
+                        whiteSpace: "nowrap",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        ".MuiOutlinedInput-notchedOutline": { border: 0 },
+                        "&:hover": {
+                          backgroundColor: "unset",
+                          border: "unset",
+                        },
+                      }}
+                    >
+                      <input
+                        type="file"
+                        accept=".pdf,.jpg,.png"
+                        hidden
+                        onChange={handleFileUpload}
+                      />
+                      <img
+                        width={values.files.length > 0 ? 34 : 70}
+                        src="../../icons/cloud-upload.png"
+                      />
+                      {values.files.length > 0
+                        ? "Subir archivo"
+                        : "Click acá para subir archivos"}
+                    </Button>
+                  )}
                   <Dialog
                     open={alertTypeFile}
                     onClose={() => setAlertTypeFile(!alertTypeFile)}
@@ -956,6 +962,19 @@ function FormComponent(props) {
                     </DialogActions>
                   </Dialog>
                 </Box>
+                {values.files.length === 10 && (
+                  <Box
+                    sx={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "end",
+                    }}
+                  >
+                    <Typography>
+                      Limite de carga de documentos alcanzado.
+                    </Typography>
+                  </Box>
+                )}
               </Box>
             </Grid>
             <Grid
