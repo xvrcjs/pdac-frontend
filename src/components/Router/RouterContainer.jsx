@@ -15,6 +15,7 @@ import ForgotPassword from "../../pages/Auth/ForgotPassword";
 import CreatePassword from "../../pages/Auth/CreatePassword";
 import ClaimsHomePage from "../../pages/ClaimsForm/Home"
 import ClaimFormPage from "../../pages/ClaimsForm/Claim"
+import ClaimIVEFormPage from "../../pages/ClaimsForm/ClaimIVE"
 import { AppContext } from "../../context/AppContext";
 
 function RouterContainer() {
@@ -87,7 +88,7 @@ function RouterContainer() {
                 <Route
                     exact
                     path="/genera-tu-reclamo/formulario-ive"
-                    element={<ClaimsHomePage />}
+                    element={<ClaimIVEFormPage />}
                 />
             </Route>
         </Routes>
