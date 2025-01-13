@@ -321,7 +321,7 @@ function ClaimerFormComponent(props) {
               >
                 <Grid container spacing={1}>
                   {genderOptions.map(({ value, label }) => (
-                    <Grid item="true" size={{ xs: 12, sm: 6, md: 6 }} key={value}>
+                    <Grid item="true" size={{ xs: 12, sm: 4, md: 4 }} key={value}>
                       <FormControlLabel
                         value={value}
                         control={<Radio />}

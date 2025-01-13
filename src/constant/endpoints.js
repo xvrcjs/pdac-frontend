@@ -14,3 +14,6 @@ export const GET_USERS = "/v1/account";
 
 // FORMULARIO DE RECLAMO
 export const VALIDATE_RECAPTCHA = "/v1/validate-recaptcha";
+
+// CONFIGURACION DE SEMAFOROS
+export const GET_TRAFIC_LIGHT_CONFIG = "/v1/traffic-light-system-config";

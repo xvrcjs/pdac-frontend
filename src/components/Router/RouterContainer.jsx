@@ -16,6 +16,7 @@ import CreatePassword from "../../pages/Auth/CreatePassword";
 import ClaimsHomePage from "../../pages/ClaimsForm/Home"
 import ClaimFormPage from "../../pages/ClaimsForm/Claim"
 import ClaimIVEFormPage from "../../pages/ClaimsForm/ClaimIVE"
+import TrafficLightSystemTimesPage from "../../pages/Config/TrafficLightSystemTimes"
 import { AppContext } from "../../context/AppContext";
 
 function RouterContainer() {
@@ -60,6 +61,11 @@ function RouterContainer() {
                     exact
                     path="/reclamos-hv"
                     element={<ClaimHVPage />}
+                />
+                <Route
+                    exact
+                    path="/configuracion/sistema-de-semaforos"
+                    element={<TrafficLightSystemTimesPage />}
                 />
             </Route>
             <Route element={<PublicRoute />}>

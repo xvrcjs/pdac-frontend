@@ -1,0 +1,3 @@
+import TrafficLightSystemTimesContainer from "./TrafficLightSystemTimesContainer";
+
+export default TrafficLightSystemTimesContainer;
