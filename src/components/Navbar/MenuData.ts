@@ -25,7 +25,7 @@ export const MenuData:Menu[] = [{
     rolesAllowed: ["Admin"]
 },{
     title: "Mesa de entrada",
-    path: "mesa_de_entrada",
+    path: "mesa-de-entrada",
     icon: "",
     rolesAllowed: ["Admin"],
 },{
@@ -48,5 +48,25 @@ export const MenuData:Menu[] = [{
     path: "derivados",
     icon: "",
     rolesAllowed: ["Admin"]
+},
+{
+    title: "Configuración",
+    path: "configuracion",
+    icon: "",
+    rolesAllowed: ["Admin"],
+    subItems: [
+        {
+            title: "Sistema de Semáforo",
+            path: "configuracion/sistema-de-semaforos",
+            icon: "",
+            rolesAllowed: ["Admin"]
+        },
+        {
+            title: "Datos oficinas municipales",
+            path: "configuracion/datos-oficinas-municipales",
+            icon: "",
+            rolesAllowed: ["Admin"]
+        }
+    ],
 }
 ]

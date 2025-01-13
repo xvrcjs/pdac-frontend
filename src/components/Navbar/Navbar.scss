@@ -21,6 +21,9 @@
         height: 150px;
         display: flex;
     } 
+    .ps-menu-root{
+        position: relative;
+    }
     .swt-navbar-links {
         color:#fff;
         // background-color: #000;
@@ -42,6 +45,31 @@
             box-shadow: none !important;
         }
         
+    }
+    .swt-navbar-sub-links {
+        color:#fff;
+        // background-color: #000;
+        font-family: Encode Sans;
+        border-top: 1px solid #aaa;
+        height: 30px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+
+        &-title{
+            font-size: 0.8rem;
+        }
+        .ps-menu-button{
+            height: auto;
+            padding-left: 50px;
+        }
+        .ps-menu-button:hover{
+            background-color: unset !important;
+            box-shadow: none !important;
+        }
+        &.ps-active{
+            background-color: #E81F76;
+        }
     }
     .swt-navbar-links-content{
         display:flex;

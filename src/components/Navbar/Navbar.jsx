@@ -10,6 +10,7 @@ import { tokens } from "../../theme";
 import Cookies from "js-cookie";
 import { MenuData } from "./MenuData.ts";
 import GridViewIcon from "@mui/icons-material/GridView";
+import CircleIcon from '@mui/icons-material/Circle';
 
 const Item = ({ title, to, icon, colors, isActive, subItems }) => {
   const iconPath = `../../icons/${icon}.svg`;
@@ -24,13 +25,13 @@ const Item = ({ title, to, icon, colors, isActive, subItems }) => {
       <MenuItem
         active={isActive}
         className="swt-navbar-links"
-        onClick={() => handleTo()}
+        // onClick={() => handleTo()}
         component={<Link to={to} />}
         rel="noopener noreferrer"
       >
         <div className="swt-navbar-links-content">
           {/* <img src={iconPath} alt={title} className="swt-navbar-icon" /> */}
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box sx={{ display: "flex", alignItems: "center" }} onClick={()=>navigate(to)}>
             <GridViewIcon sx={{ marginRight: "10px" }} />
             <Typography
               className="swt-navbar-links-title"
@@ -51,17 +52,18 @@ const Item = ({ title, to, icon, colors, isActive, subItems }) => {
         </div>
       </MenuItem>
       {isOpen && subItems && (
-        <Box sx={{ pl: 4 }}>
+        <Box>
           {subItems.map((subItem, index) => (
             <MenuItem
               key={index}
-              active={subItem.path === to}
-              className="swt-navbar-links"
+              active={location.pathname === `/${subItem.path}`}
+              sx={{fontSize:"10px"}}
+              className="swt-navbar-sub-links"
               onClick={() => navigate(subItem.path)}
             >
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <GridViewIcon sx={{ marginRight: "10px" }} />
-                <Typography className="swt-navbar-links-title">
+                <CircleIcon sx={{ marginRight: "10px",width:"10px" }} />
+                <Typography className="swt-navbar-sub-links-title">
                   {subItem.title}
                 </Typography>
               </Box>
@@ -112,7 +114,7 @@ function Navbar(props) {
         <Menu iconShape="square">
           <Box sx={{ backgroundColor: "#00AEC3" }}>
             {navMenuData.map((elem, index) => {
-              const isActive = elem.path.split("/")[0] === currentPath;
+              const isActive = location.pathname === `/${elem.path}`
               return (
                 <Item
                   key={index}
