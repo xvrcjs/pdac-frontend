@@ -16,6 +16,7 @@ function ClaimContainer() {
     //   values;
     const formData = new FormData();
     console.log(values)
+    setFormSended(true)
     // formData.append("full_name", fullname);
     // formData.append("email", email);
     // formData.append("dni", dni);
@@ -25,22 +26,19 @@ function ClaimContainer() {
     // if (profile_image.length > 0)
     //   formData.append("profile_image", profile_image[0]);
 
-    // api(CREATE_USER, {
-    //   method: "POST",
-    //   body: formData,
-    //   headers: {
-    //     "Content-Type": "multipart/form-data",
-    //   },
-    // })
-    //   .then(({ ok, body }) => {
-    //     if (ok) {
-    //     } else {
-    //       console.log("not ok");
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    api("/v1/send-claim-ive", {
+      method: "POST",
+      body: {email:values.email_cl},
+    })
+      .then(({ ok, body }) => {
+        if (ok) {
+        } else {
+          console.log("not ok");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   
   // Los campos con _cl represantan al solicitante

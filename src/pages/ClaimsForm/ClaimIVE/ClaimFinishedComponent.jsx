@@ -5,7 +5,6 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import FormComponent from "./Entities/FormComponent";
 import { tokens } from "theme";
-import "./ClaimStyles.scss";
 import Grid from "@mui/material/Grid2";
 import { useNavigate } from "react-router-dom";
 

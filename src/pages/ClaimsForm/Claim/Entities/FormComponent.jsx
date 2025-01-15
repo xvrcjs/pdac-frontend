@@ -48,7 +48,7 @@ function FormComponent(props) {
   const colors = tokens(theme.palette.mode);
 
   const navigate = useNavigate();
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(2);
   const [supplierSelected, setSupplierSelected] = useState(-1);
   const [alertTypeFile, setAlertTypeFile] = useState(false);
   const captchaRef = useRef(null);
@@ -722,13 +722,11 @@ function FormComponent(props) {
                 aria-label="maximum height"
                 placeholder="Describa aquí su problema.."
               />
-              {errors.comments && (
-                <Typography
+              <Typography
                   sx={{ color: "#B42318", textAlign: "end", mt: "10px" }}
                 >
-                  *{errors.comments}
-                </Typography>
-              )}
+                  *Es necesario que nos des una breve descripcion de tu problema
+              </Typography>
             </Grid>
             <Grid
               item="true"
@@ -1039,6 +1037,7 @@ function FormComponent(props) {
             >
               <Button
                 onClick={() => setShowConfirmMessage(!showConfirmMessage)}
+                disabled={values.comments === ""}
                 sx={{
                   borderRadius: "50px",
                   backgroundColor: "#00AEC3",
@@ -1054,6 +1053,10 @@ function FormComponent(props) {
                     color: "#FFF",
                     backgroundColor: "#00AEC3",
                     boxShadow: "0px 4px 4px 0px #00000040",
+                  },
+                  "&.Mui-disabled": {
+                    backgroundColor: "#8F8881",
+                    color: "#fff",
                   },
                 }}
               >
