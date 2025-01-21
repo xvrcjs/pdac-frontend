@@ -43,7 +43,7 @@ function ClaimIVEComponent(props) {
         >
           Volver
         </Button>
-        <a href="/">
+        <a href="/genera-tu-reclamo">
           <img
             alt="logo"
             src={`../../logo.svg`}
@@ -144,34 +144,16 @@ function ClaimIVEComponent(props) {
                 fontWeight: "400",
               }}
             >
-              Garantiza el derecho de las y los consumidores a acceder a la práctica, en todo el territorio nacional y la provincia de Buenos Aires, respetando la privacidad, confidencialidad y decisión.
+              Acceso a la Interrupción Voluntaria del Embarazo IVE - Ley N° 27.610
+              Garantiza el derecho de las y los consumidores a acceder a la práctica, en la provincia de Buenos Aires y en todo el país, respetando la privacidad, confidencialidad y decisión.
               </Typography>
               <Typography
-              sx={{
-                fontFamily: "Encode Sans",
-                fontSize: "1rem",
-                fontWeight: "400",
-              }}
-            >
-              Esta ley obliga a las obras sociales y empresas de medicina prepaga a incluir en el Programa Médico Obligatorio el conjunto de prácticas y prestaciones que prevé.
-              </Typography>
-              <Typography
-              sx={{
-                fontFamily: "Encode Sans",
-                fontSize: "1rem",
-                fontWeight: "400",
-              }}
-            >
-              Si te obstaculizan la práctica, dilatan el trámite, no te brindan información clara y precisa, se incumple el trato digno y equitativo o bien no se cumple con la derivación de la consulta a la institución que pueda realizar la práctica, tenés derecho a denunciarlo y el prestador debe cumplir con su obligación dentro de los 10 días de iniciado el reclamo.
-              </Typography>
-              <Typography
-              sx={{
-                fontFamily: "Encode Sans",
-                fontSize: "1rem",
-                fontWeight: "400",
-              }}
-            >
-              Esos incumplimientos van en contrario de los derechos de las y los consumidores incluidos y es por eso que en Defensa de las y los Consumidores contamos con un equipo de abogados y abogadas que te podrá orientar, asesorar, brindar asistencia técnica y acompañar de manera personalizada durante todo el proceso.
+                sx={{
+                  fontFamily: "Encode Sans",
+                  fontSize: "1rem",
+                  fontWeight: "400",
+                }}
+                >Esta ley obliga a obras sociales y prepagas a incluir en el Programa Médico Obligatorio el conjunto de prácticas y prestaciones que prevé. 
               </Typography>
               <Typography
                 sx={{
@@ -180,8 +162,26 @@ function ClaimIVEComponent(props) {
                   fontWeight: "400",
                 }}
               >
-              Ante cualquier consulta podés llamar al 148 o escribirnos a 
-            </Typography>
+              Si te obstaculizan la práctica, dilatan el trámite, no te dan información clara y precisa, incumplen el trato digno y equitativo o bien no se cumple con la derivación de la consulta a la institución que pueda realizar la práctica, tenés derecho a denunciar y el prestador debe cumplir con su obligación dentro de los 10 días de iniciado el reclamo. 
+              </Typography>
+              <Typography
+              sx={{
+                fontFamily: "Encode Sans",
+                fontSize: "1rem",
+                fontWeight: "400",
+              }}
+            >
+              Esos incumplimientos van en contrario de los derechos de las y los consumidores incluidos y por eso en Defensa de las y los Consumidores contamos con abogados y abogadas que te podrán orientar, asesorar, dar asistencia técnica y acompañar durante el proceso. 
+              </Typography>
+              <Typography
+              sx={{
+                fontFamily: "Encode Sans",
+                fontSize: "1rem",
+                fontWeight: "400",
+              }}
+            >
+              Ante cualquier consulta llamá al 148 o escribí a 
+              </Typography>
               <a 
                 href={`mailto:infoconsumidor@mp.gba.gov.ar`} 
                 style={{ textDecoration: 'underline' }}

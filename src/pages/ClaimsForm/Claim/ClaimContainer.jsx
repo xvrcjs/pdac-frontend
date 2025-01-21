@@ -15,7 +15,6 @@ function ClaimContainer() {
     // const { fullname, email, profile_image, dni, phone, rol, permissions } =
     //   values;
     const formData = new FormData();
-    console.log(values)
     setFormSended(true)
     // formData.append("full_name", fullname);
     // formData.append("email", email);

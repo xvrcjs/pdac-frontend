@@ -39,6 +39,8 @@ function SupplierFormComponent(props) {
     newSupplier,
     setNewSupplier,
     handleAddSupplier,
+    setAddingNewSupplier,
+    setFieldValue,
     isNew
   } = props;
 
@@ -60,8 +62,10 @@ function SupplierFormComponent(props) {
     });
   };
 
-  console.log(newSupplier);
-
+  const handleValidateSupplier = (e) => {
+    setFieldValue("suppliers", [...values.suppliers, newSupplier]);
+    setAddingNewSupplier(false)
+  }
   return (
     <Box
       sx={{
@@ -95,6 +99,7 @@ function SupplierFormComponent(props) {
         sx={{
           mt: "5px",
           "& .MuiOutlinedInput-notchedOutline": {
+            boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
             borderColor: "#AAA !important",
             borderRadius: "8px",
           },
@@ -106,14 +111,9 @@ function SupplierFormComponent(props) {
             background: "#E7E5E4 "
           }
         }}
-        // slotProps={{
-        //   input: {
-        //     inputComponent: CuitMaskCustom,
-        //   },
-        // }}
         name="cuil_sp"
-        // error={!newSupplier.cuil_sp}
-        // helperText={!newSupplier.cuil_sp && "El campo CUIL/CUIT es requerido"}
+        error={Boolean(touched.cuil_sp && newSupplier.cuil_sp === "")}
+        helperText={Boolean(touched.cuil_sp && newSupplier.cuil_sp === "") && "El campo CUIL/CUIT es requerido"}
         onChange={handleChange}
       />
       {!isNew &&
@@ -162,6 +162,7 @@ function SupplierFormComponent(props) {
         sx={{
           mt: "5px",
           "& .MuiOutlinedInput-notchedOutline": {
+            boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
             borderColor: "#AAA !important",
             borderRadius: "8px",
           },
@@ -173,8 +174,8 @@ function SupplierFormComponent(props) {
             background: "#E7E5E4 "
           }
         }}
-        error={Boolean(touched.fullname_sp && errors.fullname_sp)}
-        helperText={errors.fullname_sp}
+        error={Boolean(touched.fullname_sp && newSupplier.fullname_sp === "")}
+        helperText={Boolean(touched.fullname_sp && newSupplier.fullname_sp === "") && "El campo nombre es requerido"}
         name="fullname_sp"
         onChange={handleChange}
       />
@@ -200,6 +201,7 @@ function SupplierFormComponent(props) {
               mt: "5px",
               width: "100%",
               "& .MuiOutlinedInput-notchedOutline": {
+                boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
                 borderColor: "#AAA !important",
                 borderRadius: "8px",
               },
@@ -237,6 +239,7 @@ function SupplierFormComponent(props) {
               mt: "5px",
               width: "100%",
               "& .MuiOutlinedInput-notchedOutline": {
+                boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
                 borderColor: "#AAA !important",
                 borderRadius: "8px",
               },
@@ -288,6 +291,7 @@ function SupplierFormComponent(props) {
                 mt: "5px",
                 width: "100%",
                 "& .MuiOutlinedInput-notchedOutline": {
+                  boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
                   borderColor: "#AAA !important",
                   borderRadius: "8px",
                 },
@@ -331,6 +335,7 @@ function SupplierFormComponent(props) {
               mt: "5px",
               width: "100%",
               "& .MuiOutlinedInput-notchedOutline": {
+                boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
                 borderColor: "#AAA !important",
                 borderRadius: "8px",
               },
@@ -354,30 +359,36 @@ function SupplierFormComponent(props) {
           />
         </Grid>
         {(!isNew && values.suppliers.length <3) &&
-            <Box sx={{ display: "flex", width: "100%", justifyContent: "end" }}>
+            <Box sx={{ display: "flex", width: "100%", justifyContent: "center" }}>
                 <Button
-                  startIcon={<AddIcon/>}
-                  onClick={() => handleAddSupplier()}
+                  onClick={() => handleValidateSupplier()}
+                  disabled={!newSupplier.cuil_sp || !newSupplier.fullname_sp}
                   sx={{
                     borderRadius: "50px",
-                    color: "#E81F76",
+                    color: "#fff",
+                    mt:"20px",
                     fontFamily: "Encode Sans",
-                    p:"5px 10px",
+                    width:"294px",
+                    p:"12px 50px",
                     fontSize: "0.8rem",
                     fontWeight: "700",
                     whiteSpace: "nowrap",
                     textTransform: "capitalize",
+                    backgroundColor: "#E81F76",
+                    border: "unset",
+                    boxShadow:"0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
                     "&:hover": {
-                      color: "#E81F76",
+                      color: "#fff",
                       transform: "scale(1.01)"
                     },
                     "&.Mui-disabled": {
-                      backgroundColor: "#8F8881",
-                      color: "#fff",
+                      background:"#fff",
+                      border: "1px solid #8F8881",
+                      color: "#E81F76",
                     },
                   }}
                 >
-                Agregar otro proveedor en el reclamo
+                Validar proveedor
               </Button>
               
             </Box>

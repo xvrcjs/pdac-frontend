@@ -8,12 +8,15 @@ import { tokens } from "theme";
 import "./ClaimStyles.scss";
 import Grid from "@mui/material/Grid2";
 import { useNavigate } from "react-router-dom";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 function ClaimComponent(props) {
   const { setStartForm } = props;
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
+  const [showInfo,setShowInfo]=useState(false)
 
   return (
     <Box sx={{ backgroundColor: "#fff", padding: "10px 50px" }}>
@@ -45,7 +48,7 @@ function ClaimComponent(props) {
         >
           Volver
         </Button>
-        <a href="/">
+        <a href="/genera-tu-reclamo">
           <img
             alt="logo"
             src={`../../logo.svg`}
@@ -105,7 +108,7 @@ function ClaimComponent(props) {
               width: "404px",
             }}
           />
-          <Button
+          {/* <Button
             onClick={() => navigate(-1)}
             sx={{
               borderRadius: "50px",
@@ -128,7 +131,7 @@ function ClaimComponent(props) {
             }}
           >
             Volver
-          </Button>
+          </Button> */}
         </Grid>
         <Grid
           item="true"
@@ -136,66 +139,111 @@ function ClaimComponent(props) {
           sx={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between",
+            justifyContent:"center",
+            // justifyContent: "space-between",
             height: "550px",
           }}
         >
+          <Box>
             <Typography
               sx={{
                 fontFamily: "Encode Sans",
                 fontSize: "1rem",
                 fontWeight: "700",
+                mb:"40px"
               }}
             >
               Denuncia de defensa del consumidor
             </Typography>
             <ul>
               <li>
-                Este formulario debe ser utilizado al solo efecto de registrar
-                formalmente una denuncia. Si necesitás hacer una consulta, podés
-                hacerlo comunicándote al 0800-666-1518 de 10:00 a 16:00 hs. o
-                por correo electrónico a consultas@consumidor.gob.ar
+                Este formulario sólo se utiliza para registrar formalmente una denuncia. Si necesitás hacer una consulta, comunicate a la Línea 148 o al correo electrónico infoconsumidor@mp.gba.gov.ar
               </li>
-              <li style={{ marginTop: "15px" }}>
-                La autoridad asignada al tratamiento de tu reclamo determinará
-                su admisión. Tu denuncia supone el inicio de una instancia
-                conciliatoria con los proveedores denunciados, en la cual el
-                denunciante o usuario formará parte.
+              <li style={{ marginTop: "15px",marginBottom:"30px" }}>
+                La autoridad asignada va a recibir tu reclamo para determinar si lo acepta o lo rechaza. Tu denuncia da inicio a una instancia conciliatoria con los proveedores denunciados, en la cual vos vas a formar parte y te vamos a avisar.
               </li>
             </ul>
-            <Typography
-              sx={{
-                fontFamily: "Encode Sans",
-                fontSize: "1rem",
-                fontWeight: "700",
-              }}
+            </Box>
+            <Box sx={{display:"flex",alignItems:"center"}}>
+              <Typography
+                sx={{
+                  fontFamily: "Encode Sans",
+                  fontSize: "1rem",
+                  fontWeight: "700",
+                  mr:"20px"
+                }}
+              >
+                Cuando no corresponde el reclamo por defensa del consumidor:
+              </Typography>
+              {!showInfo ? <KeyboardArrowDownIcon sx={{cursor:"pointer"}} onClick={()=>setShowInfo(!showInfo)}/>:<KeyboardArrowUpIcon sx={{cursor:"pointer"}} onClick={()=>setShowInfo(!showInfo)}/>}
+            </Box>
+            {showInfo &&
+            <ul >
+              <li>
+                En contrataciones entre particulares, donde no interviene un proveedor, una empresa o un comerciante.
+              </li>
+              <li>
+                En servicios brindados por profesionales con título universitario y matrícula habilitante, como médicos, abogados, odontólogos, etc.
+              </li>
+              <li>
+                En cuestiones vinculadas con multas de tránsito, impuestos, tasas, etc.
+              </li>
+              <li>
+                En conflictos entre vecinos.
+              </li>
+              <li>
+                En contrataciones entre comerciantes, que incorporan un producto o servicio de modo directo al proceso comercial (relación entre un comercio y la tarjeta “Visa”, servicio de Posnet, compra de un tractor para trabajar, etc).
+              </li>
+            </ul>
+            }
+            
+        </Grid>
+      </Grid>
+      <Grid
+            container
+            spacing={2}
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              mb: "50px",
+            }}
+          >
+            <Grid
+              item="true"
+              size={{ xs: 12, sm: 6, md: 6 }}
+              sx={{ display: "flex", justifyContent: "center" }}
             >
-              Cuando no corresponde el reclamo por defensa del consumidor:
-            </Typography>
-            <ul className="custom-list">
-              <li>
-                - Las contrataciones entre particulares (donde no intervenga un
-                proveedor, empresa o comerciante)
-              </li>
-              <li>
-                - Los servicios brindados por profesionales con título
-                universitario y matrícula habilitante (ejemplos médicos,
-                abogados, odontólogos, etc)
-              </li>
-              <li>
-                - Las cuestiones vinculadas a multas de tránsito, impuestos,
-                tasas, etc.
-              </li>
-              <li>- Los conflictos entre vecinos.</li>
-              <li>
-                - Las contrataciones entre comerciantes, donde el objeto de
-                contratación sea un producto o servicio que se incorpore de un
-                modo directo al proceso de comercialización (ejemplo: relación
-                entre un comercio y la tarjeta “Visa”, servicio de Posnet,
-                Compra de un tractor para trabajar, etc)
-              </li>
-            </ul>
-            <Box sx={{display:"flex",justifyContent:"center"}}>
+              <Button
+                onClick={() => navigate(-1)}
+                sx={{
+                  borderRadius: "50px",
+                  backgroundColor: "rgba(143, 136, 129, 0.00)",
+                  color: "#000",
+                  padding: "9px 30px",
+                  fontFamily: "Encode Sans",
+                  fontSize: "1rem",
+                  border: "1px solid #8F8881",
+                  fontWeight: "700",
+                  width: "50%",
+                  textTransform: "capitalize",
+                  boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+                  "&:hover": {
+                    color: "#fff",
+                    backgroundColor: "#00AEC3",
+                    border: "1px solid #00AEC3",
+                    boxShadow: "0px 4px 4px 0px #00000040",
+                  },
+                }}
+              >
+                Volver
+              </Button>
+              </Grid>
+            <Grid
+              item="true"
+              size={{ xs: 12, sm: 6, md: 6 }}
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
               <Button
                 onClick={() => setStartForm(true)}
                 sx={{
@@ -218,9 +266,8 @@ function ClaimComponent(props) {
               >
                 Iniciar reclamo
               </Button>
-            </Box>
-        </Grid>
-      </Grid>
+              </Grid>
+              </Grid>
     </Box>
   );
 }

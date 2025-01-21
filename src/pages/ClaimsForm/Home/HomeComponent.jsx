@@ -31,7 +31,9 @@ function HomeComponent(props) {
                 marginTop: "60px",
               }}
             >
-              Nuestra misión: Proteger los derechos de las y los consumidores de la Prov de Buenos Aires.
+              Protegemos los derechos de las y los consumidores 
+              y usuarios bonaerenses: gestionando sus reclamos 
+              y generando políticas públicas estratégicas. 
             </Typography>
             <Typography
               sx={{
@@ -43,8 +45,7 @@ function HomeComponent(props) {
                 whiteSpace: "pre-line",
               }}
             >
-                {"Nuestra visión es crear un entorno donde cada reclamo sea escuchado y resuelto de manera eficiente.\nEsperamos empoderar a los ciudadanos y fortalecer la confianza en la defensa del consumidor.\nHace tu reclamo a través de la Ventanilla Única Federal."}
-
+                {"Brindamos asesoramiento.\nGarantizamos el acceso a las vías de resolución de sus conflictos.\nActuamos de manera preventiva para evitar la afectación colectiva de los derechos\nControlamos infracciones, prácticas comerciales abusivas y conductas que afecten especialmente a los sujetos más vulnerables."}
             </Typography>
         </Box>
         <Grid container spacing={2}

@@ -330,8 +330,7 @@ function FormComponent(props) {
                   fontWeight: "400",
                 }}
               >
-                Es necesario que pueda ingresar los datos solicitados para poder
-                enviar su reclamo.
+                Es necesario que pueda ingresar los datos solicitados para poder completar y enviar su reclamo.
               </Typography>
             </Box>
           </Box>
@@ -611,7 +610,7 @@ function FormComponent(props) {
                   fontWeight: "400",
                 }}
               >
-                Es necesario que pueda ingresar los datos solicitados para poder enviar su reclamo.
+                Es necesario que ingreses los datos solicitados para completar y enviar tu reclamo.
               </Typography>
             </Box>
           </Box>
@@ -648,12 +647,12 @@ function FormComponent(props) {
                   >
                     <FormControlLabel
                       value="true"
-                      control={<Radio sx={{"&.MuiButtonBase-root.MuiRadio-root.Mui-checked":{color:"#E81F76"}, color:"#E81F76"}} />}
+                      control={<Radio sx={{"&.MuiButtonBase-root.MuiRadio-root.Mui-checked":{color:"#A83E83"}, color:"#A83E83"}} />}
                       label="NO"
                     />
                     <FormControlLabel
                       value="false"
-                      control={<Radio sx={{"&.MuiButtonBase-root.MuiRadio-root.Mui-checked":{color:"#E81F76"}, color:"#E81F76"}}/>}
+                      control={<Radio sx={{"&.MuiButtonBase-root.MuiRadio-root.Mui-checked":{color:"#A83E83"}, color:"#A83E83"}}/>}
                       label="SI"
                     />
                   </RadioGroup>
@@ -695,10 +694,12 @@ function FormComponent(props) {
                   "& .MuiInputBase-root.MuiOutlinedInput-root": {
                     boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
                     borderRadius: "8px",
+                    background: !values.checkbox_social_work_or_company && "#E7E5E4"
                   },
                   "& .MuiOutlinedInput-notchedOutline": {
                     borderColor: "#000 !important",
                     borderRadius: "8px",
+                    border: !values.checkbox_social_work_or_company && "unset",
                   },
                   "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
                     borderColor: "#000 !important",
@@ -739,10 +740,12 @@ function FormComponent(props) {
                   "& .MuiInputBase-root.MuiOutlinedInput-root": {
                     boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
                     borderRadius: "8px",
+                    background: !values.checkbox_establishment && "#E7E5E4"
                   },
                   "& .MuiOutlinedInput-notchedOutline": {
                     borderColor: "#000 !important",
                     borderRadius: "8px",
+                    border: !values.checkbox_establishment && "unset"
                   },
                   "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
                     borderColor: "#000 !important",
@@ -783,10 +786,12 @@ function FormComponent(props) {
                   "& .MuiInputBase-root.MuiOutlinedInput-root": {
                     boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
                     borderRadius: "8px",
+                    background: !values.checkbox_other && "#E7E5E4"
                   },
                   "& .MuiOutlinedInput-notchedOutline": {
                     borderColor: "#000 !important",
                     borderRadius: "8px",
+                    border: !values.checkbox_other && "unset",
                   },
                   "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
                     borderColor: "#000 !important",
@@ -899,7 +904,7 @@ function FormComponent(props) {
                   },
                 }}
               >
-                Continuar
+                Enviar reclamo
               </Button>
             </Grid>
           </Grid>

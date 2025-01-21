@@ -48,12 +48,14 @@ function FormComponent(props) {
   const colors = tokens(theme.palette.mode);
 
   const navigate = useNavigate();
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(0);
   const [supplierSelected, setSupplierSelected] = useState(-1);
   const [alertTypeFile, setAlertTypeFile] = useState(false);
   const captchaRef = useRef(null);
   const [validateCaptcha, setValidateCaptcha] = useState(false);
   const [showConfirmMessage, setShowConfirmMessage] = useState(false);
+  const [addingNewSupplier,setAddingNewSupplier] = useState(true);
+
   const [newSupplier, setNewSupplier] = useState({
     cuil_sp: "",
     fullname_sp: "",
@@ -64,8 +66,6 @@ function FormComponent(props) {
   });
 
   const handleAddSupplier = () => {
-    setFieldValue("suppliers", [...values.suppliers, newSupplier]);
-
     setNewSupplier({
       cuil_sp: "",
       fullname_sp: "",
@@ -74,6 +74,7 @@ function FormComponent(props) {
       city_sp: "",
       zip_code_sp: "",
     });
+    setAddingNewSupplier(true)
   };
   const handleSetSupplierSelected = (index) => {
     if (index === supplierSelected) {
@@ -421,6 +422,7 @@ function FormComponent(props) {
               flexDirection: "row",
               justifyContent: "space-between",
               p: "2.5rem 0rem",
+              minHeight:"400px"
             }}
           >
             <Grid
@@ -430,7 +432,7 @@ function FormComponent(props) {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                justifyContent: "space-between",
+                justifyContent: values.suppliers.length < 3 ? "space-between":"center",
                 p: "0rem 2.5rem",
               }}
             >
@@ -517,7 +519,7 @@ function FormComponent(props) {
                     </Box>
                   </Box>
                 ))}
-              {values.suppliers.length < 3 && (
+              {addingNewSupplier &&(
                 <SupplierFormComponent
                   touched={touched}
                   errors={errors}
@@ -526,8 +528,39 @@ function FormComponent(props) {
                   newSupplier={newSupplier}
                   setNewSupplier={setNewSupplier}
                   handleAddSupplier={handleAddSupplier}
+                  setAddingNewSupplier={setAddingNewSupplier}
+                  setFieldValue={setFieldValue}
                 />
               )}
+              {(values.suppliers.length < 3 && !addingNewSupplier) &&
+              <Button
+                onClick={() => handleAddSupplier()}
+                disabled={values.suppliers.length === 0}
+                sx={{
+                  borderRadius: "50px",
+                  color: "#E81F76",
+                  border:"1px solid #E81F76",
+                  mt:"20px",
+                  fontFamily: "Encode Sans",
+                  width:"294px",
+                  p:"12px 50px",
+                  fontSize: "0.8rem",
+                  fontWeight: "700",
+                  whiteSpace: "nowrap",
+                  mt:"100px",
+                  textTransform: "capitalize",
+                  backgroundColor: "#fff",
+                  boxShadow:"0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+                  "&:hover": {
+                    color: "#fff",
+                    backgroundColor: "#E81F76",
+                    transform: "scale(1.01)"
+                  },
+                }}
+              >
+                Agregar otro proveedor
+              </Button>
+              }
             </Grid>
             <Grid
               item="true"
@@ -536,21 +569,21 @@ function FormComponent(props) {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
-                p: "80px",
+                p: "0px 80px",
+                minHeight: "400px",
               }}
             >
               <Typography sx={{ mb: 4 }}>
                 Esta información la podés sacar de tu factura o ticket
               </Typography>
               <Typography sx={{ mb: 4 }}>
-                1 - Buscá el proveedor utilizando su nombre habitual. Ingresá
-                pocas palabras, sin signos de puntuación, tildes o caracteres
-                especiales. Si no obtenes resultados en tu primera búsqueda,
-                continuá buscando utilizando una sola palabra.
+                1 - Carga los datos solicitados para continuar
+              </Typography>
+              <Typography sx={{ mb: 4 }}>
+                2 - Si no conoces el CUIL/CUIT del proveedor hacé click en "no sé el CUIL/CUIT del proveedor" y continua con los siguientes datos.
               </Typography>
               <Typography>
-                2 - Si no obtuviste resultados, buscá utilizando el CUIT del
-                proveedor requerido.
+                3 - Validá el proveedor para continuar.
               </Typography>
             </Grid>
           </Grid>
@@ -559,40 +592,11 @@ function FormComponent(props) {
             spacing={2}
             sx={{
               display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
+              flexDirection: "column",
+              alignItems: "end",
               mb: "50px",
             }}
           >
-            <Grid
-              item="true"
-              size={{ xs: 12, sm: 6, md: 6 }}
-              sx={{ display: "flex", justifyContent: "center" }}
-            >
-              <Button
-                onClick={() => setStep(0)}
-                sx={{
-                  borderRadius: "50px",
-                  backgroundColor: "rgba(143, 136, 129, 0.00)",
-                  color: "#000",
-                  padding: "9px 30px",
-                  fontFamily: "Encode Sans",
-                  fontSize: "1rem",
-                  border: "1px solid #8F8881",
-                  fontWeight: "700",
-                  width: "60%",
-                  textTransform: "capitalize",
-                  boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-                  "&:hover": {
-                    color: "#fff",
-                    backgroundColor: "#00AEC3",
-                    boxShadow: "0px 4px 4px 0px #00000040",
-                  },
-                }}
-              >
-                Volver
-              </Button>
-            </Grid>
             <Grid
               item="true"
               size={{ xs: 12, sm: 6, md: 6 }}
@@ -609,7 +613,7 @@ function FormComponent(props) {
                   fontFamily: "Encode Sans",
                   fontSize: "1rem",
                   fontWeight: "700",
-                  width: "80%",
+                  width: "70%",
                   textTransform: "capitalize",
                   maxWidth: "590px",
                   "&:hover": {
@@ -624,6 +628,32 @@ function FormComponent(props) {
                 }}
               >
                 Continuar
+              </Button>
+            </Grid>
+            <Grid
+              item="true"
+              size={{ xs: 12, sm: 6, md: 6 }}
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
+              <Button
+                onClick={() => setStep(0)}
+                sx={{
+                  borderRadius: "50px",
+                  backgroundColor: "rgba(143, 136, 129, 0.00)",
+                  color: "#000",
+                  padding: "9px 30px",
+                  fontFamily: "Encode Sans",
+                  fontSize: "1rem",
+                  fontWeight: "700",
+                  textTransform: "capitalize",
+                  "&:hover": {
+                    color: "#fff",
+                    backgroundColor: "#00AEC3",
+                    boxShadow: "0px 4px 4px 0px #00000040",
+                  },
+                }}
+              >
+                Volver
               </Button>
             </Grid>
           </Grid>
@@ -737,18 +767,11 @@ function FormComponent(props) {
                 justifyContent: "center",
               }}
             >
-              <Typography>
-                Esta información la podés sacar de tu factura o ticket
-              </Typography>
               <Typography sx={{ mb: 4 }}>
-                1 - Buscá el proveedor utilizando su nombre habitual. Ingresá
-                pocas palabras, sin signos de puntuación, tildes o caracteres
-                especiales. Si no obtenes resultados en tu primera búsqueda,
-                continuá buscando utilizando una sola palabra.
+                Relatá los motivos de tu reclamo. Intentá ser breve, informá qué producto compraste o qué servicio contrataste y explicá el problema: los incumplimientos, los proveedores y tu pretensión. 
               </Typography>
               <Typography>
-                2 - Si no obtuviste resultados, buscá utilizando el CUIT del
-                proveedor requerido.
+                Si tenés entre 13 y 17 años, o sos adulto mayor, migrante, turista, miembro de comunidades indígenas o del colectivo LGBT+, persona con discapacidad o estás en situación de vulnerabilidad socioeconómica y tu situación fue especialmente vulnerada, por favor especificalo en tu reclamo, para aplicar el protocolo de consumidores hipervulnerables
               </Typography>
             </Grid>
           </Grid>
@@ -986,7 +1009,7 @@ function FormComponent(props) {
             >
               <Typography sx={{ whiteSpace: "pre-line" }}>
                 {
-                  "Podés adjuntar hasta 10 documentos de tipo pdf, word, jpg y png.\n• Adjuntar tu DNI puede agilizar el proceso de admisión.\n• Si tenés una factura de compra o de servicios, adjuntala aquí. Podes adjuntar toda documentación relacionada a los hechos de tu reclamo."
+                  "Podés adjuntar hasta 10 documentos de tipo pdf, jpg y png.\n• Adjuntá tu DNI, frente y dorso, para agilizar la admisión.\n• Si tenés una factura de compra o de servicios, adjuntala aquí.\n • Incluí toda la documentación relacionada con tu reclamo."
                 }
               </Typography>
             </Grid>
