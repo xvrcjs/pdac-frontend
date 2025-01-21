@@ -38,8 +38,10 @@ function TrafficLightSystemTimesContainer() {
     setFieldValue,
   } = useFormik({
     initialValues: {
-      greenToYellow: 0,
-      yellowToRed: 0,
+      greenToYellow_c: 0,
+      yellowToRed_c: 0,
+      greenToYellow_ive_hv: 0,
+      yellowToRed_ive_hv: 0,
     },
     onSubmit: handleOnSubmit,
     validate: (values) => {
@@ -54,8 +56,10 @@ function TrafficLightSystemTimesContainer() {
       .then(({ ok, body }) => {
         if (ok) {
           setConfig(body.data);  
-          setFieldValue('greenToYellow', body.data.greenToYellow || 8); 
-          setFieldValue('yellowToRed', body.data.yellowToRed || 24);
+          setFieldValue('greenToYellow_c', body.data.greenToYellow_c|| 8); 
+          setFieldValue('yellowToRed_c', body.data.yellowToRed_c || 24);
+          setFieldValue('greenToYellow_ive_hv', body.data.greenToYellow_ive_hv || 8); 
+          setFieldValue('yellowToRed_ive_hv', body.data.yellowToRed_ive_hv || 24);
         }
       })
   },[])

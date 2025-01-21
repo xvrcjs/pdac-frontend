@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Content from "components/Content";
 import {
-  Grid,
   Box,
   Typography,
   useTheme,
@@ -16,6 +15,7 @@ import {
   Button,
   TextField,
 } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import CircleIcon from "@mui/icons-material/Circle";
 import ControlPointOutlinedIcon from "@mui/icons-material/ControlPointOutlined";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
@@ -49,7 +49,7 @@ function TrafficLightSystemTimesComponent(props) {
   return (
     <Content className="swt-dashboard" isLoaded="true">
       <Box
-        sx={{ display: "flex", justifyContent: "center", mt: "100px",mb:"100px" }}
+        sx={{ display: "flex", justifyContent: "center",p:"30px"}}
       >
         <Box sx={{ width: "1000px", display: "flex", flexDirection: "column" }}>
           <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -82,26 +82,36 @@ function TrafficLightSystemTimesComponent(props) {
                 Configuración de los tiempos del sistema de semáforo
               </Typography>
             </Box>
-            <Box sx={{ ml: "100px" }}>
-              <Typography sx={{ fontWeight: "300" }}>
-                A continuación deberá definir los tiempos para el cambio de
-                tiempos del sistema de semáforos, el mismo se aplicará
-                automáticamente a todos los reclamos que ingresen luego de
-                confirmar los cambios.
+            <Box >
+              <Typography sx={{ fontWeight: "300",ml:"100px"}}>
+                A continuación deberá definir los tiempos para el cambio de tiempos del sistema de semáforos para reclamos comunes y reclamos de tipo IVE/HV, el mismo se aplicará automáticamente a todos los reclamos que ingresen luego de confirmar los cambios.
               </Typography>
-              <Box
-                sx={{
-                  width: "754px",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  height: "234px",
-                  backgroundColor: "#000",
-                  p: "10px 30px",
-                  borderRadius: "30px",
-                  mt: "40px",
-                }}
+              <Grid
+              container
+              spacing={2}
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                p: "2.5rem 0rem",
+              }}
               >
+              <Grid
+              item="true"
+              size={{ xs: 12, sm: 6, md: 6}}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                display: "flex",
+                flexDirection: "column",
+                height: "234px",
+                backgroundColor: "#252525",
+                p: "5px 30px",
+                borderRadius: "15px",
+                boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
+              }}
+              >
+                <Typography sx={{width:"100%",textAlign:"end",color:"#E5E5E5",fontSize:"13px",fontWeight:"400",mb:"10px"}}>Semáforo reclamo común</Typography>
                 <Box
                   sx={{
                     display: "flex",
@@ -110,16 +120,27 @@ function TrafficLightSystemTimesComponent(props) {
                     justifyContent: "space-between",
                   }}
                 >
+                  <Box sx={{display:"flex",flexDirection:"column"}}>
                   <Typography
                     sx={{
                       color: "#E5E5E5",
-                      fontSize: "24px",
+                      fontSize: "20px",
                       fontWeight: "600",
                     }}
                   >
-                    Tiempo de cambio de verde-amarillo
+                    Tiempo de cambio
                   </Typography>
-                  <Box sx={{ mr: "30px" }}>
+                  <Typography
+                    sx={{
+                      color: "#E5E5E5",
+                      fontSize: "20px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    de verde-amarillo
+                  </Typography>
+                  </Box>
+                  <Box>
                     <Box
                       sx={{
                         display: "flex",
@@ -146,9 +167,9 @@ function TrafficLightSystemTimesComponent(props) {
                       }}
                     >
                       <TextField
-                        value={`${values.greenToYellow} horas`}
+                        value={`${values.greenToYellow_c} horas`}
                         onChange={handleChange}
-                        name="greenToYellow"
+                        name="greenToYellow_c"
                         disabled={true}
                         sx={{
                           color: "#fff",
@@ -187,8 +208,8 @@ function TrafficLightSystemTimesComponent(props) {
                             onClick={() =>
                               handleChange({
                                 target: {
-                                  name: "greenToYellow",
-                                  value: Math.max(values.greenToYellow - 1, 0),
+                                  name: "greenToYellow_c",
+                                  value: Math.max(values.greenToYellow_c - 1, 0),
                                 },
                               })
                             }
@@ -198,8 +219,8 @@ function TrafficLightSystemTimesComponent(props) {
                             onClick={() =>
                               handleChange({
                                 target: {
-                                  name: "greenToYellow",
-                                  value: values.greenToYellow + 1,
+                                  name: "greenToYellow_c",
+                                  value: values.greenToYellow_c + 1,
                                 },
                               })
                             }
@@ -218,16 +239,27 @@ function TrafficLightSystemTimesComponent(props) {
                     mt: "20px",
                   }}
                 >
+                  <Box sx={{display:"flex",flexDirection:"column"}}>
                   <Typography
                     sx={{
                       color: "#E5E5E5",
-                      fontSize: "24px",
+                      fontSize: "20px",
                       fontWeight: "600",
                     }}
                   >
-                    Tiempo de cambio de amarillo-rojo
+                    Tiempo de cambio
                   </Typography>
-                  <Box sx={{ mr: "30px" }}>
+                  <Typography
+                    sx={{
+                      color: "#E5E5E5",
+                      fontSize: "20px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    de amarillo-rojo
+                  </Typography>
+                  </Box>
+                  <Box>
                     <Box
                       sx={{
                         display: "flex",
@@ -254,9 +286,9 @@ function TrafficLightSystemTimesComponent(props) {
                       }}
                     >
                       <TextField
-                        value={`${values.yellowToRed} horas`}
+                        value={`${values.yellowToRed_c} horas`}
                         onChange={handleChange}
-                        name="yellowToRed"
+                        name="yellowToRed_c"
                         disabled={true}
                         sx={{
                           color: "#fff",
@@ -295,8 +327,8 @@ function TrafficLightSystemTimesComponent(props) {
                             onClick={() =>
                               handleChange({
                                 target: {
-                                  name: "yellowToRed",
-                                  value: Math.max(values.yellowToRed - 1, 0),
+                                  name: "yellowToRed_c",
+                                  value: Math.max(values.yellowToRed_c - 1, 0),
                                 },
                               })
                             }
@@ -306,8 +338,8 @@ function TrafficLightSystemTimesComponent(props) {
                             onClick={() =>
                               handleChange({
                                 target: {
-                                  name: "yellowToRed",
-                                  value: values.yellowToRed + 1,
+                                  name: "yellowToRed_c",
+                                  value: values.yellowToRed_c + 1,
                                 },
                               })
                             }
@@ -317,7 +349,262 @@ function TrafficLightSystemTimesComponent(props) {
                     </Box>
                   </Box>
                 </Box>
-              </Box>
+              </Grid>
+              <Grid
+              item="true"
+              size={{ xs: 12, sm: 6, md: 6}}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                display: "flex",
+                flexDirection: "column",
+                height: "234px",
+                backgroundColor: "#A83E83",
+                p: "5px 30px",
+                borderRadius: "15px",
+                boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
+              }}
+              >
+                <Typography sx={{width:"100%",textAlign:"end",color:"#E5E5E5",fontSize:"13px",fontWeight:"400",mb:"10px"}}>Semáforo reclamo IVE/HV</Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Box sx={{display:"flex",flexDirection:"column"}}>
+                  <Typography
+                    sx={{
+                      color: "#E5E5E5",
+                      fontSize: "20px",
+                      fontWeight: "600",
+                    }}
+                  >
+                    Tiempo de cambio
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: "#E5E5E5",
+                      fontSize: "20px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    de verde-amarillo
+                  </Typography>
+                  </Box>
+                  <Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        mb: "5px",
+                      }}
+                    >
+                      <CircleIcon sx={{ color: "#0C8D00" }} />
+                      <img
+                        alt="timer"
+                        src="../../assets/config/liner.svg"
+                        style={{
+                          width: "100px",
+                        }}
+                      />
+                      <CircleIcon sx={{ color: "#E7FF2F" }} />
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                      }}
+                    >
+                      <TextField
+                        value={`${values.greenToYellow_ive_hv} horas`}
+                        onChange={handleChange}
+                        name="greenToYellow_ive_hv"
+                        disabled={true}
+                        sx={{
+                          color: "#fff",
+                          width: "147px",
+                          borderRadius: "4px",
+                          border: "1px solid #fff",
+                          "& .MuiInputBase-input.MuiOutlinedInput-input": {
+                            color: "#fff",
+                            textAlign: "center",
+                            p: "10px 5px",
+                          },
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            border: "unset",
+                          },
+                          "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+                            border: "unset !important",
+                            borderColor: "unset !important",
+                          },
+                          "& .Mui-disabled": {
+                            textFillColor: "#fff !important",
+                          },
+                        }}
+                      />
+                      <Box sx={{ ml: "20px" }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "60px",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <RemoveOutlinedIcon
+                            sx={{ color: "#fff", cursor: "pointer" }}
+                            onClick={() =>
+                              handleChange({
+                                target: {
+                                  name: "greenToYellow_ive_hv",
+                                  value: Math.max(values.greenToYellow_ive_hv - 1, 0),
+                                },
+                              })
+                            }
+                          />
+                          <ControlPointOutlinedIcon
+                            sx={{ color: "#fff", cursor: "pointer" }}
+                            onClick={() =>
+                              handleChange({
+                                target: {
+                                  name: "greenToYellow_ive_hv",
+                                  value: values.greenToYellow_ive_hv + 1,
+                                },
+                              })
+                            }
+                          />
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    mt: "20px",
+                  }}
+                >
+                  <Box sx={{display:"flex",flexDirection:"column"}}>
+                  <Typography
+                    sx={{
+                      color: "#E5E5E5",
+                      fontSize: "20px",
+                      fontWeight: "600",
+                    }}
+                  >
+                    Tiempo de cambio
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: "#E5E5E5",
+                      fontSize: "20px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    de amarillo-rojo
+                  </Typography>
+                  </Box>
+                  <Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        mb: "5px",
+                      }}
+                    >
+                      <CircleIcon sx={{ color: "#E7FF2F" }} />
+                      <img
+                        alt="timer"
+                        src="../../assets/config/liner.svg"
+                        style={{
+                          width: "100px",
+                        }}
+                      />
+                      <CircleIcon sx={{ color: "#DC2626" }} />
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                      }}
+                    >
+                      <TextField
+                        value={`${values.yellowToRed_ive_hv} horas`}
+                        onChange={handleChange}
+                        name="yellowToRed_ive_hv"
+                        disabled={true}
+                        sx={{
+                          color: "#fff",
+                          width: "147px",
+                          borderRadius: "4px",
+                          border: "1px solid #fff",
+                          "& .MuiInputBase-input.MuiOutlinedInput-input": {
+                            color: "#fff",
+                            textAlign: "center",
+                            p: "10px 5px",
+                          },
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            border: "unset",
+                          },
+                          "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+                            border: "unset !important",
+                            borderColor: "unset !important",
+                          },
+                          "& .Mui-disabled": {
+                            textFillColor: "#fff !important",
+                          },
+                        }}
+                      />
+                      <Box sx={{ ml: "20px" }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "60px",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <RemoveOutlinedIcon
+                            sx={{ color: "#fff", cursor: "pointer" }}
+                            onClick={() =>
+                              handleChange({
+                                target: {
+                                  name: "yellowToRed_ive_hv",
+                                  value: Math.max(values.yellowToRed_ive_hv - 1, 0),
+                                },
+                              })
+                            }
+                          />
+                          <ControlPointOutlinedIcon
+                            sx={{ color: "#fff", cursor: "pointer" }}
+                            onClick={() =>
+                              handleChange({
+                                target: {
+                                  name: "yellowToRed_ive_hv",
+                                  value: values.yellowToRed_ive_hv + 1,
+                                },
+                              })
+                            }
+                          />
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </Grid>
+              </Grid>
             </Box>
             <Box
               sx={{
