@@ -112,7 +112,7 @@ const MenuFilterStatus = ({ filterStatusOpen, setFilterStatusOpen }) => {
   );
 };
 
-const DataGrid = ({ columns, rows, pageSize = 10, handleEdit,hasFilter }) => {
+const DataGrid = ({ columns, rows, pageSize = 10, handleEdit,hasFilter,noDataMessage,backgroundColor }) => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [sortField, setSortField] = useState(null);
   const [sortDirection, setSortDirection] = useState(null);
@@ -164,7 +164,7 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit,hasFilter }) => {
 
   return (
     <Box className="data-grid" sx={{ width: "100%", overflowX: "auto" }}>
-      <table style={{ width: "100%", backgroundColor: "#D9D9D9" }}>
+      <table style={{ width: "100%", backgroundColor: backgroundColor ? backgroundColor:"#D9D9D9" }}>
         <thead>
           <tr style={{ width: "100%", backgroundColor: "#F3F3F3" }}>
             {columns.map((column, index) => (
@@ -264,7 +264,16 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit,hasFilter }) => {
           </tr>
         </thead>
         <tbody>
-          {paginatedRows.map((row, index) => (
+          {paginatedRows.length === 0 ? (
+            <tr>
+              <td colSpan={columns.length} style={{height:"400px", textAlign: "center", padding: "20px" }}>
+                <Typography variant="body1" color="textSecondary">
+                  {noDataMessage}
+                </Typography>
+              </td>
+            </tr>
+          ) : (
+          paginatedRows.map((row, index) => (
             <React.Fragment key={index}>
               <tr
                 key={index}
@@ -341,7 +350,8 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit,hasFilter }) => {
                 </tr>
               )}
             </React.Fragment>
-          ))}
+          ))
+        )}
         </tbody>
       </table>
       <Box
