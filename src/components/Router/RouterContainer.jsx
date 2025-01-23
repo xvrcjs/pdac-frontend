@@ -17,6 +17,7 @@ import ClaimsHomePage from "../../pages/ClaimsForm/Home"
 import ClaimFormPage from "../../pages/ClaimsForm/Claim"
 import ClaimIVEFormPage from "../../pages/ClaimsForm/ClaimIVE"
 import TrafficLightSystemTimesPage from "../../pages/Config/TrafficLightSystemTimes"
+import DataOrganismsPage from "pages/Config/DataOrganisms";
 import { AppContext } from "../../context/AppContext";
 
 function RouterContainer() {
@@ -66,6 +67,11 @@ function RouterContainer() {
                     exact
                     path="/configuracion/sistema-de-semaforos"
                     element={<TrafficLightSystemTimesPage />}
+                />
+                <Route
+                    exact
+                    path="/configuracion/datos-organismos"
+                    element={<DataOrganismsPage />}
                 />
             </Route>
             <Route element={<PublicRoute />}>

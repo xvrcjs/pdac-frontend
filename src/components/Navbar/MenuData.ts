@@ -62,10 +62,12 @@ export const MenuData:Menu[] = [{
             rolesAllowed: ["Admin"]
         },
         {
-            title: "Datos oficinas municipales",
-            path: "configuracion/datos-oficinas-municipales",
+            title: "Datos organismos",
+            path: "configuracion/datos-organismos",
             icon: "",
-            rolesAllowed: ["Admin"]
+            rolesAllowed: ["Admin"],
+            headerTitle:"Configuración > Datos de organismos",
+            headerSubTitle:"Acá podras ver las OMICs cargadas en el sistema y tambien podrás dar de alta una nueva."
         }
     ],
 }

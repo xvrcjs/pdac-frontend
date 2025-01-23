@@ -17,3 +17,7 @@ export const VALIDATE_RECAPTCHA = "/v1/validate-recaptcha";
 
 // CONFIGURACION DE SEMAFOROS
 export const GET_TRAFIC_LIGHT_CONFIG = "/v1/traffic-light-system-config";
+
+// CONFIGURACION DE DATOS ORGANISMOS
+export const OMICS = "/v1/omic";
+
