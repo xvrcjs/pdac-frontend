@@ -47,11 +47,7 @@ function DataOrganismsComponent(props) {
       align: "center",
       width: "200px",
       renderCell: (params) => (
-        <div
-          className="swt-table-field-name"
-        >
-          {params.value}
-        </div>
+        <div className="swt-table-field-name">{params.value}</div>
       ),
     },
     {
@@ -61,11 +57,7 @@ function DataOrganismsComponent(props) {
       headerAlign: "center",
       align: "center",
       renderCell: (params) => (
-        <div
-          className="swt-table-field-name"
-        >
-          {params.value}
-        </div>
+        <div className="swt-table-field-name">{params.value}</div>
       ),
     },
     {
@@ -75,11 +67,7 @@ function DataOrganismsComponent(props) {
       headerAlign: "center",
       align: "center",
       renderCell: (params) => (
-        <div
-          className="swt-table-field-name"
-        >
-          {params.value}
-        </div>
+        <div className="swt-table-field-name">{params.value}</div>
       ),
     },
     {
@@ -89,11 +77,7 @@ function DataOrganismsComponent(props) {
       headerAlign: "center",
       align: "center",
       renderCell: (params) => (
-        <div
-          className="swt-table-field-name"
-        >
-          {params.value}
-        </div>
+        <div className="swt-table-field-name">{params.value}</div>
       ),
     },
     {
@@ -103,11 +87,7 @@ function DataOrganismsComponent(props) {
       headerAlign: "center",
       align: "center",
       renderCell: (params) => (
-        <div
-          className="swt-table-field-name"
-        >
-          {params.value}
-        </div>
+        <div className="swt-table-field-name">{params.value}</div>
       ),
     },
     {
@@ -117,11 +97,7 @@ function DataOrganismsComponent(props) {
       headerAlign: "center",
       align: "center",
       renderCell: (params) => (
-        <div
-          className="swt-table-field-name"
-        >
-          {params.value}
-        </div>
+        <div className="swt-table-field-name">{params.value}</div>
       ),
     },
   ];
@@ -177,7 +153,6 @@ function DataOrganismsComponent(props) {
       },
     },
   });
-
 
   return (
     <Content className="swt-dashboard" isLoaded="true">

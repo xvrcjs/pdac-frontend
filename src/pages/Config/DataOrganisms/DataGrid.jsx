@@ -38,7 +38,10 @@ const DataGrid = ({
   const [originalRows, setOriginalRows] = useState({});
   const [showConfirmMessage, setShowConfirmMessage] = useState(false);
   const [rowToConfirm, setRowToConfirm] = useState(null);
+  const [showConfirmChangeDetectedMessage, setShowConfirmChangeDetectedMessage] = useState(false);
+
   const navigate = useNavigate();
+
   const sortedRows = [...rows].sort((a, b) => {
     if (!sortField) return 0;
     if (sortDirection === "asc") {
@@ -56,14 +59,28 @@ const DataGrid = ({
     setSelectedRow(row);
   };
 
-  const handleEdit = (rowIndex) => {
-    setEditingRows((prev) => {
-        const isEditing = prev[rowIndex];
-        if (isEditing) {
-          return {};
+  const handleEdit = (index,rowIndex) => {
+    if (Object.keys(editingRows).length > 0) {
+        // Si hay una fila en edición, verificar si hay cambios sin guardar
+        const original = originalRows[Object.keys(editingRows)[0]];
+        const current = rows[Object.keys(editingRows)[0]];
+        const hasChanges = JSON.stringify(original) !== JSON.stringify(current);
+    
+        if (hasChanges) {
+          // Mostrar diálogo de confirmación
+          setShowConfirmChangeDetectedMessage(true);
+          setRowToConfirm(rowIndex);
+          return;
         }
-        return { [rowIndex]: true };
-      });
+    }
+    
+    setEditingRows((prev) => {
+      const isEditing = prev[rowIndex];
+      if (isEditing) {
+        return {};
+      }
+      return { [rowIndex]: true };
+    });
     if (!editingRows[rowIndex]) {
       setOriginalRows((prev) => ({
         ...prev,
@@ -77,14 +94,26 @@ const DataGrid = ({
       });
     }
   };
+  const handleConfirmSwitchRow = () => {
+    // Aplicar los cambios al cambiar de fila
+    setSelectedRow(rows[rowToConfirm]);
+    setEditingRows({});
+    setOriginalRows({});
+    setShowConfirmChangeDetectedMessage(false);
+  };
+  
+  const handleCancelSwitchRow = () => {
+    setShowConfirmChangeDetectedMessage(false);
+    setRowToConfirm(null);
+  };
   const handleCancel = (rowIndex) => {
     setRows((prevRows) => {
       const updatedRows = [...prevRows];
-      updatedRows[rowIndex] = { ...originalRows[rowIndex] }; 
+      updatedRows[rowIndex] = { ...originalRows[rowIndex] };
       return updatedRows;
     });
 
-    handleEdit(rowIndex); 
+    handleEdit(rowIndex);
   };
   const handleOpenDialog = (rowIndex) => {
     setRowToConfirm(rowIndex);
@@ -290,7 +319,7 @@ const DataGrid = ({
                         sx={{
                           display: "flex",
                           flexDirection: "column",
-                          alignItems:"center",
+                          alignItems: "center",
                           mr: "10px",
                           ml: "10px",
                         }}
@@ -343,14 +372,15 @@ const DataGrid = ({
                             </Button>
                           </>
                         ) : (
-                            
                           <IconButton
-                            onClick={() => handleEdit(index)}
+                            onClick={() => handleEdit(row,index)}
                             aria-label="row"
                             size="small"
                             // disabled={Object.keys(editingRows).length>0}
                           >
-                            <EditIcon  sx={{cursor:"pointer",width:"fit-content"}}/>
+                            <EditIcon
+                              sx={{ cursor: "pointer", width: "fit-content" }}
+                            />
                           </IconButton>
                         )}
                       </Box>
@@ -480,6 +510,25 @@ const DataGrid = ({
           </Button>
         </DialogActions>
       </Dialog>
+      <Dialog
+        open={showConfirmChangeDetectedMessage}
+        onClose={handleCancelSwitchRow}
+        >
+        <DialogTitle>¡Cambios sin aplicar!</DialogTitle>
+        <DialogContent>
+            <DialogContentText>
+            Tienes cambios sin aplicar. ¿Deseas descartarlos y continuar?
+            </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+            <Button onClick={handleCancelSwitchRow} color="primary">
+            Cancelar
+            </Button>
+            <Button onClick={handleConfirmSwitchRow} color="primary" autoFocus>
+            Continuar
+            </Button>
+        </DialogActions>
+        </Dialog>
     </>
   );
 };
