@@ -1,86 +1,77 @@
-# Getting Started with Create React App
+# AUKAN
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este proyecto fue iniciado con [Create React App](https://github.com/facebook/create-react-app).
 
-## How to use it? 
-### Install
-```
+## ¿Cómo usarlo?
+
+### Entorno de Desarrollo local
+
+### Creacion de variables de entorno
+
+Para configurar el proyecto, crea un archivo `.env` en la raíz del proyecto con las siguientes variables de entorno. A continuación, se incluye una tabla con las variables, sus valores por defecto y una descripción de su función:
+
+| Variable                        | Valor por defecto                    | Descripción                                                                 |
+|---------------------------------|--------------------------------------|-----------------------------------------------------------------------------|
+| `GENERATE_SOURCEMAP`           | `false`                              | Desactiva la generación de mapas de fuente en el build para optimizar el rendimiento. |
+| `REACT_APP_VERSION`            | `$npm_package_version`               | Define la versión de la aplicación basada en la versión especificada en `package.json`. |
+| `REACT_APP_BACKEND_URL`        | `http://localhost:8000/api/`         | URL base de la API backend utilizada por el proyecto.                                   |
+| `REACT_APP_BACKEND_URL_MEDIA`  | `http://localhost:8000`              | URL base para acceder a los recursos multimedia desde el backend.                       |
+| `PORT`                         | `3000`                               | Especifica el puerto en el que se ejecuta la aplicación React.                          |
+| `REACT_APP_IMAGES_PATH`        | `"public/images"`                   | Ruta relativa donde se encuentran las imágenes estáticas utilizadas por la aplicación.   |
+
+#### Instalación
+
+```bash
 npm install
 ```
-#### if it gives us dependency error
-```
+
+#### Si se generan errores de dependencias
+
+```bash
 npm install --legacy-peer-deps
 ```
-## Available Scripts
 
-In the project directory, you can run:
+#### Ejecutar el proyecto
 
-### Run the project
-```
+```bash
 npm run start
 ```
-or
+
+Esto iniciará la aplicación en modo de desarrollo.  
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador para verla.
+
+La página se recargará automáticamente si realizas cambios en el código.  
+También podrás ver errores de lint en la consola.
+
+### Entorno de Desarrollo Dockerizado
+
+#### Requisitos previos
+
+- Docker
+- Docker Compose
+
+#### Construir la imagen Docker
+
+```bash
+docker-compose build
 ```
-yarn start
+
+#### Iniciar el contenedor
+
+```bash
+docker-compose up
 ```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+La aplicación estará disponible en [http://localhost:3000](http://localhost:3000).
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Para detener el contenedor:
 
-### `yarn test`
+```bash
+docker-compose down
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Aprende Más
 
-### `yarn build`
+Puedes obtener más información en la [documentación de Create React App](https://facebook.github.io/create-react-app/docs/getting-started).
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Para aprender React, visita la [documentación de React](https://reactjs.org/).
