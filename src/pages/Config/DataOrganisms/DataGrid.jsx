@@ -31,8 +31,8 @@ const DataGrid = ({
   backgroundColor,
 }) => {
   const [selectedRow, setSelectedRow] = useState(null);
-  const [sortField, setSortField] = useState(null);
-  const [sortDirection, setSortDirection] = useState(null);
+  const [sortField, setSortField] = useState("name");
+  const [sortDirection, setSortDirection] = useState("asc");
   const [currentPage, setCurrentPage] = useState(1);
   const [editingRows, setEditingRows] = useState({});
   const [originalRows, setOriginalRows] = useState({});
@@ -55,24 +55,20 @@ const DataGrid = ({
     currentPage * pageSize
   );
 
-  const handleRowClick = (row) => {
-    setSelectedRow(row);
-  };
 
   const handleEdit = (index,rowIndex) => {
     if (Object.keys(editingRows).length > 0) {
-        // Si hay una fila en edición, verificar si hay cambios sin guardar
         const original = originalRows[Object.keys(editingRows)[0]];
         const current = rows[Object.keys(editingRows)[0]];
         const hasChanges = JSON.stringify(original) !== JSON.stringify(current);
     
         if (hasChanges) {
-          // Mostrar diálogo de confirmación
           setShowConfirmChangeDetectedMessage(true);
           setRowToConfirm(rowIndex);
           return;
         }
     }
+    setSelectedRow(index)
     
     setEditingRows((prev) => {
       const isEditing = prev[rowIndex];
@@ -95,26 +91,34 @@ const DataGrid = ({
     }
   };
   const handleConfirmSwitchRow = () => {
-    // Aplicar los cambios al cambiar de fila
     setSelectedRow(rows[rowToConfirm]);
+    rows[Object.keys(editingRows)[0]] = originalRows[Object.keys(editingRows)[0]];
     setEditingRows({});
+    setEditingRows((prev) => {
+      const isEditing = prev[rowToConfirm];
+      if (isEditing) {
+        return {};
+      }
+      return { [rowToConfirm]: true };
+    });
     setOriginalRows({});
     setShowConfirmChangeDetectedMessage(false);
   };
-  
+
   const handleCancelSwitchRow = () => {
     setShowConfirmChangeDetectedMessage(false);
     setRowToConfirm(null);
   };
+
   const handleCancel = (rowIndex) => {
     setRows((prevRows) => {
       const updatedRows = [...prevRows];
       updatedRows[rowIndex] = { ...originalRows[rowIndex] };
       return updatedRows;
     });
-
-    handleEdit(rowIndex);
+    setEditingRows({});
   };
+
   const handleOpenDialog = (rowIndex) => {
     setRowToConfirm(rowIndex);
     setShowConfirmMessage(true);
@@ -162,6 +166,7 @@ const DataGrid = ({
     setDialogOpen(false);
     setRowToConfirm(null);
   };
+
   return (
     <>
       <Box className="data-grid" sx={{ width: "100%", overflowX: "auto" }}>
@@ -263,12 +268,12 @@ const DataGrid = ({
                   <tr
                     key={index}
                     className={selectedRow === row ? "selected" : ""}
-                    onClick={() => handleRowClick(row)}
                   >
                     {columns.map((column, colIndex) => (
                       <td
                         key={column.field}
                         style={{
+                          fontSize:"14px",
                           textAlign: column.align || "left",
                           padding: "8px",
                           wordBreak: "break-word",
@@ -400,14 +405,14 @@ const DataGrid = ({
             justifyContent: "right",
           }}
         >
-          <IconButton
-            className="btn btn-secondary"
-            disabled={currentPage === 1}
-            onClick={() => handlePageChange(currentPage - 1)}
-          >
-            <KeyboardArrowLeftIcon sx={{ color: "#000" }} />
-          </IconButton>
-
+          {currentPage !== 1 &&
+            <IconButton
+              className="btn btn-secondary"
+              onClick={() => handlePageChange(currentPage - 1)}
+            >
+              <KeyboardArrowLeftIcon sx={{ color: "#000",cursor:"pointer" }} />
+            </IconButton>
+          }
           {[...Array(totalPages)].map((_, index) => (
             <button
               key={index}
@@ -415,19 +420,19 @@ const DataGrid = ({
                 currentPage === index + 1 ? "btn-primary" : "btn-secondary"
               }`}
               onClick={() => handlePageChange(index + 1)}
-              style={{ margin: "0 5px" }}
+              style={{ margin: "0 5px",cursor: "pointer" }}
             >
               {index + 1}
             </button>
           ))}
-
-          <IconButton
-            className="btn btn-secondary"
-            disabled={currentPage === totalPages}
-            onClick={() => handlePageChange(currentPage + 1)}
-          >
-            <KeyboardArrowRightIcon sx={{ color: "#000" }} />
-          </IconButton>
+          {currentPage !== totalPages &&
+            <IconButton
+              className="btn btn-secondary"
+              onClick={() => handlePageChange(currentPage + 1)}
+            >
+              <KeyboardArrowRightIcon sx={{ color: "#000",cursor:"pointer" }} />
+            </IconButton>
+          }
         </Box>
       </Box>
       <Dialog
@@ -513,22 +518,83 @@ const DataGrid = ({
       <Dialog
         open={showConfirmChangeDetectedMessage}
         onClose={handleCancelSwitchRow}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        sx={{
+          "&.MuiDialog-root .MuiDialog-paper": {
+            border: "2px solid #00AEC3",
+            padding: "40px 30px",
+            borderRadius: "20px",
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            fontFamily: "Encode Sans",
+            fontSize: "22px",
+            fontWeight: "600",
+          }}
+          id="alert-dialog-title"
         >
-        <DialogTitle>¡Cambios sin aplicar!</DialogTitle>
+          ¡Cambios sin aplicar!
+        </DialogTitle>
         <DialogContent>
-            <DialogContentText>
+          <DialogContentText
+            sx={{
+              fontFamily: "Encode Sans",
+              fontSize: "16px",
+              fontWeight: "300",
+              mb: "50px",
+            }}
+            id="alert-dialog-description"
+          >
             Tienes cambios sin aplicar. ¿Deseas descartarlos y continuar?
-            </DialogContentText>
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
-            <Button onClick={handleCancelSwitchRow} color="primary">
+          <Button
+            sx={{
+              borderRadius: "50px",
+              backgroundColor: "#fff",
+              color: "#000",
+              padding: "12px 12px",
+              fontFamily: "Encode Sans",
+              fontSize: "16px",
+              fontWeight: "500",
+              width: "150px",
+              border: "1px solid #000",
+              textTransform: "capitalize",
+              ":hover": {
+                color: "#FFF",
+                backgroundColor: "#000",
+              },
+            }}
+            onClick={handleCancelSwitchRow}
+          >
             Cancelar
-            </Button>
-            <Button onClick={handleConfirmSwitchRow} color="primary" autoFocus>
+          </Button>
+          <Button
+            sx={{
+              borderRadius: "50px",
+              backgroundColor: "#00AEC3",
+              color: "#fff",
+              padding: "12px 85px",
+              fontFamily: "Encode Sans",
+              fontSize: "16px",
+              fontWeight: "500",
+              textTransform: "capitalize",
+              ":hover": {
+                color: "#FFF",
+                backgroundColor: "#00AEC3",
+                transform: "scale(1.01)",
+              },
+            }}
+            onClick={handleConfirmSwitchRow}
+          >
             Continuar
-            </Button>
+          </Button>
         </DialogActions>
-        </Dialog>
+      </Dialog>
     </>
   );
 };
