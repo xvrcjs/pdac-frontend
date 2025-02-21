@@ -17,11 +17,12 @@ function ProfileMenuComponent(props) {
     handleCloseMenu,
     signout,
     account,
+    navigate,
+    permissions,
   } = props;
 
-  const theme = useTheme();
-  const colorMode = useContext(ColorModeContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
+
   const handleClose = () => {
     handleCloseMenu(false);
   };
@@ -63,7 +64,7 @@ function ProfileMenuComponent(props) {
       transformOrigin={{ horizontal: "right", vertical: "top" }}
       anchorOrigin={{ horizontal: "right", vertical: "top" }}
     >
-      <MenuItem >
+      <MenuItem onClick={()=>navigate("/perfil")} >
         {account.full_name}
       </MenuItem>
       <Divider />

@@ -48,6 +48,7 @@ function ProfileMenuContainer(props) {
             permissions={permissions}
             signout={signout}
             account={account}
+            navigate={navigate}
         />
     )
 }
