@@ -24,7 +24,7 @@ function HomeComponent(props) {
                         Beneficios del CRM para ciudadanos y administradores
                     </Typography>
                     <Typography sx={{fontWeight:"400",fontSize:"18px"}}>
-                        Nuestro ERP mejora la trazabilidad de los reclamos, garantizando un seguimiento claro y efectivo. Además, optimiza la resolución de problemas, facilitando la comunicación entre usuarios.
+                        Mejora la trazabilidad de los reclamos, garantizando un seguimiento claro y efectivo. Además, optimiza la resolución de problemas y facilita la comunicación.
                     </Typography>
                     <Box sx={{display:'flex',flexDirection:'row', margin:"30px 0px"}}>
                         <Box sx={{display:'flex',flexDirection:'column'}}>
@@ -33,7 +33,7 @@ function HomeComponent(props) {
                             Trazabilidad Garantizada
                             </Typography>
                             <Typography sx={{fontWeight:"400",fontSize:"16px"}}>
-                            Sigue cada reclamo desde su inicio hasta su resolución final.
+                            Sigue cada reclamo desde su inicio hasta su resolución, concentrando la gestión en un solo sistema.
                             </Typography>
                         </Box>
                         <Box sx={{display:'flex',flexDirection:'column'}}>
@@ -42,7 +42,7 @@ function HomeComponent(props) {
                             Resolución Eficiente
                             </Typography>
                             <Typography sx={{fontWeight:"400",fontSize:"16px"}}>
-                            Reduce los tiempos de espera y mejora la satisfacción del ciudadano.
+                            Agiliza las tareas y facilita la gestión, para respuesta rápida al ciudadano
                             </Typography>
                         </Box>
                     </Box>

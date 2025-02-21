@@ -26,7 +26,7 @@ function WelcomeComponent(props) {
           width: "100%",
         }}
       ></Box>
-      <Box sx={{ backgroundColor: "#fff", padding: "50px" }}>
+      <Box sx={{ backgroundColor: "#fff", padding: "50px",paddingBottom:"0px" }}>
         <a href="/">
           <img
             alt="logo"
@@ -72,9 +72,7 @@ function WelcomeComponent(props) {
                 width: "70%",
               }}
             >
-              Inicia sesión para acceder a un sistema intuitivo que te permitirá
-              gestionar tus reclamos de manera rápida y efectiva. No dejes que
-              tus preocupaciones se acumulen, estamos aquí para ayudarte.
+              Inicia sesión para acceder a un sistema intuitivo que te permitirá gestionar tus expedientes de manera rápida y efectiva. 
             </Typography>
           </Box>
           <img
@@ -101,15 +99,14 @@ function WelcomeComponent(props) {
           >
             <img
               alt="item-1"
-              src={`../../assets/login/items.png`}
+              src={`../../assets/login/item-1.svg`}
               style={{ height: "50px", width: "50px" }}
             />
             <Typography sx={{ fontWeight: "600", fontSize: "24px" }}>
-              Administrador defensa al consumidor
+              Administrador Dirección Provincia
             </Typography>
             <Typography sx={{ fontWeight: "300", fontSize: "16px" }}>
-              Administra los reclamos de manera integral, dandole seguimiento y
-              reasignando si es necesario.
+              Administra los expedientes de manera integral, con seguimiento, asignación, revisión y trazabilidad.
             </Typography>
             <Button
               onClick={() => navigate("/login")}
@@ -144,15 +141,14 @@ function WelcomeComponent(props) {
           >
             <img
               alt="item-1"
-              src={`../../assets/login/items.png`}
+              src={`../../assets/login/item-2.svg`}
               style={{ height: "50px", width: "50px" }}
             />
             <Typography sx={{ fontWeight: "700", fontSize: "24px" }}>
-              Administrador Municipal
+              Administrador OMIC
             </Typography>
             <Typography sx={{ fontWeight: "300", fontSize: "16px" }}>
-              Asegura que cada reclamo sea atendido por el usuario adecuado del
-              municipio a donde se refiere el reclamo.
+              Asegura que cada expediente sea trabajado, de principio a fin, por el responsable adecuado del municipio.
             </Typography>
             <Button
               onClick={() => navigate("/login")}
@@ -187,15 +183,14 @@ function WelcomeComponent(props) {
           >
             <img
               alt="item-1"
-              src={`../../assets/login/items.png`}
+              src={`../../assets/login/item-3.svg`}
               style={{ height: "50px", width: "50px" }}
             />
             <Typography sx={{ fontWeight: "700", fontSize: "24px" }}>
-              Usuario de soporte defensa al consumidor
+              Usuario de soporte Dirección Provincial
             </Typography>
             <Typography sx={{ fontWeight: "300", fontSize: "16px" }}>
-              Colabora con la resolujcion de los reclamos y la categorizacion de
-              los mismos.
+              Colabora con las consultas técnicas, categorización y dudas de los reclamos.
             </Typography>
             <Button
               sx={{
@@ -221,14 +216,13 @@ function WelcomeComponent(props) {
           </Box>
         </Box>
       </Box>
-      <Box
-        sx={{
-          background:
-            "linear-gradient(90deg, #E81F76 0%, #417099 50%, #00AEC3 100%)",
-          height: "50px",
-          width: "100%",
-        }}
-      />
+      <div style={{display:"flex"}}>
+        <img
+          src={`../../footer.png`} 
+          alt="footer"
+          style={{width: "100%"}}
+        />
+      </div>
     </>
   );
 }

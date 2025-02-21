@@ -25,14 +25,13 @@ function Layout({title}) {
       <div className={`swt-layout-content ${isNavbarCollapsed ? "collapsed" : ""}`}>
         <Outlet />
       </div>
-      <Box
-        sx={{
-          background:
-            "linear-gradient(90deg, #E81F76 0%, #417099 50%, #00AEC3 100%)",
-          height: { xs: "30px", sm: "40px", md: "50px" },
-          width: "100%",
-        }}
-      />
+      <div style={{display:"flex"}}>
+        <img
+          src={`../../footer.png`} 
+          alt="footer"
+          style={{width: "100%"}}
+        />
+      </div>
     </main>
   )
 };
