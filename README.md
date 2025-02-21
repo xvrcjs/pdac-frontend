@@ -70,6 +70,44 @@ Para detener el contenedor:
 docker-compose down
 ```
 
+#### Configuracion del Nginx
+
+En el caso de querer levantar el frontend con un dominio y en conjunto el backend en la misma url, esta es la configuracion:
+
+```bash
+server {
+    listen 80;
+    server_name aukan.localhost;
+
+    #FRONTEND REACT
+    location / {
+        proxy_pass http://pdac-frontend:80;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    #API DE DJANGO
+    location /api/ {
+        proxy_pass http://pdac-web:8000/api/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    #PANEL DE DJANGO
+    location /panel/ {
+        proxy_pass http://pdac-web:8000/panel/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+```
 ## Aprende Más
 
 Puedes obtener más información en la [documentación de Create React App](https://facebook.github.io/create-react-app/docs/getting-started).

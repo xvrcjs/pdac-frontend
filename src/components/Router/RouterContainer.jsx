@@ -18,6 +18,7 @@ import ClaimFormPage from "../../pages/ClaimsForm/Claim"
 import ClaimIVEFormPage from "../../pages/ClaimsForm/ClaimIVE"
 import TrafficLightSystemTimesPage from "../../pages/Config/TrafficLightSystemTimes"
 import DataOrganismsPage from "pages/Config/DataOrganisms";
+import ProfilePage from "../../pages/UserManagment/Profile";
 import { AppContext } from "../../context/AppContext";
 
 function RouterContainer() {
@@ -32,6 +33,11 @@ function RouterContainer() {
                     exact
                     path="/home"
                     element={<HomePage />}
+                />
+                <Route
+                    exact
+                    path="/perfil"
+                    element={<ProfilePage />}
                 />
                 <Route
                     exact

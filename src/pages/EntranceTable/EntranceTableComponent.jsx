@@ -14,14 +14,7 @@ import {
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { tokens } from "../../theme";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import {
-  DataGrid,
-  GridRow,
-  gridPageCountSelector,
-  gridPageSelector,
-  useGridApiContext,
-  useGridSelector,
-} from "@mui/x-data-grid";
+import DataGrid from "./DataGrid";
 import EditIcon from "@mui/icons-material/Edit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
@@ -72,27 +65,58 @@ function EntranceTableComponent(props) {
 const handleEdit = (id) => {
   console.log(`Edit ${id}`);
 }
-const CircularItem = ({ status }) => {
+  const CircularItem = ({ status="none" }) => {
     const statusColors = {
-        active: "green",
-        inactive: "red",
-        warning: "yellow",
-        error: "black",
-      };
-    const color = statusColors[status] || "grey"; // Por defecto, gris si el estado no existe
+      verde: "green",
+      rojo: "red",
+      amarillo: "yellow",
+      hv_verde: "green",
+      hv_rojo: "red",
+      hv_amarillo:"yellow",
+      ive: "#B31EA4",
+    };
+    const color = statusColors[status] 
     
     return (
-        <Box
-        sx={{
-            width: 30,
-            height: 30,
-            borderRadius: "50%",
-            backgroundColor: color,
-            margin: "10px auto", // Centrado y espacio entre los items
-        }}
-        />
+      <>
+        {!status.includes("hv_") ? (
+          <Box
+            sx={{
+              width: 30,
+              height: 30,
+              borderRadius: "50%",
+              backgroundColor: color,
+              margin: "10px auto"
+            }}
+          />
+        ) : (
+          <Box
+            sx={{
+              width: 30,
+              height: 30,
+              borderRadius: "50%",
+              backgroundColor: "black",
+              border: "2px solid #1DBDCD",
+              margin: "10px auto",
+            }}
+          >
+            {/* Triángulo */}
+            <Box
+              sx={{
+                width: 0,
+                height: 0,
+                borderLeft: "7px solid transparent",
+                borderRight: "7px solid transparent",
+                borderBottom: `14px solid ${color}`,
+                marginLeft: "27%",
+                marginTop: "23%"
+              }}
+            />
+          </Box>
+        )}
+      </>
     );
-    };
+  };
   const columns = [
     {
       field: "status_id",
@@ -102,11 +126,6 @@ const CircularItem = ({ status }) => {
       maxWidth: 100,
       style: "background-color:#B1B1B1",
       align: "center",
-      renderHeader: () => (
-        <div style={{ textAlign: 'center', fontWeight: 'bold' }}>
-          <CircularItem status='error' />
-        </div>
-      ),
       renderCell: (params) => (
         <CircularItem status={params.value} />
       ),
@@ -152,41 +171,8 @@ const CircularItem = ({ status }) => {
         <span style={{textTransform:'uppercase'}}>{params.value}</span>
       ),
     },
-    {
-      field: "actions",
-      headerName: "",
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-      sortable: false,
-      renderCell: (params) => (
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
-          {/* <IconButton
-          onClick={() => handleExpandClick(params.id)}
-          aria-label="expand row"
-          size="small"
-        >
-          <ExpandMoreIcon
-            style={{
-              transform: expandedRowId === params.id ? "rotate(180deg)" : "rotate(0deg)",
-              transition: "transform 0.3s",
-            }}
-          />
-        </IconButton> */}
-          <IconButton
-            onClick={() => handleEdit(params.id)}
-            aria-label="expand row"
-            size="small"
-            sx={{ ml: "10px" }}
-          >
-            <EditIcon />
-          </IconButton>
-        </Box>
-      ),
-    },
   ];
-  const themeTable = createTheme(
-    {
+  const themeTable = createTheme({
       components: {
         MuiDataGrid: {
           styleOverrides: {
@@ -236,8 +222,7 @@ const CircularItem = ({ status }) => {
           },
         },
       },
-    },
-  );
+  });
 
   useEffect(() => {
     setRows(claims);
@@ -252,6 +237,8 @@ const CircularItem = ({ status }) => {
             rows={rows}
             columns={columns}
             sx={{ minHeight: "600px" }}
+            backgroundColor={"#fff"}
+            noDataMessage="No hay reclamos para mostrar en este momento."
             initialState={{
               pagination: {
                 paginationModel: {
