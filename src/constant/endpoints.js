@@ -13,6 +13,7 @@ export const CREATE_USER = "/v1/account";
 export const GET_USERS = "/v1/account";
 
 // FORMULARIO DE RECLAMO
+export const CLAIM = "/v1/claim";
 export const VALIDATE_RECAPTCHA = "/v1/validate-recaptcha";
 
 // CONFIGURACION DE SEMAFOROS

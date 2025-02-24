@@ -60,7 +60,7 @@ function FormComponent(props) {
     cuil_sp: "",
     fullname_sp: "",
     address_sp: "",
-    num_addres_sp: "",
+    num_address_sp: "",
     city_sp: "",
     zip_code_sp: "",
   });

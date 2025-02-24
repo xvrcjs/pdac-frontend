@@ -5,6 +5,7 @@ import ClaimComponent from "./ClaimComponent";
 import FormComponent from "./Entities/FormComponent";
 import { AppContext } from "context/AppContext";
 import ClaimFinishedComponent from "./ClaimFinishedComponent";
+import { CLAIM } from "constant/endpoints";
 
 function ClaimContainer() {
   const [startForm, setStartForm] = useState(false);
@@ -12,22 +13,28 @@ function ClaimContainer() {
   const { api } = useContext(AppContext)
 
   const handleOnSubmit = (values) => {
-    // const { fullname, email, profile_image, dni, phone, rol, permissions } =
-    //   values;
     const formData = new FormData();
-    setFormSended(true)
-    // formData.append("full_name", fullname);
-    // formData.append("email", email);
-    // formData.append("dni", dni);
-    // formData.append("phone", phone);
-    // formData.append("permissions", permissions);
-    // formData.append("roles", rol);
-    // if (profile_image.length > 0)
-    //   formData.append("profile_image", profile_image[0]);
+    // setFormSended(true)
+    const claimerData = {
+      fullname: values.fullname_cl,
+      email: values.email_cl,
+      dni: values.dni_cl,
+      cuit: values.cuit_cl,
+      gender: values.gender_cl,
+    };
+    formData.append("claimer", JSON.stringify(claimerData));
+    formData.append("comments", values.comments);
+    formData.append("suppliers", JSON.stringify(values.suppliers));
+    for (let i = 0; i < values.files.length; i++) {
+      formData.append("files", values.files[i]); // Añade cada archivo al FormData
+    }
 
-    api("/v1/send-claim-ive", {
+    api(CLAIM, {
       method: "POST",
-      body: {email:values.email_cl},
+      body: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     })
       .then(({ ok, body }) => {
         if (ok) {
@@ -75,9 +82,6 @@ function ClaimContainer() {
       if (!values.dni_cl) {
         errors.dni_cl = "El campo dni es requerido.";
       }
-      // if (!values.comments) {
-      //   errors.comments = "Este campo es obligatorio para poder continuar.";
-      // }
       if (!values.email_cl) {
         errors.email_cl = "El campo email es requerido.";
       } else if (
