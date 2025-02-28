@@ -46,6 +46,7 @@ function SupplierFormComponent(props) {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    console.log(name)
     setNewSupplier((prev) => {
       if (name === "has_cuil_sp") {
         return {
@@ -53,6 +54,12 @@ function SupplierFormComponent(props) {
           has_cuil_sp: checked,
           cuil_sp: checked ? "No sé el CUIL/CUIT del proveedor" : "",
         };
+      }
+      if (name === "city_sp"){
+        return {
+          ...prev,
+          city_sp: value.name,
+        }
       }
       
       return {
@@ -310,7 +317,7 @@ function SupplierFormComponent(props) {
                 {option.name}
               </li>
             )}
-            value={localidades.find((loc) => loc.id === newSupplier.city_sp?.id) || null}
+            value={localidades.find((loc) => loc.name === newSupplier.city_sp) || null}
             isOptionEqualToValue={(option, value) => option.id === value?.id}
           />
         </Grid>

@@ -5,7 +5,7 @@ import ClaimComponent from "./ClaimComponent";
 import FormComponent from "./Entities/FormComponent";
 import { AppContext } from "context/AppContext";
 import ClaimFinishedComponent from "./ClaimFinishedComponent";
-import { CLAIM } from "constant/endpoints";
+import { CREATE_CLAIM } from "constant/endpoints";
 
 function ClaimContainer() {
   const [startForm, setStartForm] = useState(false);
@@ -25,11 +25,15 @@ function ClaimContainer() {
     formData.append("claimer", JSON.stringify(claimerData));
     formData.append("comments", values.comments);
     formData.append("suppliers", JSON.stringify(values.suppliers));
-    for (let i = 0; i < values.files.length; i++) {
-      formData.append("files", values.files[i]); // Añade cada archivo al FormData
+    if (values.files.length > 0) {
+      for (let i = 0; i < values.files.length; i++) {
+        formData.append("files", values.files[i]); // Añade cada archivo al FormData
+      }
+    }else{
+      formData.append("files", "")
     }
 
-    api(CLAIM, {
+    api(CREATE_CLAIM, {
       method: "POST",
       body: formData,
       headers: {
