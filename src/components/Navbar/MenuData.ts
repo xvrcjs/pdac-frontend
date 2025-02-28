@@ -28,6 +28,8 @@ export const MenuData:Menu[] = [{
     path: "mesa-de-entrada",
     icon: "",
     rolesAllowed: ["Admin"],
+    headerTitle:"Te damos la bienvenida a tu Mesa de entrada",
+    headerSubTitle:"Acá podras ver los reclamos sin asignar, asignados y filtrarlos por el sistema de semáforos."
 },{
     title: "Archivados",
     path: "archivados",

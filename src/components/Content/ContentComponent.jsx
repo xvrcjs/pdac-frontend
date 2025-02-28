@@ -26,10 +26,11 @@ function ContentComponent(props) {
         <div className={`content-container ${className ? className : ""}`}>
             <div className="swt-content-wrapper">
                 <div className='swt-content'
-                    style={{
-                        maxWidth: maxWidth ? `calc(${maxWidth} + max(10px, 15vw))` : undefined,
-                        minWidth: minWidth ? `calc(${minWidth} + max(10px, 15vw))` : undefined,
-                    }}>
+                    // style={{
+                    //     maxWidth: maxWidth ? `calc(${maxWidth} + max(10px, 15vw))` : undefined,
+                    //     minWidth: minWidth ? `calc(${minWidth} + max(10px, 15vw))` : undefined,
+                    // }}
+                    >
                     {children}
                 </div>
             </div >

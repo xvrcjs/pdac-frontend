@@ -43,7 +43,7 @@ const CircularItemFilter = ({ status }) => {
     ive: "#B31EA4",
   };
 
-  const color = statusColors[status] || "grey"; // Por defecto, gris si el estado no existe
+  const color = statusColors[status] || "white"; // Por defecto, gris si el estado no existe
 
   return (
     <>
@@ -54,6 +54,7 @@ const CircularItemFilter = ({ status }) => {
             height: 30,
             borderRadius: "50%",
             backgroundColor: color,
+            border:color === "white" && "1px solid #000"
           }}
         />
       ) : (
@@ -148,7 +149,7 @@ const DataGrid = ({
   );
 
   const handleEdit = (index, rowIndex) => {
-    console.log(index, rowIndex);
+    navigate(`reclamo/${index.uuid}`);
   };
 
   const handleSort = (field) => {

@@ -62,9 +62,7 @@ function EntranceTableComponent(props) {
       />
     );
   }
-const handleEdit = (id) => {
-  console.log(`Edit ${id}`);
-}
+
   const CircularItem = ({ status="none" }) => {
     const statusColors = {
       verde: "green",
@@ -119,7 +117,7 @@ const handleEdit = (id) => {
   };
   const columns = [
     {
-      field: "status_id",
+      field: "type_of_claim",
       headerName: "",
       flex: 1,
       headerAlign: "center",
@@ -131,7 +129,7 @@ const handleEdit = (id) => {
       ),
     },
     {
-      field: "claim_id",
+      field: "id",
       headerName: "RECLAMO",
       flex: 1,
       headerAlign: "center",
@@ -159,16 +157,6 @@ const handleEdit = (id) => {
       align: "center",
       renderCell: (params) => (
         <span style={{textTransform:'uppercase'}}>{params.value === 'Active' ? 'Activo':'Inactivo'}</span>
-      ),
-    },
-    {
-      field: "assigned_role",
-      headerName: "ROL ASIGNADO",
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-      renderCell: (params) => (
-        <span style={{textTransform:'uppercase'}}>{params.value}</span>
       ),
     },
   ];

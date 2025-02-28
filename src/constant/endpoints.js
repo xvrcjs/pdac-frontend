@@ -14,6 +14,11 @@ export const GET_USERS = "/v1/account";
 
 // FORMULARIO DE RECLAMO
 export const CLAIM = "/v1/claim";
+export const CREATE_CLAIM = "/v1/create_claim";
+export const DOWNLOAD_CLAIM = "/v1/download_claim";
+export const DOWNLOAD_ZIP = "/v1/zip_files_claim";
+export const COMMENT = "/v1/comment";
+
 export const VALIDATE_RECAPTCHA = "/v1/validate-recaptcha";
 
 // CONFIGURACION DE SEMAFOROS
