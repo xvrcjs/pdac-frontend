@@ -234,6 +234,7 @@ function ListUserComponent(props) {
             rows={rows}
             columns={columns}
             handleEdit={handleEdit}
+            backgroundColor={"#fbfbfb"}
           />
         </ThemeProvider>
       </div>
