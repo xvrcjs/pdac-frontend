@@ -144,7 +144,6 @@ function ClaimContainer() {
       heading: "",
       subheading: "",
       transfer_to_company: "",
-      derived_to_omic: "",
       transfer_to_the_consumer: "",
       conciliation_hearing: "",
       imputation: "",
@@ -170,7 +169,6 @@ function ClaimContainer() {
         values.heading = data.heading || "";
         values.subheading = data.subheading || "";
         values.transfer_to_company = data.transfer_to_company || "";
-        values.derived_to_omic = data.derived_to_omic || "";
         values.transfer_to_the_consumer = data.transfer_to_the_consumer || "";
         values.conciliation_hearing = data.conciliation_hearing || "";
         values.imputation = data.imputation || "";

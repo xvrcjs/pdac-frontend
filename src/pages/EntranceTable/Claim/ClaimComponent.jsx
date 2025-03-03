@@ -178,7 +178,7 @@ function ClaimComponent(props) {
               <Typography sx={{ width: "150px", ml: "70px" }}>
                 {claimInfo.id}
               </Typography>
-              <Typography>{values.derived_to_omic || "S/A"} - {claimInfo.derived_to_user || "S/A"}</Typography>
+              <Typography>{claimInfo.derived_to_omic.name || "S/A"} - {claimInfo.derived_to_user || "S/A"}</Typography>
             </Box>
             <Grid
               container
@@ -571,37 +571,9 @@ function ClaimComponent(props) {
                     <Typography sx={{ fontSize: "14px", fontWeight: "500" }}>
                       Derivado al municipio:
                     </Typography>
-                    <Select
-                      displayEmpty
-                      value={values.derived_to_omic}
-                      name="derived_to_omic"
-                      onChange={handleChange}
-                      input={<OutlinedInput />}
-                      inputProps={{ "aria-label": "Without label" }}
-                      sx={{
-                        height: "40px",
-                        width: "60%",
-                        textAlign: "center",
-                        fontSize:"14px",
-                        "& .MuiOutlinedInput-notchedOutline": {
-                          border: "1.5px solid #00AEC3 !important",
-                          borderRadius: "7px",
-                        },
-                      }}
-                    >
-                      <MenuItem sx={{ fontSize: "14px" }} disabled value="">
-                        <em>Omic</em>
-                      </MenuItem>
-                      {omics.map((item, index) => (
-                        <MenuItem
-                          key={index}
-                          value={item.name}
-                          sx={{ fontSize: "14px" }}
-                        >
-                          {item.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                    <Typography sx={{p:"5px",border:"1px solid #000",borderRadius:"7px",mt:"10px",width:"70%"}}>
+                      {claimInfo.derived_to_omic.name}
+                    </Typography>
                   </Box>
                   <Box
                     sx={{
