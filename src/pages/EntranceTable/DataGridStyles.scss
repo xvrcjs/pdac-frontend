@@ -13,8 +13,8 @@ table{
     td{
         border-bottom: 1px solid #ccc;
     }
-    tr{
-        height: 50px;
+    thead, tr{
+        border-radius: 50px;
     }
     .selected{
         background-color: rgba(29, 189, 205, 0.20);

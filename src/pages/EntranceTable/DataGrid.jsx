@@ -27,10 +27,12 @@ const filterOptions = [
   { id: "rojo", label: "Rojo", status: "rojo" },
   { id: "amarillo", label: "Amarillo", status: "amarillo" },
   { id: "verde", label: "Verde", status: "verde" },
-  { id: "hv_rojo", label: "HV", status: "hv_rojo" },
-  { id: "hv_amarillo", label: "HV", status: "hv_amarillo" },
-  { id: "hv_verde", label: "HV", status: "hv_verde" },
-  { id: "ive", label: "HV-IVE", status: "ive" },
+  { id: "hv_verde", label: "HV-Verde", status: "hv_verde" },
+  { id: "hv_amarillo", label: "HV-Rojo", status: "hv_amarillo" },
+  { id: "hv_rojo", label: "HV-Amarillo", status: "hv_rojo" },
+  { id: "hv_ive_v", label: "HV-IVE-V", status: "hv_ive_v" },
+  { id: "hv_ive_a", label: "HV-IVE-A", status: "hv_ive_a" },
+  { id: "hv_ive_r", label: "HV-IVE-R", status: "hv_ive_r" },
 ];
 const CircularItemFilter = ({ status }) => {
   const statusColors = {
@@ -40,6 +42,9 @@ const CircularItemFilter = ({ status }) => {
     hv_verde: "green",
     hv_rojo: "red",
     hv_amarillo: "yellow",
+    hv_ive_r: "red",
+    hv_ive_a: "yellow",
+    hv_ive_v: "green",
     ive: "#B31EA4",
   };
 
@@ -63,7 +68,7 @@ const CircularItemFilter = ({ status }) => {
             width: 30,
             height: 30,
             borderRadius: "50%",
-            backgroundColor: "black",
+            backgroundColor: status.includes("hv_ive")?"#B31EA4":"black",
             position: "relative",
             border: "2px solid #1DBDCD",
           }}
@@ -98,7 +103,7 @@ const FilterItem = ({ label, status = "none", selected, onClick }) => {
         backgroundColor: selected ? "#1DBDCD2B" : "transparent",
         "&:hover": { backgroundColor: "#1DBDCD2B", cursor: "pointer" },
         transition: "background-color 0.3s ease",
-        width: "60%",
+        width: "70%",
         margin: "auto",
       }}
       onClick={onClick}
@@ -120,6 +125,8 @@ const DataGrid = ({
   hasFilter,
   noDataMessage,
   backgroundColor,
+  setClaimSelected,
+  setShowTypeAssignClaim
 }) => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [sortField, setSortField] = useState("name");
@@ -168,6 +175,11 @@ const DataGrid = ({
       setCurrentPage(pageNumber);
     }
   };
+
+  const handleAssignClaim = (claim,index)=>{
+    setClaimSelected(claim.uuid)
+    setShowTypeAssignClaim(true)
+  }
 
   return (
     <>
@@ -382,7 +394,7 @@ const DataGrid = ({
                 <td
                   colSpan={columns.length}
                   style={{
-                    height: "400px",
+                    height: "600px",
                     textAlign: "center",
                     padding: "20px",
                   }}
@@ -435,7 +447,7 @@ const DataGrid = ({
                               textAlign: column.align || "left",
                               padding: "8px",
                               wordBreak: "break-word",
-                              width: column.width || "auto",
+                              width: column.width || "200px",
                               borderBottom:
                                 colIndex === 0 && hasFilter ? "unset" : "",
                               backgroundColor:
@@ -453,23 +465,44 @@ const DataGrid = ({
                       <Box
                         sx={{
                           display: "flex",
-                          flexDirection: "column",
+                          flexDirection: "row",
                           alignItems: "center",
+                          justifyContent:"end",
                           mr: "10px",
                           position: "static",
-                          ml: "10px",
                         }}
                       >
                         {row && Object.keys(row).length > 0 && (
+                          <>
+                          {row.assigned === "S/A" ?
+                            <IconButton
+                              onClick={() => handleAssignClaim(row, index)}
+                              aria-label="row"
+                              size="medium"
+                              sx={{marginRight:"40px"}}
+                            >
+                                <img src="../../assets/claims/table/paper_plane.svg" alt="asignar-reclamo"/>
+                            </IconButton>
+                            :
+                            <IconButton
+                              onClick={() => handleReAssignClaim(row, index)}
+                              aria-label="row"
+                              size="medium"
+                              sx={{marginRight:"40px"}}
+                            >
+                                <img src="../../assets/claims/table/forward_circle.svg" alt="re-asignar-reclamo"/>
+                            </IconButton>
+                          }
                           <IconButton
                             onClick={() => handleEdit(row, index)}
                             aria-label="row"
-                            size="small"
+                            size="medium"
                           >
                             <EditIcon
                               sx={{ cursor: "pointer", width: "fit-content" }}
                             />
                           </IconButton>
+                          </>
                         )}
                       </Box>
                     </td>

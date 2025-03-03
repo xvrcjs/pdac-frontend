@@ -19,7 +19,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 function EntranceTableComponent(props) {
-  const { claims } = props;
+  const { claims, setClaimSelected, setShowTypeAssignClaim} = props;
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -244,6 +244,8 @@ function EntranceTableComponent(props) {
               // noResultsOverlay: CustomNoRowsOverlay,
               // noRowsOverlay: CustomNoRowsOverlay,
             }}
+            setClaimSelected={setClaimSelected}
+            setShowTypeAssignClaim={setShowTypeAssignClaim}
           />
         </ThemeProvider>
       </Box>
