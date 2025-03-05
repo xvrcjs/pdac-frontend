@@ -19,7 +19,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 function EntranceTableComponent(props) {
-  const { claims, setClaimSelected, setShowTypeAssignClaim} = props;
+  const { claims, setClaimSelected, setShowTypeAssignClaim,setShowMessageConfirmReAssign} = props;
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -235,17 +235,14 @@ function EntranceTableComponent(props) {
                 },
               },
             }}
-            // disableRowSelectionOnClick
             disableColumnMenu
             pageSizeOptions={[10, 15, 30]}
             slots={{
               pagination: CustomPagination,
-              // toolbar: CustomToolbar,
-              // noResultsOverlay: CustomNoRowsOverlay,
-              // noRowsOverlay: CustomNoRowsOverlay,
             }}
             setClaimSelected={setClaimSelected}
             setShowTypeAssignClaim={setShowTypeAssignClaim}
+            setShowMessageConfirmReAssign={setShowMessageConfirmReAssign}
           />
         </ThemeProvider>
       </Box>

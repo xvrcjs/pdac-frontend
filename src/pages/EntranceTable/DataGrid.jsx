@@ -126,7 +126,8 @@ const DataGrid = ({
   noDataMessage,
   backgroundColor,
   setClaimSelected,
-  setShowTypeAssignClaim
+  setShowTypeAssignClaim,
+  setShowMessageConfirmReAssign
 }) => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [sortField, setSortField] = useState("name");
@@ -179,6 +180,11 @@ const DataGrid = ({
   const handleAssignClaim = (claim,index)=>{
     setClaimSelected(claim.uuid)
     setShowTypeAssignClaim(true)
+  }
+
+  const handleReAssignClaim = (claim,index) =>{
+    setClaimSelected(claim.uuid)
+    setShowMessageConfirmReAssign(true)
   }
 
   return (

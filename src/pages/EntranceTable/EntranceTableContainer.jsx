@@ -8,8 +8,13 @@ function EntranceTableContainer() {
   const { api, account } = useContext(AppContext);
   const [claimSelected, setClaimSelected] = useState(null);
   const [showTypeAssignClaim, setShowTypeAssignClaim] = useState(false);
-  
+  const [isReAssignClaim, setIsReAssignClaim] = useState(false)
   const [claims, setClaims] = useState([]);
+  const [showMessageConfirmReAssign,setShowMessageConfirmReAssign] = useState(false)
+
+  // const handleReAssignClaim = () =>{
+  //   setShowMessageConfirmReAssign(!showMessageConfirmReAssign)
+  // }
   useEffect(() => {
     api(CLAIM).then(({ ok, body }) => {
       if (ok) {
@@ -24,11 +29,14 @@ function EntranceTableContainer() {
         claims={claims}
         setClaimSelected={setClaimSelected}
         setShowTypeAssignClaim={setShowTypeAssignClaim}
+        setShowMessageConfirmReAssign={setShowMessageConfirmReAssign}
       />
       <AssignClaimContainer
         claimSelected={claimSelected}
         showTypeAssignClaim={showTypeAssignClaim}
         setShowTypeAssignClaim={setShowTypeAssignClaim}
+        showMessageConfirmReAssign={showMessageConfirmReAssign}
+        setShowMessageConfirmReAssign={setShowMessageConfirmReAssign}
       />
     </>
   );

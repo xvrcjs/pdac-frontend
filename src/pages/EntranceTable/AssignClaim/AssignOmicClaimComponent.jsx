@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Content from "components/Content";
 import {
   Box,
   TextField,
@@ -70,17 +69,16 @@ const themeTable = createTheme({
     },
   },
 });
-function AssignClaimComponent(props) {
+function AssignOmicClaimComponent(props) {
   const {
     omics,
     handleOnSubmit,
     setShowTypeAssignClaim,
     showTypeAssignClaim,
-    typeAssignClaim,
-    setTypeAssignClaim
+    showTableOmic,
+    setShowTableOmic
   } = props;
 
-  const [showTableOmic, setShowTableOmic] = useState(false);
   const [omicSelected,setOmicSelected] = useState("");
   const [showConfirmSendAssignment,setShowConfirmSendAssignment] = useState(false)
   const [rows,setRows] = useState([])
@@ -159,133 +157,6 @@ function AssignClaimComponent(props) {
 
   return (
     <>
-      <Dialog
-        open={showTypeAssignClaim}
-        onClose={() => setShowTypeAssignClaim(!showTypeAssignClaim)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        sx={{
-          "&.MuiDialog-root .MuiDialog-paper": {
-            padding: "20px 20px",
-            borderRadius: "50px",
-            maxWidth: "100%",
-            width: "961px",
-          },
-        }}
-      >
-        <DialogTitle
-          sx={{
-            fontFamily: "Encode Sans",
-            fontSize: "24px",
-            fontWeight: "500",
-          }}
-          id="alert-dialog-title"
-        >
-          Asignación manual de reclamo
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText
-            sx={{
-              fontFamily: "Encode Sans",
-              fontSize: "20px",
-              fontWeight: "200",
-              mb: "50px",
-              position: "relative",
-            }}
-            id="alert-dialog-description"
-          >
-            Seleccione el destino de asignación del reclamo
-          </DialogContentText>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Button
-              sx={{
-                borderRadius: "20px",
-                backgroundColor:
-                  typeAssignClaim === "omic" ? "#1DBDCD4F" : "#fff",
-                color: "#000",
-                width: "100%",
-                padding: "12px 20px",
-                fontFamily: "Encode Sans",
-                fontSize: "15px",
-                fontWeight: "400",
-                border: "1px solid #646464",
-                justifyContent: "left",
-                ":hover": {
-                  backgroundColor: "#1DBDCD4F",
-                },
-              }}
-              onClick={() => setTypeAssignClaim("omic")}
-            >
-              Asignar a Municipio
-            </Button>
-            <Button
-              sx={{
-                borderRadius: "20px",
-                backgroundColor:
-                  typeAssignClaim === "user" ? "#1DBDCD4F" : "#fff",
-                color: "#000",
-                width: "100%",
-                padding: "12px 20px",
-                fontFamily: "Encode Sans",
-                fontSize: "15px",
-                fontWeight: "400",
-                border: "1px solid #646464",
-                justifyContent: "left",
-                mt: "10px",
-                ":hover": {
-                  backgroundColor: "#1DBDCD4F",
-                },
-              }}
-              onClick={() => setTypeAssignClaim("user")}
-            >
-              Asignación Directa a Usuario de Defensa al Consumidor
-            </Button>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            sx={{
-              borderRadius: "50px",
-              backgroundColor: "#fff",
-              color: "#000",
-              width: "189px",
-              padding: "12px 60px",
-              fontFamily: "Encode Sans",
-              fontSize: "15px",
-              fontWeight: "500",
-              textTransform: "capitalize",
-              border: "2px solid #838383",
-            }}
-            onClick={() => {
-              setTypeAssignClaim(""),
-                setShowTypeAssignClaim(!showTypeAssignClaim);
-            }}
-          >
-            Cancelar
-          </Button>
-          <Button
-            sx={{
-              borderRadius: "50px",
-              backgroundColor: "#00AEC3",
-              color: "#fff",
-              padding: "12px 0px",
-              fontFamily: "Encode Sans",
-              fontSize: "15px",
-              fontWeight: "500",
-              ml: "20px",
-              width: "251px",
-              textTransform: "capitalize",
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              setShowTableOmic(!showTableOmic),
-                setShowTypeAssignClaim(!showTypeAssignClaim);
-            }}
-          >
-            Confirmar
-          </Button>
-        </DialogActions>
-      </Dialog>
       <Dialog
         open={showTableOmic}
         onClose={() => setShowTableOmic(!showTableOmic)}
@@ -419,7 +290,11 @@ function AssignClaimComponent(props) {
               textTransform: "capitalize",
               border: "2px solid #838383",
             }}
-            onClick={() => {setShowTableOmic(!showTableOmic),setShowTypeAssignClaim(!showTypeAssignClaim)}}
+            onClick={() => {
+              setOmicSelected("")
+              setShowTableOmic(!showTableOmic)
+              setShowTypeAssignClaim(!showTypeAssignClaim)
+            }}
           >
             Cancelar
           </Button>
@@ -436,7 +311,13 @@ function AssignClaimComponent(props) {
               width: "251px",
               textTransform: "capitalize",
               cursor: "pointer",
+              "&.Mui-disabled": {
+                backgroundColor: "#ccc",
+                cursor: "not-allowed",
+                color: "#fff",
+              }
             }}
+            disabled={omicSelected === ""}
             onClick={() => (setShowTableOmic(!showTableOmic),setShowConfirmSendAssignment(!showConfirmSendAssignment))}
           >
             Confirmar
@@ -525,4 +406,4 @@ function AssignClaimComponent(props) {
   );
 }
 
-export default AssignClaimComponent;
+export default AssignOmicClaimComponent;

@@ -178,7 +178,7 @@ function ClaimComponent(props) {
               <Typography sx={{ width: "150px", ml: "70px" }}>
                 {claimInfo.id}
               </Typography>
-              <Typography>{claimInfo.derived_to_omic.name || "S/A"} - {claimInfo.derived_to_user || "S/A"}</Typography>
+              <Typography>{claimInfo.derived_to_omic.name || "S/A"} - {claimInfo.derived_to_user.full_name || "S/A"}</Typography>
             </Box>
             <Grid
               container
