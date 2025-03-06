@@ -99,8 +99,8 @@ function ClaimContainer() {
     );
   };
 
-  const handleHighlightComment = (index) => {
-    if (claimInfo.featured_comments.length < 3) {
+  const handleHighlightComment = (index,type) => {
+    if (type === "set" && claimInfo.featured_comments.length < 3 || type === "unfix") {
       api(COMMENT + "/" + id, { method: "PATCH", body: { id: index } }).then(
         ({ ok, body }) => {
           if (ok) {
@@ -274,7 +274,6 @@ function ClaimContainer() {
               cursor:"pointer",
             }}
             onClick={() => setShowMaxHighlightComment(!showMaxHighlightComment)}
-            autoFocus
           >
             Aceptar
           </Button>
@@ -367,14 +366,17 @@ function ClaimContainer() {
             border: "3px solid #00AEC3",
             borderRadius: "30px",
             maxWidth: "1017px",
+            width:"1017px !important",
+            height:"381px !important",
           },
         }}
       >
         <DialogTitle
           sx={{
             fontFamily: "Encode Sans",
-            fontSize: "30px",
-            fontWeight: "500",
+            fontSize: "32px",
+            fontWeight: "600",
+            mt:"93px"
           }}
           id="alert-dialog-title"
         >
@@ -384,7 +386,7 @@ function ClaimContainer() {
           <DialogContentText
             sx={{
               fontFamily: "Encode Sans",
-              fontSize: "20px",
+              fontSize: "16px",
               fontWeight: "300",
               mb: "50px",
             }}

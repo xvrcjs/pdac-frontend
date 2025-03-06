@@ -138,10 +138,11 @@ const DataGrid = ({
   const [filterSelected, setFilterSelected] = useState("");
 
   const navigate = useNavigate();
-
+  
   const filteredRows = filterSelected
-    ? rows.filter((row) => row.status_id === filterSelected)
+    ? rows.filter((row) => row.type_of_claim === filterSelected)
     : rows;
+
   const sortedRows = [...filteredRows].sort((a, b) => {
     if (!sortField) return 0;
     if (sortDirection === "asc") {

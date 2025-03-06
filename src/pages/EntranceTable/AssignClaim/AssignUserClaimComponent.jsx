@@ -32,7 +32,7 @@ const themeTable = createTheme({
           "& .MuiDataGrid-row": {
             backgroundColor: "#fff",
             color: "#000",
-            borderRadius: "50px",
+            borderRadius: "10px",
             border: "1px solid #646464",
             marginTop: "2px !important",
             width: "99%",
@@ -50,7 +50,8 @@ const themeTable = createTheme({
           },
           "& .MuiDataGrid-columnHeaders": {
             backgroundColor: "#00AEC3",
-            borderRadius: "50px",
+            borderBottomLeftRadius: "10px",
+            borderBottomRightRadius: "10px",
             fontFamily: "Encode Sans",
             color: "#fff",
             fontSize: "12px",
@@ -89,7 +90,7 @@ function AssignUserClaimComponent(props) {
       headerName: "Nombre y Apellido",
       flex: 1,
       headerAlign: "center",
-      align: "center",
+      align: "left",
       renderCell: (params) => (
         <div className="swt-table-field-name">{params.value}</div>
       ),
@@ -119,7 +120,7 @@ function AssignUserClaimComponent(props) {
       headerName: "EMAIL",
       flex: 1,
       headerAlign: "center",
-      align: "center",
+      align: "left",
       renderCell: (params) => (
         params.value.email
       ),

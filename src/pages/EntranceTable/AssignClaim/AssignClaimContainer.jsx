@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "context/AppContext";
-import { ASSIGN_CLAIM, OMICS,GET_USERS } from "constant/endpoints";
+import { ASSIGN_CLAIM, OMICS,GET_USERS} from "constant/endpoints";
 import AssignOmicClaimComponent from "./AssignOmicClaimComponent";
 import AssignUserClaimComponent from "./AssignUserClaimComponent";
 
@@ -14,6 +14,7 @@ import {
   DialogContentText,
   DialogActions,
   Button,
+  Typography,
 } from "@mui/material";
 
 function AssignClaimContainer(props) {
@@ -52,7 +53,7 @@ function AssignClaimContainer(props) {
         }
       });
     }else{
-      api(GET_USERS).then(({ ok, body }) => {
+      api(GET_USERS+"?search=Admin").then(({ ok, body }) => {
         if (ok) {
           setUsers(body.data);
           setShowTableUser(!showTableUser)
@@ -72,7 +73,8 @@ function AssignClaimContainer(props) {
             padding: "20px 20px",
             borderRadius: "50px",
             maxWidth: "100%",
-            width: "961px",
+            width: "1017px",
+            border: "4px solid #00AEC3"
           },
         }}
       >
@@ -80,15 +82,18 @@ function AssignClaimContainer(props) {
           sx={{
             fontFamily: "Encode Sans",
             fontSize: "24px",
-            fontWeight: "500",
+            fontWeight: "600",
+            mt:"40px",
+            ml:"69px",
+            mr:"200px"
           }}
           id="alert-dialog-title"
         >
           Este reclamo ya se encuentra asignado.
           <br />
-          <span style={{fontSize:"32px"}}>¿Desea reasignarlo?</span>
+          <Typography sx={{fontSize:"32px",fontWeight:"600"}}>¿Desea reasignarlo?</Typography>
           <br />
-          Al hacerlo, los cambios impactaran automáticamente en el sistema.
+          <span>Al hacerlo, los cambios impactaran automáticamente en el sistema.</span>
         </DialogTitle>
         <DialogContent>
           <DialogContentText
@@ -96,8 +101,9 @@ function AssignClaimContainer(props) {
               fontFamily: "Encode Sans",
               fontSize: "20px",
               fontWeight: "200",
-              mb: "50px",
               position: "relative",
+              ml:"69px",
+              mb:"49px"
             }}
             id="alert-dialog-description"
           >

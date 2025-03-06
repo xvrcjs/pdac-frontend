@@ -115,8 +115,8 @@ function ClaimComponent(props) {
   const prefix = `${account.full_name}: `; 
 
   const filteredActivity = claimInfo.activity.filter(item => {
-    if (activityFilter === 'activity') {
-      return item.type === 'activity'; 
+    if (activityFilter === "status_activity") {
+      return item.type === "status_activity"; 
     } else if (activityFilter === 'comment') {
       return item.type === 'comment'; 
     }
@@ -178,7 +178,7 @@ function ClaimComponent(props) {
               <Typography sx={{ width: "150px", ml: "70px" }}>
                 {claimInfo.id}
               </Typography>
-              <Typography>{claimInfo.derived_to_omic.name || "S/A"} - {claimInfo.derived_to_user.full_name || "S/A"}</Typography>
+              <Typography>{claimInfo.derived_to_omic ? claimInfo.derived_to_omic.name +" - "+ claimInfo.derived_to_omic.responsible:claimInfo.derived_to_user ? claimInfo.derived_to_user:"S/A"}</Typography>
             </Box>
             <Grid
               container
@@ -241,18 +241,21 @@ function ClaimComponent(props) {
                       inputProps={{ "aria-label": "Without label" }}
                       sx={{
                         height: "40px",
-                        width: "60%",
+                        width: "160px",
                         textAlign: "center",
                         fontSize:"14px",
-                        fontSize:"14px",
+                        color: values.claim_access === "" ? "grey":"#000",
                         "& .MuiOutlinedInput-notchedOutline": {
                           border: "1.5px solid #00AEC3 !important",
                           borderRadius: "10px",
                         },
+                        "&.MuiDisabledInput-notchedOutline": {
+                          color: "grey"
+                        }
                       }}
                     >
                       <MenuItem sx={{ fontSize: "14px" }} disabled value="">
-                        <em>Acceso del reclamo</em>
+                        Acceso del reclamo
                       </MenuItem>
                       {claim_access.map((item, index) => (
                         <MenuItem
@@ -287,9 +290,10 @@ function ClaimComponent(props) {
                       inputProps={{ "aria-label": "Without label" }}
                       sx={{
                         height: "40px",
-                        width: "60%",
+                        width: "160px",
                         textAlign: "center",
                         fontSize:"14px",
+                        color: values.type_of_claim === "" ? "grey":"#000",
                         "& .MuiOutlinedInput-notchedOutline": {
                           border: "1.5px solid #00AEC3 !important",
                           borderRadius: "10px",
@@ -297,7 +301,7 @@ function ClaimComponent(props) {
                       }}
                     >
                       <MenuItem sx={{ fontSize: "14px" }} disabled value="">
-                        <em>Tipo de reclamo</em>
+                        Tipo de reclamo
                       </MenuItem>
                       {type_of_claim.map((item, index) => (
                         <MenuItem
@@ -332,9 +336,10 @@ function ClaimComponent(props) {
                       inputProps={{ "aria-label": "Without label" }}
                       sx={{
                         height: "40px",
-                        width: "60%",
+                        width: "160px",
                         textAlign: "center",
                         fontSize:"14px",
+                        color: values.category === "" ? "grey":"#000",
                         "& .MuiOutlinedInput-notchedOutline": {
                           border: "1.5px solid #00AEC3 !important",
                           borderRadius: "10px",
@@ -342,7 +347,7 @@ function ClaimComponent(props) {
                       }}
                     >
                       <MenuItem sx={{ fontSize: "14px" }} disabled value="">
-                        <em>Categoría del reclamo</em>
+                        Categoría del reclamo
                       </MenuItem>
                       {category.map((item, index) => (
                         <MenuItem
@@ -377,9 +382,10 @@ function ClaimComponent(props) {
                       inputProps={{ "aria-label": "Without label" }}
                       sx={{
                         height: "40px",
-                        width: "60%",
+                        width: "160px",
                         textAlign: "center",
                         fontSize:"14px",
+                        color: values.heading === "" ? "grey":"#000",
                         "& .MuiOutlinedInput-notchedOutline": {
                           border: "1.5px solid #00AEC3 !important",
                           borderRadius: "10px",
@@ -387,7 +393,7 @@ function ClaimComponent(props) {
                       }}
                     >
                       <MenuItem sx={{ fontSize: "14px" }} disabled value="">
-                        <em>Rubro del reclamo</em>
+                        Rubro del reclamo
                       </MenuItem>
                       {heading.map((item, index) => (
                         <MenuItem
@@ -422,9 +428,10 @@ function ClaimComponent(props) {
                       inputProps={{ "aria-label": "Without label" }}
                       sx={{
                         height: "40px",
-                        width: "60%",
+                        width: "160px",
                         textAlign: "center",
                         fontSize:"14px",
+                        color: values.subheading === "" ? "grey":"#000",
                         "& .MuiOutlinedInput-notchedOutline": {
                           border: "1.5px solid #00AEC3 !important",
                           borderRadius: "10px",
@@ -432,7 +439,7 @@ function ClaimComponent(props) {
                       }}
                     >
                       <MenuItem sx={{ fontSize: "14px" }} disabled value="">
-                        <em>Subrubro del reclamo</em>
+                        Subrubro del reclamo
                       </MenuItem>
                       {subheading.map((item, index) => (
                         <MenuItem
@@ -468,6 +475,7 @@ function ClaimComponent(props) {
                         height: "40px",
                         textAlign: "center",
                         fontSize:"14px",
+                        color: values.reason === "" ? "grey":"#000",
                         "& .MuiOutlinedInput-notchedOutline": {
                           border: "1.5px solid #00AEC3 !important",
                           borderRadius: "7px",
@@ -475,7 +483,7 @@ function ClaimComponent(props) {
                       }}
                     >
                       <MenuItem sx={{ fontSize: "14px" }} disabled value="">
-                        <em>Motivo del reclamo</em>
+                        Motivo del reclamo
                       </MenuItem>
                       {reason.map((item, index) => (
                         <MenuItem
@@ -571,8 +579,8 @@ function ClaimComponent(props) {
                     <Typography sx={{ fontSize: "14px", fontWeight: "500" }}>
                       Derivado al municipio:
                     </Typography>
-                    <Typography sx={{p:"5px",border:"1px solid #000",borderRadius:"7px",mt:"10px",width:"70%"}}>
-                      {claimInfo.derived_to_omic.name}
+                    <Typography sx={{p:"5px",border:"1px solid #000",borderRadius:"7px",width:"70%",height:"25px"}}>
+                      {claimInfo?.derived_to_omic?.name || ""}
                     </Typography>
                   </Box>
                   <Box
@@ -960,7 +968,7 @@ function ClaimComponent(props) {
                         <MenuItem sx={{ fontSize: "14px",display:"flex",flexDirection:"column",alignItems:"center" }} value="">
                           Todo
                         </MenuItem>
-                        <MenuItem sx={{ fontSize: "14px",display:"flex",flexDirection:"column",alignItems:"center" }} value="activity">
+                        <MenuItem sx={{ fontSize: "14px",display:"flex",flexDirection:"column",alignItems:"center" }} value="status_activity">
                           Actividades
                         </MenuItem>
                         <MenuItem sx={{ fontSize: "14px",display:"flex",flexDirection:"column",alignItems:"center" }} value="comment">
@@ -1003,7 +1011,7 @@ function ClaimComponent(props) {
                                 {activity.timestamp}
                               </span>
                               {(!activity.highlighted && activity.type === "comment") && 
-                                <span style={{marginLeft:"15px",fontSize:"13px",color:"#E81F76",cursor:"pointer"}} onClick={()=> handleHighlightComment(activity.id)}>
+                                <span style={{marginLeft:"15px",fontSize:"13px",color:"#E81F76",cursor:"pointer"}} onClick={()=> handleHighlightComment(activity.id,"set")}>
                                   Destacar mensaje
                                 </span>
                               }
@@ -1088,7 +1096,12 @@ function ClaimComponent(props) {
                           borderRadius: "50px",
                           p: "5px 20px",
                           mt: "15px",
+                          "&.Mui-disabled": {
+                            backgroundColor: "#8F8881",
+                            color: "#fff",
+                          },
                         }}
+                        disabled={comment===""}
                         onClick={() => handleAddComment(comment)}
                       >
                         Agregar comentario
@@ -1133,7 +1146,7 @@ function ClaimComponent(props) {
                     }}
                   >
                     <MenuItem sx={{ fontSize: "14px" }} disabled value="">
-                      <em>Estado de reclamo</em>
+                      Estado de reclamo
                     </MenuItem>
                     {claim_status.map((item, index) => (
                       <MenuItem
@@ -1183,6 +1196,7 @@ function ClaimComponent(props) {
                         justifyContent: "center",
                         alignItems: "center",
                         mt: "-10px",
+                        p:"10px"
                       }}
                     >
                       {claimInfo.last_status === null ?
@@ -1297,7 +1311,7 @@ function ClaimComponent(props) {
                                 {comment.timestamp}
                               </span>
                               {
-                                <span style={{marginLeft:"15px",fontSize:"13px",color:"#E81F76",cursor:"pointer"}} onClick={()=> handleHighlightComment(comment.id)}>
+                                <span style={{marginLeft:"15px",fontSize:"13px",color:"#E81F76",cursor:"pointer"}} onClick={()=> handleHighlightComment(comment.id,"unfix")}>
                                   Desfijar comentario
                                 </span>
                               }

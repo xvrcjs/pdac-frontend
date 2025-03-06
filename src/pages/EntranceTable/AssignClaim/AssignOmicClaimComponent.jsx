@@ -30,9 +30,9 @@ const themeTable = createTheme({
             border: "unset",
           },
           "& .MuiDataGrid-row": {
-            backgroundColor: "#fff",
+            backgroundColor: "#ECEAEA",
             color: "#000",
-            borderRadius: "50px",
+            borderRadius: "10px",
             border: "1px solid #646464",
             marginTop: "2px !important",
             width: "99%",
@@ -50,7 +50,8 @@ const themeTable = createTheme({
           },
           "& .MuiDataGrid-columnHeaders": {
             backgroundColor: "#00AEC3",
-            borderRadius: "50px",
+            borderBottomLeftRadius: "10px",
+            borderBottomRightRadius: "10px",
             fontFamily: "Encode Sans",
             color: "#fff",
             fontSize: "12px",
@@ -89,24 +90,21 @@ function AssignOmicClaimComponent(props) {
       headerName: "OMIC",
       flex: 1,
       headerAlign: "center",
-      align: "center",
-      renderCell: (params) => (
-        <div className="swt-table-field-name">{params.value}</div>
-      ),
+      align: "left",
     },
     {
       field: "phone",
       headerName: "TEL",
       flex: 1,
       headerAlign: "center",
-      align: "center",
+      align: "left",
     },
     {
       field: "address",
       headerName: "DIRECCIÓN",
       flex: 1,
       headerAlign: "center",
-      align: "center",
+      align: "left",
     },
     {
       field: "opening_hours",
@@ -127,7 +125,7 @@ function AssignOmicClaimComponent(props) {
       headerName: "RESPONSABLE",
       flex: 1,
       headerAlign: "center",
-      align: "center",
+      align: "left",
       minWidth: 200,
     },
   ];
