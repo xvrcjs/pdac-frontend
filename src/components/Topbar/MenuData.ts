@@ -12,14 +12,14 @@ interface Menu{
 export const MenuData:Menu[] = [{
     title: "Mesa de entrada",
     path: "mesa-de-entrada",
-    rolesAllowed: ["Admin"],
+    rolesAllowed: ["Admin","Omic"],
     headerTitle: "Te damos la bienvenida a tu Mesa de entrada",
     headerSubTitle: "Acá podras ver los reclamos sin asignar, asignados y filtrarlos por el sistema de semáforos."
 },
 ,{
     title: "Reclamos HV",
     path: "reclamos-hv",
-    rolesAllowed: ["Admin"],
+    rolesAllowed: ["Admin","Omic"],
     headerTitle: "Te damos la bienvenida a tu Mesa de reclamos Hiper Vulnerables",
     headerSubTitle:"Acá podras ver los reclamos y sus diferentes estados."
 },{

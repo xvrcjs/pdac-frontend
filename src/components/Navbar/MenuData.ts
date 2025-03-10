@@ -14,7 +14,7 @@ export const MenuData:Menu[] = [{
     title: "Home",
     path: "home",
     icon: "",
-    rolesAllowed: ["Admin"],
+    rolesAllowed: ["Admin","Omic"],
     headerTitle:"Te damos la bienvenida a tu tablero de gestión administrativa",
     headerSubTitle:"Sed tortor, sed velit ridiculus ipsum pharetra lacus odio gravida augue enim."
 },
@@ -22,19 +22,21 @@ export const MenuData:Menu[] = [{
     title: "Mi perfil",
     path: "perfil",
     icon: "",
-    rolesAllowed: ["Admin"]
+    rolesAllowed: ["Admin","Omic"],
+    headerTitle:"Toda la información que necesitas, está al alcance de tu mano.",
+    headerSubTitle:"Navegá entre las secciones de trabajo de manera intuitiva."
 },{
     title: "Mesa de entrada",
     path: "mesa-de-entrada",
     icon: "",
-    rolesAllowed: ["Admin"],
+    rolesAllowed: ["Admin","Omic"],
     headerTitle:"Te damos la bienvenida a tu Mesa de entrada",
     headerSubTitle:"Acá podras ver los reclamos sin asignar, asignados y filtrarlos por el sistema de semáforos."
 },{
     title: "Archivados",
     path: "archivados",
     icon: "",
-    rolesAllowed: ["Admin"],
+    rolesAllowed: ["Admin","Omic"],
     subItems: [
         {
             title: "Enviados",
@@ -49,7 +51,7 @@ export const MenuData:Menu[] = [{
     title: "Derivados",
     path: "derivados",
     icon: "",
-    rolesAllowed: ["Admin"]
+    rolesAllowed: ["Admin","Omic"]
 },
 {
     title: "Configuración",
