@@ -2,30 +2,30 @@ import React, { useContext, useState, useEffect } from "react";
 import { AppContext } from "context/AppContext";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import { GET_USERS,GET_PERMISSIONS,CREATE_USER } from "constant/endpoints";
+import { LOGOUT_ENDPOINT,CREATE_USER } from "constant/endpoints";
 import ProfileComponent from "./ProfileComponent";
 
 function ProfileContainer() {
 
-  const { api,account } = useContext(AppContext);
+  const { api,account,setAccount } = useContext(AppContext);
   const [isLoading,setIsLoading] = useState(true)
   const navigate = useNavigate();
   
 
   const handleOnSubmit = (values) => {
-    const { fullname, email, profile_image, dni, phone, rol, permissions,active,comments } =
+    const { fullname, email, profile_image } =
       values;
     const formData = new FormData();
 
     formData.append("full_name", fullname);
     formData.append("email", email);
-    
+    console.log(profile_image);
     if (typeof profile_image[0] !== "string" && profile_image.length > 0) {
       formData.append("profile_image", profile_image[0]);
     }else if (profile_image.length === 0){
         formData.append("profile_image", "")
     }
-    api(CREATE_USER+"/"+id+"/", {
+    api(CREATE_USER+"/"+account.uuid+"/", {
       method: "PATCH",
       body: formData,
       headers: {
@@ -56,9 +56,7 @@ function ProfileContainer() {
     initialValues: {
       fullname: "",
       email: "",
-      profile_image: "",
-      dni: "",
-      phone: "",
+      profile_image: ""
     },
     onSubmit: handleOnSubmit,
     validate: (values) => {
@@ -77,8 +75,22 @@ function ProfileContainer() {
     },
   });
 
+  function signout() {
+      api(LOGOUT_ENDPOINT).then(({ ok }) => {
+          if (ok) {
+              setAccount();
+              Cookies.remove("token")
+              localStorage.removeItem('lastVisitedUrl')
+              setIsInitialized(true)
+              navigate("/")
+          }
+      })
+  }
+
   useEffect(() => {
-      values.fullname = account.fullname
+      values.fullname = account.full_name
+      values.email = account.user__email
+      console.log(account)
       values.profile_image = account.profile_image
       setIsLoading(false)
   }, []);
@@ -95,6 +107,7 @@ function ProfileContainer() {
             dirty={dirty}
             handleBlur={handleBlur}
             account={account}
+            signout={signout}
         />
   );
 }

@@ -23,6 +23,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { tokens } from "../../../theme";
 import DropzoneComponent from "components/DragAndDrop/DropzoneComponent";
+import SearchIcon from "@mui/icons-material/Search";
 
 import { Form } from "formik";
 import { styled } from "@mui/material/styles";
@@ -102,6 +103,7 @@ function EditUserComponent(props) {
     handleChange,
     handleOnSubmit,
     roles,
+    omics,
     permissions,
   } = props;
 
@@ -111,15 +113,18 @@ function EditUserComponent(props) {
   const [isEditing, setIsEditing] = useState(false);
   const [isDragActive, setIsDragActive] = useState(false);
   const [rolSelected, setRolSelected] = useState(values.rol);
+  const [omicSelected,setOmicSelected] = useState(values.omic);
+  const [omicFiltered,setOmicFiltered] = useState([]);
   const [showConfirmCreate, setShowConfirmCreate] = useState(false);
   const [showConfirmSendEmail, setShowConfirmSendEmail] = useState(false);
   const [showRoles, setShowRoles] = useState(true);
+  const [showOmics, setShowOmics] = useState(true);
   const [showPermissions, setShowPermissions] = useState(true);
   const [selectedPermissions, setSelectedPermissions] = useState(
     values.permissions
   );
   const [showComments, setShowComments] = useState(true);
-
+  
   const filteredPermissions =
     permissions.find((p) => p.type === rolSelected)?.permissions || [];
 
@@ -139,6 +144,7 @@ function EditUserComponent(props) {
   const handleSaveUser = () => {
     setShowConfirmCreate(!showConfirmCreate);
     values.rol = rolSelected;
+    values.omic = omicSelected
     values.permissions = JSON.stringify(selectedPermissions);
     values.profile_image = files;
     handleOnSubmit(values);
@@ -151,12 +157,28 @@ function EditUserComponent(props) {
     setSelectedPermissions({});
   };
 
+  const handleSelectOmic = (omic) => {
+    setOmicSelected(omic);
+  };
+
   const handleTogglePermission = (permissionValue) => {
     setSelectedPermissions((prevPermissions) => ({
       ...prevPermissions,
       [permissionValue]: !prevPermissions[permissionValue],
     }));
   };
+
+  const handleFilter = (e) => {
+      const text = e.target.value;
+      const filteredRows = omics.filter((c) => {
+        return c.name.toLowerCase().includes(text.toLowerCase());
+      });
+      setOmicFiltered(filteredRows);
+  };
+
+  useEffect(() => {
+    setOmicFiltered(omics)
+  }, [omics]);
 
   return (
     <Content className="swt-dashboard" isLoaded="true">
@@ -514,6 +536,7 @@ function EditUserComponent(props) {
                 justifyContent: "space-between",
               }}
             >
+              <Box sx={{display:"flex",flexDirection:"column"}}>
               <Box sx={{ width: "276px" }}>
                 <Button
                   variant="contained"
@@ -553,6 +576,96 @@ function EditUserComponent(props) {
                     ))}
                   </Box>
                 )}
+              </Box>
+              <Box sx={{ width: "276px",mt:"50px" }}>
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "#00AEC3",
+                  color: "#FFF",
+                  fontFamily: "Encode Sans",
+                  fontSize: "16px",
+                  fontStyle: "normal",
+                  fontWeight: "400",
+                  lineHeight: "normal",
+                  width: "100%",
+                  p: "15px 20px",
+                  justifyContent: "space-between",
+                }}
+                onClick={() => setShowOmics(!showOmics)}
+                endIcon={
+                  showOmics ? (
+                    <KeyboardArrowUpIcon />
+                  ) : (
+                    <KeyboardArrowDownIcon />
+                  )
+                }
+              >
+                Selección de OMIC
+              </Button>
+              {showOmics && (
+                <Box className="swt-user-select-content" sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  maxHeight:"180px",
+                  p:"10px 10px"
+                }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mb: "2px",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    <TextField
+                      placeholder="Filtrar OMIC"
+                      InputProps={{
+                        endAdornment: (
+                          <SearchIcon
+                            sx={{
+                              fill: "#000",
+                              marginRight: "8px",
+                            }}
+                          />
+                        ),
+                      }}
+                      sx={{
+                        m: 0,
+                        p: 0,
+                        fontSize:"16px",
+                        backgroundColor: "#D9D9D9DE",
+                        borderRadius: "50px",
+                        "& fieldset": {
+                          borderRadius: "15px",
+                        },
+                        "& input": {
+                          paddingY: "12px",
+                          fontFamily: "Encode Sans",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline":{
+                          border:"unset !important",
+                        },
+                        width: "350px",
+                      }}
+                      onChange={handleFilter}
+                    />
+                  </Box>
+                  <Box sx={{overflow:"auto"}}>
+                  {omicFiltered.map((omic,index) => (
+                    <Typography
+                      key={index}
+                      className={omicSelected === omic.uuid ? "selected" : ""}
+                      onClick={() => handleSelectOmic(omic.uuid)}
+                      sx={{fontSize:"16px",p:"5px 10px !important",fontWeight:"400"}}
+                    >
+                      {omic.name}
+                    </Typography>
+                  ))}
+                  </Box>
+                </Box>
+              )}
+            </Box>
               </Box>
               <Box sx={{ width: "360px", ml: "30px" }}>
                 <Button

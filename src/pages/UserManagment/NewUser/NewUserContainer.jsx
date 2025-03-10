@@ -3,20 +3,22 @@ import NewUserComponent from "./NewUserComponent";
 import { AppContext } from "context/AppContext";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import { CREATE_USER,GET_PERMISSIONS } from "constant/endpoints";
+import { CREATE_USER,GET_PERMISSIONS, OMICS } from "constant/endpoints";
 
 function NewUserContainer() {
   const { api, account } = useContext(AppContext);
   const navigate = useNavigate();
+  const [omics,setOmics]= useState()
   const [roles, setRoles] = useState([
     { label: "Usuario Administrador", value: "admin" },
     { label: "Usuario Municipal", value: "omic" },
     { label: "Usuario de Soporte", value: "support" },
   ]);
   const [permissions, setPermissions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true)
 
   const handleOnSubmit = (values) => {
-    const { fullname, email, profile_image, dni, phone,rol, permissions} = values;       
+    const { fullname, email, profile_image, dni, phone,rol, permissions,omic} = values;       
         const formData = new FormData();
         formData.append('full_name', fullname);
         formData.append('email', email);
@@ -24,6 +26,7 @@ function NewUserContainer() {
         formData.append('phone', phone);
         formData.append('permissions', permissions);
         formData.append('roles',rol);
+        formData.append('omic_id', omic);
         if(profile_image.length > 0)
             formData.append('profile_image', profile_image[0]);
         
@@ -61,6 +64,7 @@ function NewUserContainer() {
       email: "",
       profile_image: "",
       rol: "",
+      omic:"",
       creation_date: "",
       dni: "",
       phone: "",
@@ -100,21 +104,29 @@ function NewUserContainer() {
         setPermissions(body.data);
       }
     });
+    api(OMICS).then(({ ok, body }) => {
+      if (ok) {
+        setOmics(body.data);
+        setIsLoading(false)
+      }
+    });
   }, []);
-  
+
   return (
-    <NewUserComponent
-      values={values}
-      touched={touched}
-      errors={errors}
-      isValid={isValid}
-      dirty={dirty}
-      handleBlur={handleBlur}
-      handleChange={handleChange}
-      handleOnSubmit={handleOnSubmit}
-      roles={roles}
-      permissions={permissions}
-    />
+    !isLoading &&
+      <NewUserComponent
+        values={values}
+        touched={touched}
+        errors={errors}
+        isValid={isValid}
+        dirty={dirty}
+        handleBlur={handleBlur}
+        handleChange={handleChange}
+        handleOnSubmit={handleOnSubmit}
+        roles={roles}
+        omics={omics}
+        permissions={permissions}
+      />
   );
 }
 

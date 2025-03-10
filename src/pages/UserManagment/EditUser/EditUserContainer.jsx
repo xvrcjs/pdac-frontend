@@ -4,12 +4,13 @@ import { AppContext } from "context/AppContext";
 import { useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import { GET_USERS,GET_PERMISSIONS,CREATE_USER } from "constant/endpoints";
+import { GET_USERS,GET_PERMISSIONS,CREATE_USER,OMICS } from "constant/endpoints";
 import { formatMeridiem } from "@mui/x-date-pickers/internals/utils/date-utils";
 
 function EditUserContainer() {
   const { id } = useParams();
   const [user, setUser] = useState();
+  const [omics,setOmics]= useState()
   const [roles, setRoles] = useState([
     { label: "Usuario Administrador", value: "admin" },
     { label: "Usuario Municipal", value: "omic" },
@@ -21,7 +22,7 @@ function EditUserContainer() {
   const navigate = useNavigate();
 
   const handleOnSubmit = (values) => {
-    const { fullname, email, profile_image, dni, phone, rol, permissions,active,comments } =
+    const { fullname, email, profile_image, dni, phone, rol, permissions,active,comments,omic } =
       values;
     const formData = new FormData();
 
@@ -31,6 +32,7 @@ function EditUserContainer() {
     formData.append("roles", rol);
     formData.append("is_active",active)
     formData.append("comments", comments)
+    formData.append('omic_id', omic);
     
     if (typeof profile_image[0] !== "string" && profile_image.length > 0) {
       formData.append("profile_image", profile_image[0]);
@@ -70,6 +72,7 @@ function EditUserContainer() {
       email: "",
       profile_image: "",
       rol: "",
+      omic: "",
       creation_date: "",
       dni: "",
       phone: "",
@@ -102,6 +105,7 @@ function EditUserContainer() {
         values.email = body.data.user.email
         values.dni = body.data.dni
         values.phone = body.data.phone
+        values.omic = body.data?.omic?.uuid
         values.rol = body.data.roles[0].name
         values.profile_image = body.data.profile_image
         values.permissions = body.data.permissions
@@ -116,6 +120,11 @@ function EditUserContainer() {
         setPermissions(body.data);
       }
     });
+    api(OMICS).then(({ ok, body }) => {
+      if (ok) {
+        setOmics(body.data);
+      }
+    });
   }, []);
 
   return (
@@ -123,6 +132,7 @@ function EditUserContainer() {
         <EditUserComponent
             values={values}
             roles={roles}
+            omics={omics}
             permissions={permissions}
             handleOnSubmit={handleOnSubmit}
             handleChange={handleChange}
