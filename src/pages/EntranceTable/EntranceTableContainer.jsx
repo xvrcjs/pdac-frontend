@@ -12,9 +12,6 @@ function EntranceTableContainer() {
   const [claims, setClaims] = useState([]);
   const [showMessageConfirmReAssign,setShowMessageConfirmReAssign] = useState(false)
 
-  // const handleReAssignClaim = () =>{
-  //   setShowMessageConfirmReAssign(!showMessageConfirmReAssign)
-  // }
   useEffect(() => {
     api(CLAIM).then(({ ok, body }) => {
       if (ok) {

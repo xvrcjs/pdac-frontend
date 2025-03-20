@@ -12,6 +12,12 @@ const DropzoneComponent = (props) => {
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
+        accept: {
+            'image/jpeg': [],
+            'image/jpg': [],
+            'image/png': []
+        },
+        maxSize: 5 * 1024 * 1024, // 5MB
     });
     
     useEffect(() => {
