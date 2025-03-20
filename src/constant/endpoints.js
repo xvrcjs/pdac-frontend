@@ -28,3 +28,6 @@ export const GET_TRAFIC_LIGHT_CONFIG = "/v1/traffic-light-system-config";
 // CONFIGURACION DE DATOS ORGANISMOS
 export const OMICS = "/v1/omic";
 
+
+export const CREATE_STANDARDS_PROTOCOLS = "v1/standards-and-protocols"
+export const GET_ZIP_STANDARDS_PROTOCOLS = "v1/standards-and-protocols/zip"
