@@ -26,7 +26,7 @@ const Item = ({ title, to, icon, colors, isActive, subItems }) => {
         active={isActive}
         className="swt-navbar-links"
         // onClick={() => handleTo()}
-        component={<Link to={to} />}
+        component={!subItems && <Link to={to} />}
         rel="noopener noreferrer"
       >
         <div className="swt-navbar-links-content">

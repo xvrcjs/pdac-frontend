@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, Typography, useTheme,Avatar } from "@mui/material";
 import { Menu, MenuItem } from "react-pro-sidebar";
 import "./Topbar.scss";
 import { tokens } from "../../theme";
@@ -177,6 +177,7 @@ function Topbar(props) {
   const [isMenuOpen, setMenuOpen] = useState(false)
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
 
   let location = useLocation();
 
@@ -211,8 +212,13 @@ function Topbar(props) {
             justifyContent: "right",
             display: "flex",
             flexDirection: "row",
+            mb: "5px"
           }}
         >
+          <Box sx={{display:"flex",flexDirection:"row",alignItems:"center",mr:"20px",cursor:"pointer"}} onClick={()=>navigate('/estandares-y-protocolos')}>
+            <img alt="user-profile" src={`../../assets/home/folder-open.svg`} style={{ width: "24px",height:"24px" }} />
+            <Typography sx={{fontSize:"14px",fontWeight:"400",ml:"5px"}}>Estándares y protocolos</Typography>
+          </Box>
           <Box
             sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
           >
@@ -250,7 +256,16 @@ function Topbar(props) {
               Bienvenido nuevamente
             </Typography>
             <div style={{cursor:'pointer'}} onClick={()=> setMenuOpen(!isMenuOpen)}>
-              <img alt="user-profile" src={account.profile_image ? process.env.REACT_APP_BACKEND_URL_MEDIA+account.profile_image : `../../assets/examples/user-profile.png`} style={{ width: "50px",height:"35px",borderRadius:"20px" }} />
+              <Avatar
+                  src={
+                    process.env.REACT_APP_BACKEND_URL_MEDIA+account.profile_image
+                  }
+                  sx={{
+                    width: "50px",
+                    height: "35px",
+                    borderRadius: "20px",
+                  }}
+                />
             </div>
             <ProfileMenuContainer isMenuOpen={isMenuOpen}
             setMenuOpen={setMenuOpen}/>
@@ -281,6 +296,7 @@ function Topbar(props) {
           >
             {menu.map((elem, index) => {
               const isActive = elem.path.split("/")[0] === currentPath;
+              if (!elem.show) return null;
               return (
                 <Item
                   key={index}

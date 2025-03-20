@@ -7,6 +7,7 @@ interface Menu{
     subItems?: Menu[];
     headerTitle?: string;
     headerSubTitle?: string;
+    show?: boolean;
 }
 
 export const MenuData:Menu[] = [{
@@ -14,14 +15,16 @@ export const MenuData:Menu[] = [{
     path: "mesa-de-entrada",
     rolesAllowed: ["Admin","Omic"],
     headerTitle: "Te damos la bienvenida a tu Mesa de entrada",
-    headerSubTitle: "Acá podras ver los reclamos sin asignar, asignados y filtrarlos por el sistema de semáforos."
+    headerSubTitle: "Acá podras ver los reclamos sin asignar, asignados y filtrarlos por el sistema de semáforos.",
+    show: true,
 },
 ,{
     title: "Reclamos HV",
     path: "reclamos-hv",
     rolesAllowed: ["Admin","Omic"],
     headerTitle: "Te damos la bienvenida a tu Mesa de reclamos Hiper Vulnerables",
-    headerSubTitle:"Acá podras ver los reclamos y sus diferentes estados."
+    headerSubTitle:"Acá podras ver los reclamos y sus diferentes estados.",
+    show: true,
 },{
     title: "Gestión de usuarios",
     path: "gestion-de-usuarios",
@@ -49,5 +52,13 @@ export const MenuData:Menu[] = [{
             headerSubTitle:"Modifique los datos, seleccione el tipo de rol y accesos que tendrá este usuario."
         }
     ],
+    show: true,
+},{
+    title: "Estandares y protocolos",
+    path: "estandares-y-protocolos",
+    rolesAllowed: ["Admin","Omic"],
+    headerTitle: "Te damos la bienvenida a tu Biblioteca de estándares y protocolos",
+    headerSubTitle:"Acá podrás consultar y descargar la información que necesites",
+    show: false,
 }
 ]

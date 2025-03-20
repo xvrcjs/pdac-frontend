@@ -20,6 +20,7 @@ import TrafficLightSystemTimesPage from "../../pages/Config/TrafficLightSystemTi
 import DataOrganismsPage from "pages/Config/DataOrganisms";
 import ProfilePage from "../../pages/UserManagment/Profile";
 import ClaimViewPage from "pages/EntranceTable/Claim";
+import StandardsProtocolsPage from "pages/StandardsProtocols"
 import { AppContext } from "../../context/AppContext";
 
 function RouterContainer() {
@@ -84,6 +85,11 @@ function RouterContainer() {
                     exact
                     path="/configuracion/datos-organismos"
                     element={<DataOrganismsPage />}
+                />
+                <Route
+                    exact
+                    path="/estandares-y-protocolos"
+                    element={<StandardsProtocolsPage />}
                 />
             </Route>
             <Route element={<PublicRoute />}>
