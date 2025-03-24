@@ -14,19 +14,12 @@ import {
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { tokens } from "../../theme";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import {
-  DataGrid,
-  GridRow,
-  gridPageCountSelector,
-  gridPageSelector,
-  useGridApiContext,
-  useGridSelector,
-} from "@mui/x-data-grid";
+import DataGrid from "./DataGrid";
 import EditIcon from "@mui/icons-material/Edit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 function ClaimHVComponent(props) {
-  const { claims } = props;
+  const { claims,setClaimSelected, setShowTypeAssignClaim, setShowMessageConfirmReAssign,account } = props;
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -69,64 +62,62 @@ function ClaimHVComponent(props) {
       />
     );
   }
-  const handleEdit = (id) => {
-    console.log(`Edit ${id}`);
-  };
-  const CircularItem = ({ status }) => {
-    const statusColors = {
-      active: "green",
-      inactive: "red",
-      warning: "yellow",
-      error: "black",
-    };
-    const color = statusColors[status] || "grey"; // Por defecto, gris si el estado no existe
 
+  const CircularItem = ({ status = "none" }) => {
+    const statusColors = {
+      hv_verde: "green",
+      hv_rojo: "red",
+      hv_amarillo: "yellow",
+      hv_ive_r: "red",
+      hv_ive_a: "yellow",
+      hv_ive_v: "green",
+      ive: "#B31EA4",
+    };
+    const color = statusColors[status];
     return (
-      <Box
-      sx={{
-        width: 35,
-        height: 35,
-        borderRadius: "50%",
-        backgroundColor: "black",
-        position: "relative",
-        margin: "10px auto", 
-      }}
-    >
-      {/* Triángulo */}
-      <Box
-        sx={{
-          width: 0,
-          height: 0,
-          borderLeft: "7px solid transparent",
-          borderRight: "7px solid transparent",
-          borderBottom: `14px solid ${color}`, 
-          position: "absolute",
-          top: "45%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-        }}
-      />
-    </Box>
-  );
-};
+      <>
+          <Box
+            sx={{
+              width: 30,
+              height: 30,
+              borderRadius: "50%",
+              backgroundColor: color ? (status.includes("hv_ive")? "#B31EA4":"#000"):"none",
+              margin: "10px auto",
+              position: "relative",
+            }}
+          >
+            {/* Triángulo */}
+            <Box
+              sx={{
+                width: 0,
+                height: 0,
+                borderLeft: "7px solid transparent",
+                borderRight: "7px solid transparent",
+                borderBottom: `14px solid ${color}`,
+                position: "absolute",
+                top: "45%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+              }}
+            />
+          </Box>
+      </>
+    );
+  };
+
   const columns = [
     {
-      field: "status_id",
+      field: "type_of_claim",
       headerName: "",
       flex: 1,
       headerAlign: "center",
       maxWidth: 100,
       style: "background-color:#B1B1B1",
       align: "center",
-      renderHeader: () => (
-        <div style={{ textAlign: "center", fontWeight: "bold" }}>
-          <CircularItem status="error" />
-        </div>
-      ),
       renderCell: (params) => <CircularItem status={params.value} />,
     },
     {
-      field: "claim_id",
+      field: "id",
       headerName: "RECLAMO",
       flex: 1,
       headerAlign: "center",
@@ -143,7 +134,7 @@ function ClaimHVComponent(props) {
       headerAlign: "center",
       align: "center",
       renderCell: (params) => (
-        <span style={{textTransform:'uppercase'}}>{params.value}</span>
+        <span style={{ textTransform: "uppercase" }}>{params.value}</span>
       ),
     },
     {
@@ -153,105 +144,63 @@ function ClaimHVComponent(props) {
       headerAlign: "center",
       align: "center",
       renderCell: (params) => (
-        <span style={{textTransform:'uppercase'}}>{params.value === 'Active' ? 'Activo':'Inactivo'}</span>
-      ),
-    },
-    {
-      field: "assigned_role",
-      headerName: "ROL ASIGNADO",
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-      renderCell: (params) => (
-        <span style={{textTransform:'uppercase'}}>{params.value}</span>
-      ),
-    },
-    {
-      field: "actions",
-      headerName: "",
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-      sortable: false,
-      renderCell: (params) => (
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
-          {/* <IconButton
-          onClick={() => handleExpandClick(params.id)}
-          aria-label="expand row"
-          size="small"
-        >
-          <ExpandMoreIcon
-            style={{
-              transform: expandedRowId === params.id ? "rotate(180deg)" : "rotate(0deg)",
-              transition: "transform 0.3s",
-            }}
-          />
-        </IconButton> */}
-          <IconButton
-            onClick={() => handleEdit(params.id)}
-            aria-label="expand row"
-            size="small"
-            sx={{ ml: "10px" }}
-          >
-            <EditIcon />
-          </IconButton>
-        </Box>
+        <span style={{ textTransform: "uppercase" }}>
+          {params.value === "Active" ? "Activo" : "Inactivo"}
+        </span>
       ),
     },
   ];
-  const themeTable = createTheme(
-    {
-      components: {
-        MuiDataGrid: {
-          styleOverrides: {
-            root: {
+  const themeTable = createTheme({
+    components: {
+      MuiDataGrid: {
+        styleOverrides: {
+          root: {
+            backgroundColor: "#D9D9D9",
+            borderColor: "#D9D9D9",
+            "& .MuiDataGrid-main": {
               backgroundColor: "#D9D9D9",
               borderColor: "#D9D9D9",
-              "& .MuiDataGrid-main": {
-                backgroundColor: "#D9D9D9",
-                borderColor: "#D9D9D9",
-              },
-              // "& .MuiDataGrid-cell": {
-              //   backgroundColor: "#D9D9D9",
-              //   color: "#000",
-              // },
-              "& .MuiDataGrid-columnHeaders": {
-                backgroundColor: "#B1B1B1",
-                fontFamily: "Encode Sans",
-                fontSize: "12px",
-                fontWeight: 700,
-                lineHeight: "18px",
-                textAlign: "center",
-              },
-              "& .MuiDataGrid-toolbarContainer .MuiInput-root": {
-                backgroundColor: "#D9D9D9",
-                color: "#000",
-              },
-              "& .MuiDataGrid-gutters": {
-                color: "#000",
-              },
-              "& .Mui-selected": {
-                backgroundColor: "#56D2FF !important",
-              },
-              "& .MuiDataGrid-footerContainer": {
-                backgroundColor: "transparent",
-              },
+            },
+            // "& .MuiDataGrid-cell": {
+            //   backgroundColor: "#D9D9D9",
+            //   color: "#000",
+            // },
+            "& .MuiDataGrid-columnHeaders": {
+              backgroundColor: "#B1B1B1",
+              fontFamily: "Encode Sans",
+              fontSize: "12px",
+              fontWeight: 700,
+              lineHeight: "18px",
+              textAlign: "center",
+            },
+            "& .MuiDataGrid-toolbarContainer .MuiInput-root": {
+              backgroundColor: "#D9D9D9",
+              color: "#000",
+            },
+            "& .MuiDataGrid-gutters": {
+              color: "#000",
+            },
+            "& .Mui-selected": {
+              backgroundColor: "#56D2FF !important",
+            },
+            "& .MuiDataGrid-footerContainer": {
+              backgroundColor: "transparent",
             },
           },
         },
-        MuiToolbar: {
-          styleOverrides: {
-            root: {
+      },
+      MuiToolbar: {
+        styleOverrides: {
+          root: {
+            color: "#000",
+            "& svg": {
               color: "#000",
-              "& svg": {
-                color: "#000",
-              },
             },
           },
         },
       },
     },
-  );
+  });
 
   useEffect(() => {
     setRows(claims);
@@ -261,11 +210,13 @@ function ClaimHVComponent(props) {
   return (
     <Content className="swt-dashboard" isLoaded="true">
       <Box sx={{ margin: "50px 50px" }}>
-        <ThemeProvider theme={themeTable}>
+      <ThemeProvider theme={themeTable}>
           <DataGrid
             rows={rows}
             columns={columns}
             sx={{ minHeight: "600px" }}
+            backgroundColor={"#fff"}
+            noDataMessage="No hay reclamos para mostrar en este momento."
             initialState={{
               pagination: {
                 paginationModel: {
@@ -274,15 +225,15 @@ function ClaimHVComponent(props) {
                 },
               },
             }}
-            // disableRowSelectionOnClick
             disableColumnMenu
             pageSizeOptions={[10, 15, 30]}
             slots={{
               pagination: CustomPagination,
-              // toolbar: CustomToolbar,
-              // noResultsOverlay: CustomNoRowsOverlay,
-              // noRowsOverlay: CustomNoRowsOverlay,
             }}
+            setClaimSelected={setClaimSelected}
+            setShowTypeAssignClaim={setShowTypeAssignClaim}
+            setShowMessageConfirmReAssign={setShowMessageConfirmReAssign}
+            account={account}
           />
         </ThemeProvider>
       </Box>
