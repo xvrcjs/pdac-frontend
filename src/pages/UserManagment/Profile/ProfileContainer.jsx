@@ -19,7 +19,6 @@ function ProfileContainer() {
 
     formData.append("full_name", fullname);
     formData.append("email", email);
-    console.log(profile_image);
     if (typeof profile_image[0] !== "string" && profile_image.length > 0) {
       formData.append("profile_image", profile_image[0]);
     }else if (profile_image.length === 0){
@@ -90,7 +89,6 @@ function ProfileContainer() {
   useEffect(() => {
       values.fullname = account.full_name
       values.email = account.user__email
-      console.log(account)
       values.profile_image = account.profile_image
       setIsLoading(false)
   }, []);

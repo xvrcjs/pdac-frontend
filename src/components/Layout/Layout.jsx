@@ -12,7 +12,7 @@ function Layout({title}) {
   const [isNavbarCollapsed, setIsNavbarCollapsed] = useState(false);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { account,setAccount } = useContext(AppContext);
+  const { account,setAccount,api } = useContext(AppContext);
 
   return (
     <main className="swt-layout-main">
@@ -20,6 +20,7 @@ function Layout({title}) {
         isNavbarCollapsed={isNavbarCollapsed}
         setIsNavbarCollapsed={setIsNavbarCollapsed}
         account={account}
+        api={api}
         setAccount={setAccount}
       />    
       <div className={`swt-layout-content ${isNavbarCollapsed ? "collapsed" : ""}`}>

@@ -9,8 +9,9 @@ import ContactSupportIcon from "@mui/icons-material/ContactSupport";
 import SearchBar from "./SearchComponent";
 import { MenuData } from "./MenuData.ts";
 import ProfileMenuContainer from "components/ProfileMenu";
+import { CANT_CLAIM_HV_IVE } from "constant/endpoints"
 
-const Item = ({ title, to, icon, colors, isActive, subItems }) => {
+const Item = ({ title, to, icon, colors, isActive, subItems,cantClaim }) => {
   const iconPath = `../../icons/${icon}.svg`;
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -31,7 +32,24 @@ const Item = ({ title, to, icon, colors, isActive, subItems }) => {
           component={<Link to={to} />}
           rel="noopener noreferrer"
         >
-          <div className="swt-topbar-links-content">
+          {(title === "Reclamos HV") && (cantClaim > 0) && 
+            <Box sx={{
+              position:"absolute",
+              top:"-10px",
+              right:"15px",
+              background:"#B31EA4", 
+              width:"24px",
+              borderRadius:"50%",
+              textAlign:"center",
+              animation: "blink 1.2s infinite",
+              "@keyframes blink": {
+                "100%": { opacity: 1,transform: "scale(1.3)"  }
+              }
+            }}>
+              <Typography sx={{fontSize:"15px"}} >{cantClaim}</Typography>
+            </Box>
+          }
+          <div className="swt-topbar-links-content">   
             <Box
               sx={{ display: "flex", alignItems: "center" }}
               onClick={() => setIsOpen(!isOpen)}
@@ -116,7 +134,7 @@ const Item = ({ title, to, icon, colors, isActive, subItems }) => {
 
 const getHeaders = (menu, navMenu, path) => {
   const matchRoute = (itemPath, currentPath) => {
-    const regex = new RegExp(`^${itemPath.replace(/:\w+/, "\\w+")}$`);
+    const regex = new RegExp(`^${itemPath.replace(/:\w+/g, "[a-zA-Z0-9-]+")}$`);
     return regex.test(currentPath);
   };
 
@@ -170,11 +188,12 @@ const getHeaders = (menu, navMenu, path) => {
 };
 
 function Topbar(props) {
-  const { isNavbarCollapsed, account,setAccount } = props;
+  const { isNavbarCollapsed, account,setAccount,api } = props;
   const [menu, setMenu] = useState([]);
   const [navMenuData, setNavMenuData] = useState([]);
   const [currentPath, setCurrentPath] = useState("");
   const [isMenuOpen, setMenuOpen] = useState(false)
+  const [cantClaim,setCantClaim] = useState(0)
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -196,6 +215,11 @@ function Topbar(props) {
       item.rolesAllowed.includes(account["roles"][0].name)
     );
     setMenu(filteredMenu);
+    api(CANT_CLAIM_HV_IVE).then(({ ok, body }) => {
+          if (ok) {
+            setCantClaim(body.data.total_claims_hv);
+          }
+        });
   }, []);
 
   useEffect(() => {
@@ -305,6 +329,7 @@ function Topbar(props) {
                   isActive={isActive}
                   colors={colors}
                   subItems={elem.subItems}
+                  cantClaim={cantClaim}
                 />
               );
             })}

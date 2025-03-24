@@ -14,11 +14,16 @@ export const GET_USERS = "/v1/account";
 
 // FORMULARIO DE RECLAMO
 export const CLAIM = "/v1/claim";
+export const CLAIM_IVE = "/v1/claim-ive";
 export const CREATE_CLAIM = "/v1/create_claim";
+export const CREATE_CLAIM_IVE = "/v1/create-claim-ive";
 export const DOWNLOAD_CLAIM = "/v1/download_claim";
 export const DOWNLOAD_ZIP = "/v1/zip_files_claim";
 export const COMMENT = "/v1/comment";
+export const COMMENT_IVE = "/v1/comment-ive";
 export const ASSIGN_CLAIM = "/v1/assign_claim";
+export const ASSIGN_CLAIM_IVE = "/v1/assign-claim-ive";
+export const CANT_CLAIM_HV_IVE = "/v1/cant-claim-hv";
 
 export const VALIDATE_RECAPTCHA = "/v1/validate-recaptcha";
 

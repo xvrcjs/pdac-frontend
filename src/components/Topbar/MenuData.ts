@@ -53,12 +53,21 @@ export const MenuData:Menu[] = [{
         }
     ],
     show: true,
-},{
+},
+{
     title: "Estandares y protocolos",
     path: "estandares-y-protocolos",
     rolesAllowed: ["Admin","Omic"],
     headerTitle: "Te damos la bienvenida a tu Biblioteca de estándares y protocolos",
     headerSubTitle:"Acá podrás consultar y descargar la información que necesites",
+    show: false,
+},
+{
+    title: "Reclamo",
+    path: "mesa-de-entrada/reclamo/:id",
+    rolesAllowed: ["Admin","Omic"],
+    headerTitle: "Vista del reclamo",
+    headerSubTitle:"Acá podras ver toda la información del reclamo, sus movimientos, actividades",
     show: false,
 }
 ]
