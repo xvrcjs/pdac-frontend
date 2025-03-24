@@ -367,7 +367,8 @@ function ClaimContainer() {
             borderRadius: "30px",
             maxWidth: "1017px",
             width:"1017px !important",
-            height:"381px !important",
+            height:"331px !important",
+            justifyContent:"space-between"
           },
         }}
       >
@@ -376,7 +377,7 @@ function ClaimContainer() {
             fontFamily: "Encode Sans",
             fontSize: "32px",
             fontWeight: "600",
-            mt:"93px"
+            mt:"40px"
           }}
           id="alert-dialog-title"
         >
@@ -404,7 +405,7 @@ function ClaimContainer() {
               width:"189px",
               padding: "12px 60px",
               fontFamily: "Encode Sans",
-              fontSize: "12px",
+              fontSize: "18px",
               fontWeight: "500",
               textTransform: "capitalize",
               border: "2px solid #838383",
@@ -420,7 +421,7 @@ function ClaimContainer() {
               color: "#fff",
               padding: "12px 0px",
               fontFamily: "Encode Sans",
-              fontSize: "12px",
+              fontSize: "18px",
               fontWeight: "500",
               ml: "20px",
               width: "251px",
@@ -445,6 +446,7 @@ function ClaimContainer() {
             border: "3px solid #00AEC3",
             borderRadius: "30px",
             maxWidth: "1017px",
+            width:"800px !important",
             height:"250px",
             justifyContent:"space-between"
 
@@ -456,7 +458,7 @@ function ClaimContainer() {
             fontFamily: "Encode Sans",
             fontSize: "30px",
             fontWeight: "500",
-            mt:"20px",
+            mt:"50px",
           }}
           id="alert-dialog-title"
         >

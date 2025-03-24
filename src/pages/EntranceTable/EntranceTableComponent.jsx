@@ -19,7 +19,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 function EntranceTableComponent(props) {
-  const { claims, setClaimSelected, setShowTypeAssignClaim,setShowMessageConfirmReAssign} = props;
+  const { claims, setClaimSelected, setShowTypeAssignClaim,setShowMessageConfirmReAssign,account} = props;
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -243,6 +243,7 @@ function EntranceTableComponent(props) {
             setClaimSelected={setClaimSelected}
             setShowTypeAssignClaim={setShowTypeAssignClaim}
             setShowMessageConfirmReAssign={setShowMessageConfirmReAssign}
+            account={account}
           />
         </ThemeProvider>
       </Box>

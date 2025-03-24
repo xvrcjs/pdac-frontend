@@ -127,7 +127,8 @@ const DataGrid = ({
   backgroundColor,
   setClaimSelected,
   setShowTypeAssignClaim,
-  setShowMessageConfirmReAssign
+  setShowMessageConfirmReAssign,
+  account
 }) => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [sortField, setSortField] = useState("name");
@@ -157,7 +158,7 @@ const DataGrid = ({
     currentPage * pageSize
   );
 
-  const handleEdit = (index, rowIndex) => {
+  const handleEdit = (index, rowIndex,type) => {
     navigate(`reclamo/${index.uuid}`);
   };
 
@@ -479,26 +480,13 @@ const DataGrid = ({
                           position: "static",
                         }}
                       >
-                        {row && Object.keys(row).length > 0 && (
+                      {(account.roles && account.roles.some(role => role.name === "Admin")) && 
+                        row && Object.keys(row).length > 0 && (
                           <>
                           {row.assigned === "S/A" ?
-                            <IconButton
-                              onClick={() => handleAssignClaim(row, index)}
-                              aria-label="row"
-                              size="medium"
-                              sx={{marginRight:"40px"}}
-                            >
-                                <img src="../../assets/claims/table/paper_plane.svg" alt="asignar-reclamo"/>
-                            </IconButton>
+                              <img src="../../assets/claims/table/paper_plane.svg" alt="asignar-reclamo" onClick={() => handleAssignClaim(row, index)} style={{cursor:"pointer",marginRight:"40px"}}/>
                             :
-                            <IconButton
-                              onClick={() => handleReAssignClaim(row, index)}
-                              aria-label="row"
-                              size="medium"
-                              sx={{marginRight:"40px"}}
-                            >
-                                <img src="../../assets/claims/table/forward_circle.svg" alt="re-asignar-reclamo"/>
-                            </IconButton>
+                              <img src="../../assets/claims/table/forward_circle.svg" alt="re-asignar-reclamo" onClick={() => handleReAssignClaim(row, index)} style={{cursor:"pointer",marginRight:"40px"}}/>
                           }
                           <IconButton
                             onClick={() => handleEdit(row, index)}
@@ -510,7 +498,8 @@ const DataGrid = ({
                             />
                           </IconButton>
                           </>
-                        )}
+                        )
+                      }
                       </Box>
                     </td>
                   </tr>
@@ -519,6 +508,7 @@ const DataGrid = ({
             )}
           </tbody>
         </table>
+        {totalPages > 1 && 
         <Box
           className="data-table-pagination"
           sx={{
@@ -561,6 +551,7 @@ const DataGrid = ({
             </IconButton>
           )}
         </Box>
+        }
       </Box>
     </>
   );

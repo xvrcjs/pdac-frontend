@@ -13,11 +13,20 @@ function EntranceTableContainer() {
   const [showMessageConfirmReAssign,setShowMessageConfirmReAssign] = useState(false)
 
   useEffect(() => {
-    api(CLAIM).then(({ ok, body }) => {
-      if (ok) {
-        setClaims(body.data);
-      }
-    });
+    if (account.roles[0].name === "Admin"){
+      api(CLAIM).then(({ ok, body }) => {
+        if (ok) {
+          setClaims(body.data);
+        }
+      })
+    }
+    else{
+      api(CLAIM+"?search="+account.uuid).then(({ ok, body }) => {
+        if (ok) {
+          setClaims(body.data);
+        }
+      })
+    }
   }, []);
 
   return (
@@ -27,6 +36,7 @@ function EntranceTableContainer() {
         setClaimSelected={setClaimSelected}
         setShowTypeAssignClaim={setShowTypeAssignClaim}
         setShowMessageConfirmReAssign={setShowMessageConfirmReAssign}
+        account={account}
       />
       <AssignClaimContainer
         claimSelected={claimSelected}

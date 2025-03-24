@@ -50,6 +50,7 @@ const CircularItemFilter = ({ status }) => {
             width: 30,
             height: 30,
             borderRadius: "50%",
+            mt: "10px",
             backgroundColor: color,
           }}
         />
@@ -148,7 +149,7 @@ function ClaimComponent(props) {
             justifyContent: "center",
           }}
         >
-          <CircularItemFilter status={"hv_rojo"} />
+          <CircularItemFilter status={claimInfo["status_claim"]} />
         </Box>
         <Box sx={{ width: "100%" }}>
           <Box
