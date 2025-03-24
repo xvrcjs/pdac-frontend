@@ -4,33 +4,24 @@ import { useFormik } from "formik";
 import ClaimIVEComponent from "./ClaimIVEComponent";
 import ClaimFinishedComponent from "./ClaimFinishedComponent";
 import FormComponent from "./Entities/FormComponent";
+import { CREATE_CLAIM_IVE } from "constant/endpoints";
 import { AppContext } from "context/AppContext";
 
 function ClaimIVEContainer() {
   const [startForm, setStartForm] = useState(false);
   const [formSended, setFormSended] = useState(false);
+  const [idCreated, setIdCreated] = useState("")
   const { api } = useContext(AppContext)
-
-  const handleOnSubmit = (values) => {
-    // const { fullname, email, profile_image, dni, phone, rol, permissions } =
-    //   values;
-    const formData = new FormData();
-    setFormSended(true)
-    // formData.append("full_name", fullname);
-    // formData.append("email", email);
-    // formData.append("dni", dni);
-    // formData.append("phone", phone);
-    // formData.append("permissions", permissions);
-    // formData.append("roles", rol);
-    // if (profile_image.length > 0)
-    //   formData.append("profile_image", profile_image[0]);
-
-    api("/v1/send-claim-ive", {
+  
+  const handleOnSubmit = () => {
+    api(CREATE_CLAIM_IVE, {
       method: "POST",
-      body: {"email":values.email_cl},
+      body: values,
     })
       .then(({ ok, body }) => {
         if (ok) {
+          setIdCreated(body["data"]["id"])
+          setFormSended(true)
         } else {
           console.log("not ok");
         }
@@ -40,8 +31,6 @@ function ClaimIVEContainer() {
       });
   };
   
-  // Los campos con _cl represantan al solicitante
-  // Los campos con _sp representan a los proveedores
   const {
     handleSubmit,
     handleChange,
@@ -55,44 +44,45 @@ function ClaimIVEContainer() {
     setFieldValue,
   } = useFormik({
     initialValues: {
-      fullname_cl: "",
-      dni_cl: "",
-      birthdate_cl: "",
-      email_cl: "",
-      email_confirm_cl:"",
-      phone_cl:"",
+      fullname: "",
+      dni: "",
+      birthdate: "",
+      email: "",
+      email_confirm:"",
+      phone:"",
       checkbox_social_work_or_company:false,
       checkbox_establishment:false,
       checkbox_other:false,
       social_work_or_company:"",
       establishment:"",
-      other:""
+      other:"",
+      reasons: []
     },
     onSubmit: handleOnSubmit,
     validate: (values) => {
       const errors = {};
-      if (!values.fullname_cl) {
-        errors.fullname_cl = "El campo nombre es requerido.";
+      if (!values.fullname) {
+        errors.fullname = "El campo nombre es requerido.";
       }
-      if (!values.dni_cl) {
-        errors.dni_cl = "El campo dni es requerido.";
-      }else if (values.dni_cl.length !== 10) {
-        errors.dni_cl = "Ingrese un dni valido";
+      if (!values.dni) {
+        errors.dni = "El campo dni es requerido.";
+      }else if (values.dni.length !== 10) {
+        errors.dni = "Ingrese un dni valido";
       }
       // if (!values.comments) {
       //   errors.comments = "Este campo es obligatorio para poder continuar.";
       // }
-      if (!values.email_cl) {
-        errors.email_cl = "El campo email es requerido.";
+      if (!values.email) {
+        errors.email = "El campo email es requerido.";
       } else if (
-        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email_cl)
+        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
       ) {
-        errors.email_cl = "Dirección de correo no valida.";
+        errors.email = "Dirección de correo no valida.";
       } 
-      if (!values.email_confirm_cl) {
-        errors.email_confirm_cl = "El campo es requerido.";
-      } else if (values.email_cl !== values.email_confirm_cl) {
-        errors.email_confirm_cl = "Los correos no coinciden.";
+      if (!values.email_confirm) {
+        errors.email_confirm = "El campo es requerido.";
+      } else if (values.email !== values.email_confirm) {
+        errors.email_confirm = "Los correos no coinciden.";
       }
       return errors;
     },
@@ -125,7 +115,7 @@ function ClaimIVEContainer() {
           handleOnSubmit={handleOnSubmit}
         />
         :
-        <ClaimFinishedComponent/>
+        <ClaimFinishedComponent idCreated={idCreated}/>
       )}
     </div>
   );

@@ -49,19 +49,8 @@ const DNIMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
   );
 });
 
-
-
-
 function ClaimerFormComponent(props) {
   const { values, touched, errors, handleChange, handleBlur, setStep } = props;
-  const [showGender, setShowGender] = useState(false);
-  const genderOptions = [
-    { value: "female", label: "Femenino" },
-    { value: "male", label: "Masculino" },
-    { value: "x", label: "X" },
-    { value: "other", label: "Otro" },
-    { value: "none", label: "Prefiero no decirlo" },
-  ];
 
   return (
     <Box
@@ -88,7 +77,7 @@ function ClaimerFormComponent(props) {
         variant="outlined"
         placeholder="Maria Luiza Alves"
         className="input-field"
-        value={values.fullname_cl}
+        value={values.fullname}
         onBlur={handleBlur}
         sx={{
           mt: "5px",
@@ -105,9 +94,9 @@ function ClaimerFormComponent(props) {
             borderColor: "#000 !important",
           },
         }}
-        error={Boolean(touched.fullname_cl && errors.fullname_cl)}
-        helperText={touched.fullname_cl && errors.fullname_cl ? errors.fullname_cl : ""}
-        name="fullname_cl"
+        error={Boolean(touched.fullname && errors.fullname)}
+        helperText={touched.fullname && errors.fullname ? errors.fullname : ""}
+        name="fullname"
         onChange={handleChange}
       />
       <Typography
@@ -124,7 +113,7 @@ function ClaimerFormComponent(props) {
         variant="outlined"
         placeholder="12.123.123"
         className="input-field"
-        value={values.dni_cl}
+        value={values.dni}
         onBlur={handleBlur}
         sx={{
           mt: "5px",
@@ -146,9 +135,9 @@ function ClaimerFormComponent(props) {
             inputComponent: DNIMaskCustom,
           },
         }}
-        error={Boolean(touched.dni_cl && errors.dni_cl)}
-        helperText={touched.dni_cl && errors.dni_cl ? errors.dni_cl : ""}
-        name="dni_cl"
+        error={Boolean(touched.dni && errors.dni)}
+        helperText={touched.dni && errors.dni ? errors.dni : ""}
+        name="dni"
         onChange={handleChange}
       />
       <Typography
@@ -162,11 +151,11 @@ function ClaimerFormComponent(props) {
         FECHA DE NACIMIENTO
       </Typography>
       <TextField
-        value={values.birthdate_cl}
+        value={values.birthdate}
         onChange={handleChange}
         placeholder="12/12/2012"
         variant="outlined"
-        name="birthdate_cl"
+        name="birthdate"
         className="input-field"
         onBlur={handleBlur}
         sx={{
@@ -189,8 +178,8 @@ function ClaimerFormComponent(props) {
             inputComponent: DateMaskCustom,
           },
         }}
-        error={Boolean(touched.birthdate_cl && errors.birthdate_cl)}
-        helperText={touched.birthdate_cl && errors.birthdate_cl ? errors.birthdate_cl : ""}
+        error={Boolean(touched.birthdate && errors.birthdate)}
+        helperText={touched.birthdate && errors.birthdate ? errors.birthdate : ""}
       />
     </Box>
   );

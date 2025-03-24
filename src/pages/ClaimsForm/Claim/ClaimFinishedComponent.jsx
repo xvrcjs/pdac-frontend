@@ -9,7 +9,7 @@ import "./ClaimStyles.scss";
 import Grid from "@mui/material/Grid2";
 import { useNavigate } from "react-router-dom";
 
-function ClaimFinishedComponent({idClaim}) {
+function ClaimFinishedComponent({idCreated}) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -56,7 +56,7 @@ function ClaimFinishedComponent({idClaim}) {
               width: "60%"
             }}
           >
-            Recibirá detalles y actualizaciones de su reclamo a su casilla de correo electrónico bajo el numero de reclamo: {idClaim}. 
+            Recibirá detalles y actualizaciones de su reclamo a su casilla de correo electrónico bajo el numero de reclamo: {idCreated}. 
           </Typography>
               <Button
                 onClick={() => navigate("/genera-tu-reclamo")}

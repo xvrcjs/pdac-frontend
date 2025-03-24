@@ -20,6 +20,7 @@ import TrafficLightSystemTimesPage from "../../pages/Config/TrafficLightSystemTi
 import DataOrganismsPage from "pages/Config/DataOrganisms";
 import ProfilePage from "../../pages/UserManagment/Profile";
 import ClaimViewPage from "pages/EntranceTable/Claim";
+import ClaimIVEViewPage from "pages/ClaimsHV/ClaimIVE";
 import StandardsProtocolsPage from "pages/StandardsProtocols"
 import { AppContext } from "../../context/AppContext";
 
@@ -65,6 +66,11 @@ function RouterContainer() {
                     exact
                     path="/mesa-de-entrada/reclamo/:id"
                     element={<ClaimViewPage />}
+                />
+                <Route
+                    exact
+                    path="/reclamos-hv/reclamo-ive/:id"
+                    element={<ClaimIVEViewPage />}
                 />
                 <Route
                     exact

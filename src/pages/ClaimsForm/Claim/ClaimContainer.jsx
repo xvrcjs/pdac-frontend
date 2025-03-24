@@ -10,6 +10,7 @@ import { CREATE_CLAIM } from "constant/endpoints";
 function ClaimContainer() {
   const [startForm, setStartForm] = useState(false);
   const [formSended, setFormSended] = useState(false);
+  const [idCreated,setIdCreated] = useState("")
   const { api } = useContext(AppContext)
 
   const handleOnSubmit = (values) => {
@@ -42,6 +43,8 @@ function ClaimContainer() {
     })
       .then(({ ok, body }) => {
         if (ok) {
+          setIdCreated(body["data"]["id"])
+          setFormSended(true)
         } else {
           console.log("not ok");
         }
@@ -124,7 +127,7 @@ function ClaimContainer() {
           handleOnSubmit={handleOnSubmit}
         />
         :
-        <ClaimFinishedComponent/>
+        <ClaimFinishedComponent idCreated={idCreated}/>
       )}
     </div>
   );

@@ -49,7 +49,7 @@ function FormComponent(props) {
 
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
-  const [selectedReasons, setSelectedReasons] = useState({});
+  const [selectedReasons, setSelectedReasons] = useState([]);
   const [alertTypeFile, setAlertTypeFile] = useState(false);
   const captchaRef = useRef(null);
   const [validateCaptcha, setValidateCaptcha] = useState(false);
@@ -70,11 +70,12 @@ function FormComponent(props) {
     { label: "Otra", value: "otra" }
   ])
 
-  const handleToogleReason = (reason) => {
-    setSelectedReasons((prevReason) => ({
-      ...prevReason,
-      [reason]: !prevReason[reason],
-    }));
+  const handleToggleReason = (reason) => {
+    setSelectedReasons((prevReasons) => 
+      prevReasons.includes(reason)
+        ? prevReasons.filter((r) => r !== reason) // Si está, lo elimina
+        : [...prevReasons, reason] // Si no está, lo agrega
+    );
   };
   
   const handleRecaptcha = async (token) => {
@@ -84,6 +85,7 @@ function FormComponent(props) {
     }).then(({ ok, body }) => {
       if (ok) {
         setValidateCaptcha(true);
+        setFieldValue("reasons", selectedReasons);
       } else {
         setValidateCaptcha(false)
       }
@@ -268,7 +270,7 @@ function FormComponent(props) {
               <Button
                 onClick={() => setStep(1)}
                 // disabled={
-                //   ['dni_cl', 'fullname_cl', 'birthdate_cl'].some(
+                //   ['dni', 'fullname', 'birthdate'].some(
                 //     (field) => errors[field] || !touched[field]
                 //   )
                 // }
@@ -379,7 +381,7 @@ function FormComponent(props) {
                 variant="outlined"
                 placeholder="luisitasfr@gmail.com"
                 className="input-field"
-                value={values.email_cl}
+                value={values.email}
                 onBlur={handleBlur}
                 sx={{
                   mt: "5px",
@@ -396,9 +398,9 @@ function FormComponent(props) {
                     borderColor: "#000 !important",
                   },
                 }}
-                error={Boolean(touched.email_cl && errors.email_cl)}
-                helperText={touched.email_cl && errors.email_cl ? errors.email_cl : ""}
-                name="email_cl"
+                error={Boolean(touched.email && errors.email)}
+                helperText={touched.email && errors.email ? errors.email : ""}
+                name="email"
                 onChange={handleChange}
               />
               <Typography
@@ -415,7 +417,7 @@ function FormComponent(props) {
                 variant="outlined"
                 placeholder="luisitasfr@gmail.com"
                 className="input-field"
-                value={values.email_confirm_cl}
+                value={values.email_confirm}
                 onBlur={handleBlur}
                 sx={{
                   mt: "5px",
@@ -433,12 +435,12 @@ function FormComponent(props) {
                   },
                 }}
                 
-                name="email_confirm_cl"
+                name="email_confirm"
                 onChange={handleChange}
               />
-              {touched.email_confirm_cl && errors.email_confirm_cl && (
+              {touched.email_confirm && errors.email_confirm && (
                   <Typography sx={{ color: "red", fontSize: "12px" }}>
-                    {errors.email_confirm_cl}
+                    {errors.email_confirm}
                   </Typography>
                 )}
               <Typography
@@ -455,7 +457,7 @@ function FormComponent(props) {
                 variant="outlined"
                 placeholder="2214553565"
                 className="input-field"
-                value={values.phone_cl}
+                value={values.phone}
                 onBlur={handleBlur}
                 sx={{
                   mt: "5px",
@@ -472,9 +474,9 @@ function FormComponent(props) {
                     borderColor: "#000 !important",
                   },
                 }}
-                error={Boolean(touched.phone_cl && errors.phone_cl)}
-                helperText={touched.phone_cl && errors.phone_cl ? errors.phone_cl : ""}
-                name="phone_cl"
+                error={Boolean(touched.phone && errors.phone)}
+                helperText={touched.phone && errors.phone ? errors.phone : ""}
+                name="phone"
                 onChange={handleChange}
               />
               </Box>
@@ -816,12 +818,10 @@ function FormComponent(props) {
                       key={reason.value}
                       control={
                         <Checkbox
-                          checked={
-                            selectedReasons[reason.value] || false
-                          }
+                          checked={selectedReasons.includes(reason.value)}
                           key={index}
                           onChange={() =>
-                            handleToogleReason(reason.value)
+                            handleToggleReason(reason.value)
                           }
                           sx={{
                             color: "#A83E83",
