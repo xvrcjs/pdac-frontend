@@ -131,8 +131,8 @@ const DataGrid = ({
   account
 }) => {
   const [selectedRow, setSelectedRow] = useState(null);
-  const [sortField, setSortField] = useState("name");
-  const [sortDirection, setSortDirection] = useState("asc");
+  const [sortField, setSortField] = useState("id");
+  const [sortDirection, setSortDirection] = useState("desc");
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilter, setShowFilter] = useState(false);
   const [filter, setFilter] = useState(null);

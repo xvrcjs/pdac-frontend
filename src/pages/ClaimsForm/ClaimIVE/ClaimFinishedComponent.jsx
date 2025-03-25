@@ -82,16 +82,13 @@ function ClaimFinishedComponent({idCreated}) {
               </Button>
       </Box>
     </Box>
-    <Box
-      sx={{
-        background:
-          "url(../../assets/footer.png) lightgray 50% / cover no-repeat",
-        height: "107px",
-        width: "100%",
-        position: "absolute",
-        bottom: 0,
-      }}
-    />
+    <div style={{display:"flex"}}>
+        <img
+          src={`../../footer.png`} 
+          alt="footer"
+          style={{width: "100%",position:"absolute",bottom: "0"}}
+        />
+    </div>
     </>
   );
 }

@@ -24,7 +24,7 @@ function ClaimContainer() {
       gender: values.gender_cl,
     };
     formData.append("claimer", JSON.stringify(claimerData));
-    formData.append("comments", values.comments);
+    formData.append("problem_description", values.comments);
     formData.append("suppliers", JSON.stringify(values.suppliers));
     if (values.files.length > 0) {
       for (let i = 0; i < values.files.length; i++) {

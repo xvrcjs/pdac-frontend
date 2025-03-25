@@ -287,21 +287,22 @@ export const omics = [
   "Zárate",
 ];
 export const claim_status = [
-  "Resuelto",
-  "En trámite",
-  "Traslado al Consumidor",
-  "Traslado a empresa",
-  "DNDC / Coprec",
-  "Intimación IVE",
-  "Derivado al Municipio",
-  "Derivado a Salud Pública",
   "Caratulado",
-  "En análisis",
-  "Para Audiencia",
-  "Notifica Acta de audiencia",
-  "Intimación",
-  "Intima por última vez",
+  "DNDC / Coprec",
+  "Derivado a Salud Pública",
   "Derivado a otro Organismo",
+  "Derivado al Municipio",
+  "En análisis",
+  "En trámite",
+  "Intima por última vez",
+  "Intimación",
+  "Intimación IVE",
+  "Notifica Acta de audiencia",
+  "Para Audiencia",
+  "Rechazado",
+  "Resuelto",
+  "Traslado a empresa",
+  "Traslado al Consumidor"
 ];
 
 export const gender = {
