@@ -46,7 +46,6 @@ function SupplierFormComponent(props) {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    console.log(name)
     setNewSupplier((prev) => {
       if (name === "has_cuil_sp") {
         return {

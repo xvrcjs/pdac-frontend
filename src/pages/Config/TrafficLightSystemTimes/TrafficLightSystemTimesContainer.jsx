@@ -7,7 +7,7 @@ import { GET_TRAFIC_LIGHT_CONFIG } from "constant/endpoints";
 function TrafficLightSystemTimesContainer() {
   const { api, account } = useContext(AppContext);
   const [config,setConfig] = useState('')
-  // TODO: Cambiar por POST y generar logica de GET OR CREATE
+  
   const handleOnSubmit = (values) => {
       api(GET_TRAFIC_LIGHT_CONFIG, {
         method: "PATCH",

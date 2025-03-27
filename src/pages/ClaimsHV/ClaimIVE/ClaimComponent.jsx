@@ -30,24 +30,23 @@ import FolderZipOutlinedIcon from "@mui/icons-material/FolderZipOutlined";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 
 const CircularItemFilter = ({ status }) => {
-  console.log(status)
   const statusColors = {
     hv_ive_r: "red",
     hv_ive_a: "yellow",
     hv_ive_v: "green",
   };
 
-  const color = statusColors[status] || "white"; // Por defecto, gris si el estado no existe
-  console.log(color)
+  const color = statusColors[status] || "white"; 
   return (
     <>
         <Box
           sx={{
             width: 30,
             height: 30,
-            mt: "10px",
+            mt: "55px",
             borderRadius: "50%",
             backgroundColor: color ? "#B31EA4":"#000",
+            border: "4px solid #fff",
             position: "relative",
           }}
         >
@@ -124,10 +123,9 @@ function ClaimComponent(props) {
         <Box
           sx={{
             width: "80px",
-            backgroundColor: "#fff",
-            border:"2px solid #B31EA4",
-            borderRadius: "15px",
-            mr: "5px",
+            backgroundColor: "#B31EA4",
+            borderTopLeftRadius: "15px",
+            borderBottomLeftRadius: "15px",
             display: "flex",
             justifyContent: "center",
           }}
@@ -141,16 +139,16 @@ function ClaimComponent(props) {
               flexDirection: "row",
               height: "50px",
               width: "100%",
-              backgroundColor: "#FFF",
+              backgroundColor: "#B31EA4",
               alignItems: "center",
-              border:"3px solid #B31EA4",
-              borderRadius:"5px",
+              color:"#fff",
+              borderTopRightRadius: "15px",
             }}
           >
             <Typography sx={{ width: "150px", ml: "70px" }}>RECLAMO</Typography>
             <Typography>ASIGNADO</Typography>
           </Box>
-          <Box sx={{ border: "1px solid #000" }}>
+          <Box sx={{ border: "1px solid #B31EA4",borderBottomRightRadius:"15px" }}>
             <Box
               sx={{
                 display: "flex",

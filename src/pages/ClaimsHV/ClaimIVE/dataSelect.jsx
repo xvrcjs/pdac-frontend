@@ -1,23 +1,8 @@
 export const claim_access = [
-  "Ventanilla Única",
-  "Correo Electronico",
-  "Derivado de otro Organismo",
-  "Reclamo Presencial",
+  "Ventanilla Provincial",
 ];
 export const type_of_claim = [
-  "S/A",
   "IVE",
-  "HV - Por afectacion de derechos de NNyA",
-  "HV - Jubilados o pensionados",
-  "HV - Por estado físico o mental",
-  "HV - Por ruralidad",
-  "HV - Por razones, sociales, económicas o culturales",
-  "HV - Por turista",
-  "HV - Por migrante",
-  "HV - Por colectivo LGTB+",
-  "HV - Por pueblos originarios",
-  "HV - Mayores de 70años",
-  "HV - Otro",
 ];
 export const category = [
   "Sin clasificar",

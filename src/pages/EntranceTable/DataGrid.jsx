@@ -434,7 +434,7 @@ const DataGrid = ({
                               padding: "8px",
                               wordBreak: "break-word",
                               width: index === 0 ? "80px" : "auto",
-                              backgroundColor: "#CCC",
+                              backgroundColor: "#F3F3F3",
                               borderTopLeftRadius: index === 0 ? "30px" : "0px",
                               // borderTopRightRadius: index === 0 ? "30px":"0px",
                               borderBottomLeftRadius:

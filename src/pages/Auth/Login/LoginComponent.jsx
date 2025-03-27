@@ -276,6 +276,8 @@ function LoginComponent(props) {
             "linear-gradient(90deg, #E81F76 0%, #417099 50%, #00AEC3 100%)",
           height: "50px",
           width: "100%",
+          position: "absolute",
+          bottom: "0",
         }}
       />
     </>

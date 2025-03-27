@@ -103,7 +103,7 @@ function WelcomeComponent(props) {
               style={{ height: "50px", width: "50px" }}
             />
             <Typography sx={{ fontWeight: "600", fontSize: "24px" }}>
-              Administrador Dirección Provincia
+              Administrador Dirección Provincial
             </Typography>
             <Typography sx={{ fontWeight: "300", fontSize: "16px" }}>
               Administra los expedientes de manera integral, con seguimiento, asignación, revisión y trazabilidad.
