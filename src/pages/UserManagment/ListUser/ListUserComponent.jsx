@@ -190,9 +190,9 @@ function ListUserComponent(props) {
         <Box
           sx={{
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "right",
             mb: 5,
-            borderRadius: "5px",
+            borderRadius: "5px"
           }}
         >
           <TextField

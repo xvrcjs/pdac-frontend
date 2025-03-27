@@ -173,7 +173,9 @@ function NewUserComponent(props) {
     <Content className="swt-dashboard" isLoaded="true">
       <Box
         sx={{
-          margin: "100px 100px",
+          margin:"auto",
+          marginTop:"80px",
+          width:"80%",
           display: "flex",
           flexDirection: "column",
         }}
@@ -485,6 +487,8 @@ function NewUserComponent(props) {
                 </Box>
               )}
             </Box>
+           {/* TODO: REVISAR */}
+            {rolSelected === "omic" && 
             <Box sx={{ width: "276px",mt:"50px" }}>
               <Button
                 variant="contained"
@@ -515,7 +519,7 @@ function NewUserComponent(props) {
                 <Box className="swt-user-select-content" sx={{
                   display: "flex",
                   flexDirection: "column",
-                  maxHeight:"200px",
+                  maxHeight:"120px",
                   p:"10px 10px"
                 }}>
                   <Box
@@ -542,13 +546,15 @@ function NewUserComponent(props) {
                         m: 0,
                         p: 0,
                         fontSize:"16px",
-                        backgroundColor: "#D9D9D9DE",
                         borderRadius: "50px",
+                        border: "1px solid rgba(61, 62, 64, 0.50)",
+                        background:"#fff",
+                        boxShadow: "0px 4px 4px 0px #00AEC3",
                         "& fieldset": {
                           borderRadius: "15px",
                         },
                         "& input": {
-                          paddingY: "12px",
+                          paddingY: "8px",
                           fontFamily: "Encode Sans",
                         },
                         "& .MuiOutlinedInput-notchedOutline":{
@@ -559,7 +565,7 @@ function NewUserComponent(props) {
                       onChange={handleFilter}
                     />
                   </Box>
-                  <Box sx={{overflow:"auto"}}>
+                  <Box sx={{overflow:"auto",mt:'5px'}}>
                   {omicFiltered.map((omic,index) => (
                     <Typography
                       key={index}
@@ -574,6 +580,7 @@ function NewUserComponent(props) {
                 </Box>
               )}
             </Box>
+            }
             </Box>
             <Box sx={{ width: "360px" }}>
               <Button

@@ -184,7 +184,8 @@ function EditUserComponent(props) {
     <Content className="swt-dashboard" isLoaded="true">
       <Box
         sx={{
-          margin: "100px 100px",
+          margin:"auto",
+          marginTop:"80px",
           display: "flex",
           flexDirection: "column",
         }}
@@ -193,6 +194,7 @@ function EditUserComponent(props) {
           sx={{
             display: "flex",
             flexDirection: "row",
+            justifyContent: "space-between"
           }}
         >
           <Box
@@ -577,6 +579,7 @@ function EditUserComponent(props) {
                   </Box>
                 )}
               </Box>
+              {rolSelected === "omic" && 
               <Box sx={{ width: "276px",mt:"50px" }}>
               <Button
                 variant="contained"
@@ -607,7 +610,7 @@ function EditUserComponent(props) {
                 <Box className="swt-user-select-content" sx={{
                   display: "flex",
                   flexDirection: "column",
-                  maxHeight:"180px",
+                  maxHeight:"120px",
                   p:"10px 10px"
                 }}>
                   <Box
@@ -634,13 +637,15 @@ function EditUserComponent(props) {
                         m: 0,
                         p: 0,
                         fontSize:"16px",
-                        backgroundColor: "#D9D9D9DE",
+                        border: "1px solid rgba(61, 62, 64, 0.50)",
+                        background:"#fff",
+                        boxShadow: "0px 4px 4px 0px #00AEC3",
                         borderRadius: "50px",
                         "& fieldset": {
                           borderRadius: "15px",
                         },
                         "& input": {
-                          paddingY: "12px",
+                          paddingY: "8px",
                           fontFamily: "Encode Sans",
                         },
                         "& .MuiOutlinedInput-notchedOutline":{
@@ -651,7 +656,7 @@ function EditUserComponent(props) {
                       onChange={handleFilter}
                     />
                   </Box>
-                  <Box sx={{overflow:"auto"}}>
+                  <Box sx={{overflow:"auto",mt:'5px'}}>
                   {omicFiltered.map((omic,index) => (
                     <Typography
                       key={index}
@@ -666,6 +671,7 @@ function EditUserComponent(props) {
                 </Box>
               )}
             </Box>
+            }
               </Box>
               <Box sx={{ width: "360px", ml: "30px" }}>
                 <Button
@@ -752,7 +758,7 @@ function EditUserComponent(props) {
                   width: "100%",
                   p: "15px 20px",
                   justifyContent: "space-between",
-                  mb: "5px",
+                  mt: "30px",
                 }}
                 onClick={() => setShowComments(!showComments)}
                 endIcon={
@@ -784,8 +790,8 @@ function EditUserComponent(props) {
                       p: "20px",
                       fontFamily: "Encode Sans",
                       overflow: "scroll !important",
-                      maxHeight: "150px",
-                      height: "150px",
+                      maxHeight: "120px",
+                      height: "120px",
                     },
                     "& .MuiOutlinedInput-notchedOutline": {
                       border: "unset",
@@ -800,27 +806,12 @@ function EditUserComponent(props) {
                   defaultValue=""
                 />
               )}
-            </Box>
-          </Box>
-          <Box sx={{ width: "150px", mt: "150px", ml: "20px" }}>
-            <Stack direction="column" spacing={1} sx={{ alignItems: "center" }}>
-              <MaterialUISwitch
-                name="active"
-                checked={values.active}
-                onChange={handleChange}
-                inputProps={{ "aria-label": "ant design" }}
-              />
-              <Typography>
-                Usuario: {values.active ? "ACTIVO" : "INACTIVO"}
-              </Typography>
-            </Stack>
-          </Box>
-        </Box>
-        <Box
+              <Box
           sx={{
             display: "flex",
             flexDirection: "row",
             justifyContent: "right",
+            mt: "120px",
           }}
         >
           <Button
@@ -875,6 +866,22 @@ function EditUserComponent(props) {
           >
             Guardar cambios
           </Button>
+        </Box>
+            </Box>
+          </Box>
+          <Box sx={{ width: "150px", mt: "150px", ml: "20px" }}>
+            <Stack direction="column" spacing={1} sx={{ alignItems: "center" }}>
+              <MaterialUISwitch
+                name="active"
+                checked={values.active}
+                onChange={handleChange}
+                inputProps={{ "aria-label": "ant design" }}
+              />
+              <Typography>
+                Usuario: {values.active ? "ACTIVO" : "INACTIVO"}
+              </Typography>
+            </Stack>
+          </Box>
         </Box>
       </Box>
       <Dialog
