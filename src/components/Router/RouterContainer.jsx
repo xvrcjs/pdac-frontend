@@ -34,7 +34,7 @@ function RouterContainer() {
                 <Route exact path="*" element={<HomePage />} />
                 <Route
                     exact
-                    path="/home"
+                    path="/inicio"
                     element={<HomePage />}
                 />
                 <Route

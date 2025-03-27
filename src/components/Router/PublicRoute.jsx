@@ -9,7 +9,7 @@ const PublicRoute = () => {
     if(permissions.view_permission){
       return <Navigate to={"/reg-updater/activity-logs"} replace />;
     }else{
-      return <Navigate to={"/home"} replace />;
+      return <Navigate to={"/inicio"} replace />;
     }
   }
 
