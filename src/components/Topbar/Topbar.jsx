@@ -6,7 +6,6 @@ import { tokens } from "../../theme";
 import Navbar from "components/Navbar";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ContactSupportIcon from "@mui/icons-material/ContactSupport";
-import SearchBar from "./SearchComponent";
 import { MenuData } from "./MenuData.ts";
 import ProfileMenuContainer from "components/ProfileMenu";
 import { CANT_CLAIM_HV_IVE } from "constant/endpoints"
@@ -41,7 +40,7 @@ const Item = ({ title, to, icon, colors, isActive, subItems,cantClaim }) => {
               width:"24px",
               borderRadius:"50%",
               textAlign:"center",
-              animation: "blink 1.2s infinite",
+              animation: "blink 0.7s infinite",
               "@keyframes blink": {
                 "100%": { opacity: 1,transform: "scale(1.3)"  }
               }
@@ -70,6 +69,7 @@ const Item = ({ title, to, icon, colors, isActive, subItems,cantClaim }) => {
             flexDirection: "column",
             width: "100%",
             contain: "layout",
+            mr:"10px"
           }}
         >
           <MenuItem
@@ -96,7 +96,9 @@ const Item = ({ title, to, icon, colors, isActive, subItems,cantClaim }) => {
               sx={{
                 position: "fixed",
                 width: "100%",
-                marginTop: "100px",
+                marginTop: "101px",
+                borderRadius: "10px",
+                backgroundColor: "#00AEC3"
               }}
             >
               {subItems.map((subItem, index) => {
@@ -206,10 +208,6 @@ function Topbar(props) {
     location.pathname.substring(1)
   );
 
-  const handleSearch = (searchTerm) => {
-    console.log("Buscando:", searchTerm);
-  };
-
   useEffect(() => {
     const filteredMenu = MenuData.filter((item) =>
       item.rolesAllowed.includes(account["roles"][0].name)
@@ -312,7 +310,6 @@ function Topbar(props) {
           >
             Tablero de gestión administrativa
           </Typography>
-          <SearchBar onSearch={handleSearch} />
         </Box>
         <Menu iconShape="square">
           <Box
@@ -341,6 +338,10 @@ function Topbar(props) {
             backgroundColor: "#fff",
             marginTop: "20px",
             p: "30px",
+            height: '119px',
+            flexDirection: "column",
+            display: "flex",
+            justifyContent: "center"
           }}
         >
           <Typography

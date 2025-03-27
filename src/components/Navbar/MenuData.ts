@@ -3,7 +3,6 @@ type Rol = "Omic" | "Admin" | "Soporte"
 interface Menu{
     title: string;
     path: string;
-    icon: string;
     rolesAllowed?: Rol[];
     subItems?: Menu[];
     headerTitle?: string;
@@ -11,9 +10,8 @@ interface Menu{
 }
 
 export const MenuData:Menu[] = [{
-    title: "Home",
-    path: "home",
-    icon: "",
+    title: "Inicio",
+    path: "inicio",
     rolesAllowed: ["Admin","Omic"],
     headerTitle:"Te damos la bienvenida a tu tablero de gestión administrativa",
     headerSubTitle:"Sed tortor, sed velit ridiculus ipsum pharetra lacus odio gravida augue enim."
@@ -21,54 +19,42 @@ export const MenuData:Menu[] = [{
 ,{
     title: "Mi perfil",
     path: "perfil",
-    icon: "",
     rolesAllowed: ["Admin","Omic"],
     headerTitle:"Toda la información que necesitas, está al alcance de tu mano.",
     headerSubTitle:"Navegá entre las secciones de trabajo de manera intuitiva."
 },{
     title: "Mesa de entrada",
     path: "mesa-de-entrada",
-    icon: "",
     rolesAllowed: ["Admin","Omic"],
     headerTitle:"Te damos la bienvenida a tu Mesa de entrada",
     headerSubTitle:"Acá podras ver los reclamos sin asignar, asignados y filtrarlos por el sistema de semáforos."
 },{
     title: "Archivados",
     path: "archivados",
-    icon: "",
     rolesAllowed: ["Admin","Omic"],
-    subItems: [
-        {
-            title: "Enviados",
-            path: "archivados/enviados",
-            icon: "",
-            rolesAllowed: ["Admin"]
-        }
-    ],
     headerTitle:"Te damos la bienvenida a el archivo de reclamos cerrados",
     headerSubTitle:"Acá podras ver los reclamos cerrados, archivados y tambien podrás reabrirlos."
 },{
     title: "Derivados",
     path: "derivados",
-    icon: "",
     rolesAllowed: ["Admin","Omic"]
 },
 {
     title: "Configuración",
     path: "configuracion",
-    icon: "",
     rolesAllowed: ["Admin"],
     subItems: [
         {
             title: "Sistema de Semáforo",
             path: "configuracion/sistema-de-semaforos",
-            icon: "",
-            rolesAllowed: ["Admin"]
+            rolesAllowed: ["Admin"],
+            headerTitle: "Te damos la bienvenida a el Panel de Configuración",
+            headerSubTitle:"Acá podrás ver los controladores de tiempo del sistema de semáforo y modificar su configuración"
+            
         },
         {
             title: "Datos organismos",
             path: "configuracion/datos-organismos",
-            icon: "",
             rolesAllowed: ["Admin"],
             headerTitle:"Configuración > Datos de organismos",
             headerSubTitle:"Acá podras ver las OMICs cargadas en el sistema y tambien podrás dar de alta una nueva."

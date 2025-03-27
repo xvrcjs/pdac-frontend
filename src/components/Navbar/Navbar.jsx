@@ -11,28 +11,48 @@ import Cookies from "js-cookie";
 import { MenuData } from "./MenuData.ts";
 import GridViewIcon from "@mui/icons-material/GridView";
 import CircleIcon from '@mui/icons-material/Circle';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';import FolderOutlinedIcon from '@mui/icons-material/FolderOutlined';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import IosShareRoundedIcon from '@mui/icons-material/IosShareRounded';
+import TrafficRoundedIcon from '@mui/icons-material/TrafficRounded';
+import ApartmentRoundedIcon from '@mui/icons-material/ApartmentRounded';
 
-const Item = ({ title, to, icon, colors, isActive, subItems }) => {
-  const iconPath = `../../icons/${icon}.svg`;
+const Item = ({ index,title, to, colors, isActive, subItems,isOpen, setOpenSubMenu }) => {
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
 
-  const handleTo = () => {
-    navigate(to);
+  const handleToggle = () => {
+    setOpenSubMenu(prev => (prev === index ? null : index)); 
   };
+
+  const handleNavigation = (path) => {
+    navigate(path);
+    setOpenSubMenu(null); 
+  };
+  const handleIcon = (icon) => {
+    const icons = {
+      "/inicio": <HomeOutlinedIcon sx={{ marginRight: "10px" }} />,
+      "/perfil": <PersonOutlineOutlinedIcon sx={{ marginRight: "10px" }} />,
+      "/mesa-de-entrada": <GridViewIcon sx={{ marginRight: "10px" }} />,
+      "/archivados": <FolderOutlinedIcon sx={{ marginRight: "10px" }} />,
+      "/derivados": <IosShareRoundedIcon sx={{ marginRight: "10px" }} />,
+      "/configuracion": <SettingsOutlinedIcon sx={{ marginRight: "10px" }} />,
+      "configuracion/sistema-de-semaforos": <TrafficRoundedIcon sx={{ marginRight: "10px" }} />,
+      "configuracion/datos-organismos": <ApartmentRoundedIcon sx={{ marginRight: "10px" }} />
+    }
+    return icons[icon]
+  }
   return (
     <>
       <MenuItem
         active={isActive}
         className="swt-navbar-links"
-        // onClick={() => handleTo()}
-        component={!subItems && <Link to={to} />}
+        component={!subItems && <Link to={to} sx={{cursor:"pointer"}} onClick={()=>navigate(to)}/>}
         rel="noopener noreferrer"
       >
         <div className="swt-navbar-links-content">
-          {/* <img src={iconPath} alt={title} className="swt-navbar-icon" /> */}
-          <Box sx={{ display: "flex", alignItems: "center" }} onClick={()=>navigate(to)}>
-            <GridViewIcon sx={{ marginRight: "10px" }} />
+          <Box sx={{ display: "flex", alignItems: "center" }} >
+            {handleIcon(to)}
             <Typography
               className="swt-navbar-links-title"
               color={isActive ? "#fff" : ""}
@@ -41,7 +61,7 @@ const Item = ({ title, to, icon, colors, isActive, subItems }) => {
             </Typography>
           </Box>
           {subItems && (
-            <IconButton onClick={() => setIsOpen(!isOpen)}>
+            <IconButton onClick={handleToggle}>
               {isOpen ? (
                 <KeyboardArrowUpIcon sx={{ color: "#fff" }} />
               ) : (
@@ -50,27 +70,27 @@ const Item = ({ title, to, icon, colors, isActive, subItems }) => {
             </IconButton>
           )}
         </div>
+        {isOpen && subItems && (
+          <Box sx={{background:"#00AEC3",width:"100%",position:"absolute",zIndex:"100",borderRadius:"10px",left:"0",marginTop: "6px"}} >
+            {subItems.map((subItem, index) => (
+              <MenuItem
+                key={index}
+                active={location.pathname === `/${subItem.path}`}
+                sx={{fontSize:"10px"}}
+                className="swt-navbar-sub-links"
+                onClick={() => handleNavigation(subItem.path)}
+              >
+                <Box sx={{ display: "flex", alignItems: "center"}}>
+                  {handleIcon(subItem.path)}
+                  <Typography className="swt-navbar-sub-links-title">
+                    {subItem.title}
+                  </Typography>
+                </Box>
+              </MenuItem>
+            ))}
+          </Box>
+        )}
       </MenuItem>
-      {isOpen && subItems && (
-        <Box>
-          {subItems.map((subItem, index) => (
-            <MenuItem
-              key={index}
-              active={location.pathname === `/${subItem.path}`}
-              sx={{fontSize:"10px"}}
-              className="swt-navbar-sub-links"
-              onClick={() => navigate(subItem.path)}
-            >
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <CircleIcon sx={{ marginRight: "10px",width:"10px" }} />
-                <Typography className="swt-navbar-sub-links-title">
-                  {subItem.title}
-                </Typography>
-              </Box>
-            </MenuItem>
-          ))}
-        </Box>
-      )}
     </>
   );
 };
@@ -80,6 +100,7 @@ function Navbar(props) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { isNavbarCollapsed, setIsNavbarCollapsed } = props;
+  const [openSubMenu, setOpenSubMenu] = useState(null);
   const { account } = useContext(AppContext);
   const [currentPath, setCurrentPath] = useState("");
   const mode = Cookies.get("theme");
@@ -101,7 +122,7 @@ function Navbar(props) {
     <>
       <div className={`swt-navbar ${isNavbarCollapsed ? "collapsed" : ""}`}>
         <Box className="swt-navbar-logo">
-          <a href="/home" style={{display: "flex", justifyContent:"center", alignItems:"center"}}>
+          <a href="/inicio" style={{display: "flex", justifyContent:"center", alignItems:"center"}}>
               <img
                 alt="logo"
                 src={`../../logo.svg`}
@@ -111,29 +132,24 @@ function Navbar(props) {
               />
           </a>
         </Box>
-        <Menu iconShape="square">
-          <Box sx={{ backgroundColor: "#00AEC3" }}>
+        <Menu iconShape="square" className="swt-navbar-content">
             {navMenuData.map((elem, index) => {
-              const isActive = location.pathname === `/${elem.path}`
+              // const isActive = location.pathname === `/${elem.path}`
+              const isActive = location.pathname.startsWith(`/${elem.path}`);
               return (
                 <Item
                   key={index}
+                  index={index}
                   title={elem.title}
                   to={`/${elem.path}`}
-                  icon={
-                    isActive
-                      ? mode === "dark"
-                        ? elem.icon + "-Active-Dark"
-                        : elem.icon + "-Active-Light"
-                      : elem.icon + "-Default"
-                  }
                   isActive={isActive}
                   colors={colors}
                   subItems={elem.subItems}
+                  isOpen={openSubMenu === index}
+                  setOpenSubMenu={setOpenSubMenu}
                 />
               );
             })}
-          </Box>
         </Menu>
       </div>
     </>

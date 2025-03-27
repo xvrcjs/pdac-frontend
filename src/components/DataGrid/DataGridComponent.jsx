@@ -354,44 +354,50 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit,hasFilter,noDataMes
         )}
         </tbody>
       </table>
-      <Box
-        className="data-table-pagination"
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          marginTop: "10px",
-          justifyContent: "right",
-        }}
-      >
-        <IconButton
-          className="btn btn-secondary"
-          disabled={currentPage === 1}
-          onClick={() => handlePageChange(currentPage - 1)}
+      {totalPages > 1 && 
+        <Box
+          className="data-table-pagination"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            marginTop: "10px",
+            justifyContent: "right",
+          }}
         >
-          <KeyboardArrowLeftIcon sx={{color:"#000"}}/>
-        </IconButton>
-
-        {[...Array(totalPages)].map((_, index) => (
-          <button
-            key={index}
-            className={`btn ${
-              currentPage === index + 1 ? "btn-primary" : "btn-secondary"
-            }`}
-            onClick={() => handlePageChange(index + 1)}
-            style={{ margin: "0 5px" }}
-          >
-            {index + 1}
-          </button>
-        ))}
-
-        <IconButton
-          className="btn btn-secondary"
-          disabled={currentPage === totalPages}
-          onClick={() => handlePageChange(currentPage + 1)}
-        >
-          <KeyboardArrowRightIcon sx={{color:"#000"}}/>
-        </IconButton>
-      </Box>
+          {currentPage !== 1 && (
+            <IconButton
+              className="btn btn-secondary"
+              onClick={() => handlePageChange(currentPage - 1)}
+            >
+              <KeyboardArrowLeftIcon
+                sx={{ color: "#000", cursor: "pointer" }}
+              />
+            </IconButton>
+          )}
+          {[...Array(totalPages)].map((_, index) => (
+            <button
+              key={index}
+              className={`btn ${
+                currentPage === index + 1 ? "btn-primary" : "btn-secondary"
+              }`}
+              onClick={() => handlePageChange(index + 1)}
+              style={{ margin: "0 5px", cursor: "pointer" }}
+            >
+              {index + 1}
+            </button>
+          ))}
+          {currentPage !== totalPages && (
+            <IconButton
+              className="btn btn-secondary"
+              onClick={() => handlePageChange(currentPage + 1)}
+            >
+              <KeyboardArrowRightIcon
+                sx={{ color: "#000", cursor: "pointer" }}
+              />
+            </IconButton>
+          )}
+        </Box>
+        }
     </Box>
   );
 };

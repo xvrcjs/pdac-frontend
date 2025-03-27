@@ -1,10 +1,7 @@
 import React, {useContext} from "react";
 import "./ProfileMenuStyles.scss";
 import { Typography , useTheme} from "@mui/material";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Divider from "@mui/material/Divider";
+import { Menu, MenuItem, ListItemIcon,Divider } from "@mui/material";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 
@@ -34,11 +31,12 @@ function ProfileMenuComponent(props) {
       sx= {{
         overflow:"hidden",
         filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-        mt: 3,
+        mt: 4,
         ml: -2,
         "& .MuiPaper-root": {
           minWidth: 180,
           borderRadius: 0,
+          borderRadius:"10px",
         },
         "& .MuiAvatar-root": {
           width: '100%',
@@ -69,7 +67,7 @@ function ProfileMenuComponent(props) {
         <ListItemIcon>
           <Logout  fontSize="small" />
         </ListItemIcon>
-        Salir
+        Cerrar sesión
       </MenuItem>
     </Menu>
   );

@@ -44,13 +44,6 @@ export const MenuData:Menu[] = [{
             headerTitle:"Te damos la bienvenida a tu tablero de gestión administrativa",
             headerSubTitle:"A continuación podrás ver el listado general de usuarios."
         },
-        {
-            title: "Configuracion de roles",
-            path: "gestion-de-usuarios/editar-usuario/:id",
-            rolesAllowed: ["Admin"],
-            headerTitle:"Datos del usuario",
-            headerSubTitle:"Modifique los datos, seleccione el tipo de rol y accesos que tendrá este usuario."
-        }
     ],
     show: true,
 },
@@ -68,6 +61,14 @@ export const MenuData:Menu[] = [{
     rolesAllowed: ["Admin","Omic"],
     headerTitle: "Vista del reclamo",
     headerSubTitle:"Acá podras ver toda la información del reclamo, sus movimientos, actividades",
+    show: false,
+},
+{
+    title: "Reclamo IVE",
+    path: "reclamos-hv/reclamo-ive/:id",
+    rolesAllowed: ["Admin","Omic"],
+    headerTitle: "Te damos la bienvenida a tu Mesa de entrada",
+    headerSubTitle:"Acá podras ver los reclamos sin asignar, asignados y filtrarlos por el sistema de semáforos.",
     show: false,
 }
 ]

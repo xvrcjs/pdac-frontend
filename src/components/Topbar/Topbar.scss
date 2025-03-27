@@ -74,7 +74,6 @@
             left: 0;
             top: 100%;
             z-index: 10;
-            background-color: #272727;
             
             &-title{
                 color: #fff;
@@ -84,8 +83,12 @@
                 box-shadow: none !important;
             }
             &.ps-active  &-title{
-                color: #02ABC1;
+                color: #fff;
             }
+        }
+        &-sub-item:hover{
+            background-color: #E81F76;
+            border-radius: 10px;
         }
     }
 }
