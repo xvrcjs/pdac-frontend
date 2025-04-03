@@ -23,6 +23,7 @@ import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined
 import { useFormik } from "formik";
 import { SINGIN_ENDPOINT } from "constant/endpoints";
 import { Link } from "react-router-dom";
+import Grid from "@mui/material/Grid2";
 
 function LoginComponent(props) {
   const theme = useTheme();
@@ -83,20 +84,33 @@ function LoginComponent(props) {
   };
 
   return (
-    <>
-      <Box
+    <Grid
+      container
+      spacing={2}
+      >
+      <Grid
+        container
+        spacing={10}
         sx={{
           display: "flex",
           flexDirection: "row",
-          padding: "40px",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          height:"100%",
+          p:"40px"
         }}
       >
-        <Box sx={{ width: "50%" }}>
+        <Grid 
+          item="true"
+          size={{ xs: 12, sm: 6, md: 6 }} 
+          sx={{minWidth: "300px", height: "auto"}}
+          >
           <Box sx={{ width: "80%" }}>
             <img
               alt="logo-pba"
               src="../../logo-pba.png"
-              style={{ height: "100px", width: "auto" }}
+              style={{ height: "auto", width: "250px" }}
             />
             <h1>
               <span style={{ color: "#00AEC3" }}>Inicio de sesión</span> de
@@ -110,7 +124,7 @@ function LoginComponent(props) {
               de la <span style={{ color: "#00AEC3" }}>Provincia de Buenos Aires.</span>
             </h1>
           </Box>
-          <Box sx={{ width: "350px", marginTop: "80px" }}>
+          <Box sx={{ maxWidth: "386px", marginTop: "80px" }}>
             <form onSubmit={handleSubmit} className="form-login">
               <Box sx={{ marginBottom: "20px" }}>
                 <Typography
@@ -263,24 +277,22 @@ function LoginComponent(props) {
               </Button>
             </form>
           </Box>
-        </Box>
-        <img
-          alt="item-2"
-          src={`../../assets/login/img-2.png`}
-          style={{ height: "800px", borderRadius: "20px" }}
-        />
-      </Box>
-      <Box
-        sx={{
-          background:
-            "linear-gradient(90deg, #E81F76 0%, #417099 50%, #00AEC3 100%)",
-          height: "50px",
-          width: "100%",
-          position: "absolute",
-          bottom: "0",
-        }}
+        </Grid>
+        <Grid item="true"
+          size={{ xs: 12, sm: 6, md: 6 }} >
+          <img
+            alt="item-2"
+            src={`../../assets/login/img-2.png`}
+            style={{ width:"100%",height: "auto", borderRadius: "20px" }}
+          />
+        </Grid>
+      </Grid>
+      <img 
+        src={`../../footer.png`} 
+        alt="footer"
+        style={{width: "100%"}}
       />
-    </>
+    </Grid>
   );
 }
 

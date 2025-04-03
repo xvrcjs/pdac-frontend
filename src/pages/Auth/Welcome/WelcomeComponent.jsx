@@ -5,7 +5,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-
+import Grid from "@mui/material/Grid2";
 import { tokens } from "theme";
 import "./WelcomeStyles.scss";
 import "utils/MainStyles.scss";
@@ -25,29 +25,33 @@ function WelcomeComponent(props) {
           height: "50px",
           width: "100%",
         }}
-      ></Box>
-      <Box sx={{ backgroundColor: "#fff", padding: "50px",paddingBottom:"0px" }}>
-        <a href="/">
-          <img
-            alt="logo"
-            src={`../../logo.svg`}
-            style={{ height: "70px", marginTop: "20px" }}
-          />
-        </a>
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
-          <Box
+      />
+      <a href="/">
+        <img
+          alt="logo"
+          src={`../../logo.svg`}
+          style={{ maxWidth:"300px",height: "auto", marginTop: "50px",marginLeft:"50px" }}
+        />
+      </a>
+      <Grid container sx={{ padding: "50px",paddingBottom:"0px" }}>
+        <Grid 
+          container 
+          spacing={3}
+          sx={{ display: "flex", flexDirection: "row",width: "100%", }}
+        >
+          <Grid
+            item="true" 
+            size={{ xs: 12, sm: 6, md: 6 }}
             sx={{
               display: "flex",
               flexDirection: "column",
-              width: "50%",
             }}
           >
             <Typography
               sx={{
                 fontFamily: "Encode Sans",
-                fontSize: "35px",
+                fontSize: "3rem",
                 fontWeight: "700",
-                marginTop: "60px",
               }}
             >
               Te damos la <span style={{ color: "#00AEC3" }}>bienvenida</span>.
@@ -56,7 +60,7 @@ function WelcomeComponent(props) {
               sx={{
                 minWidth: "50%",
                 fontFamily: "Encode Sans",
-                fontSize: "25px",
+                fontSize: "32px",
                 fontWeight: "500",
                 marginTop: "70px",
               }}
@@ -69,28 +73,38 @@ function WelcomeComponent(props) {
                 fontFamily: "Encode Sans",
                 fontWeight: "300",
                 mt: "20px",
-                width: "70%",
+                maxWidth: "530px",
               }}
             >
               Inicia sesión para acceder a un sistema intuitivo que te permitirá gestionar tus expedientes de manera rápida y efectiva. 
             </Typography>
-          </Box>
-          <img
-            alt="img-1"
-            src={`../../assets/login/img-1.png`}
-            style={{ height: "480px", width: "634px" }}
-          />
-        </Box>
-        <Box
+          </Grid>
+          <Grid
+            item="true"
+            size={{ xs: 12, sm: 6, md: 6 }}
+            sx={{ display: "flex", flexDirection: "row" }}
+          >
+            <img
+              alt="img-1"
+              src={`../../assets/login/img-1.png`}
+              style={{  width: "100%" ,height: "auto"}}
+            />
+          </Grid>
+          </Grid>
+        <Grid
+          container
           sx={{
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
+            mt:"30px"
           }}
         >
-          <Box
+          <Grid
+            item="true"
+            size={{ xs: 12, sm: 4, md: 4 }}
             sx={{
-              p: "40px",
+              p: "20px",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
@@ -100,7 +114,7 @@ function WelcomeComponent(props) {
             <img
               alt="item-1"
               src={`../../assets/login/item-1.svg`}
-              style={{ height: "50px", width: "50px" }}
+              style={{ height: "auto", maxWidth: "50px" }}
             />
             <Typography sx={{ fontWeight: "600", fontSize: "24px" }}>
               Administrador Dirección Provincial
@@ -129,10 +143,12 @@ function WelcomeComponent(props) {
             >
               Iniciar sesión
             </Button>
-          </Box>
-          <Box
+          </Grid>
+          <Grid
+            item="true"
+            size={{ xs: 12, sm: 4, md: 4 }}
             sx={{
-              p: "40px",
+              p: "20px",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
@@ -142,7 +158,7 @@ function WelcomeComponent(props) {
             <img
               alt="item-1"
               src={`../../assets/login/item-2.svg`}
-              style={{ height: "50px", width: "50px" }}
+              style={{ height: "auto", maxWidth: "50px" }}
             />
             <Typography sx={{ fontWeight: "700", fontSize: "24px" }}>
               Administrador OMIC
@@ -171,10 +187,12 @@ function WelcomeComponent(props) {
             >
               Iniciar sesión
             </Button>
-          </Box>
-          <Box
+          </Grid>
+          <Grid
+            item="true"
+            size={{ xs: 12, sm: 4, md: 4 }}
             sx={{
-              p: "40px",
+              p: "20px",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
@@ -184,7 +202,7 @@ function WelcomeComponent(props) {
             <img
               alt="item-1"
               src={`../../assets/login/item-3.svg`}
-              style={{ height: "50px", width: "50px" }}
+              style={{ height: "auto", maxWidth:"50px" }}
             />
             <Typography sx={{ fontWeight: "700", fontSize: "24px" }}>
               Usuario de soporte Dirección Provincial
@@ -213,9 +231,9 @@ function WelcomeComponent(props) {
             >
               Iniciar sesión
             </Button>
-          </Box>
-        </Box>
-      </Box>
+          </Grid>
+        </Grid>
+      </Grid>
       <div style={{display:"flex"}}>
         <img
           src={`../../footer.png`} 
