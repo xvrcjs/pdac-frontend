@@ -3,15 +3,12 @@ import { Outlet } from 'react-router-dom';
 import NavbarLayout from "../Navbar";
 import TopbarLayout from "../Topbar";
 import "./LayoutStyles.scss";
-import { useTheme,Box} from "@mui/material";
-import {tokens } from "../../theme";
 import { AppContext } from "context/AppContext.js";
 
 
 function Layout({title}) {
   const [isNavbarCollapsed, setIsNavbarCollapsed] = useState(false);
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const [navMenuData, setNavMenuData] = useState([]);
   const { account,setAccount,api } = useContext(AppContext);
 
   return (
@@ -22,7 +19,12 @@ function Layout({title}) {
         account={account}
         api={api}
         setAccount={setAccount}
-      />    
+      /> 
+      <NavbarLayout 
+        api={api} 
+        navMenuData={navMenuData} 
+        setNavMenuData={setNavMenuData}
+      />
       <div className={`swt-layout-content ${isNavbarCollapsed ? "collapsed" : ""}`}>
         <Outlet />
       </div>
@@ -30,7 +32,7 @@ function Layout({title}) {
         <img
           src={`../../footer.png`} 
           alt="footer"
-          style={{width: "100%"}}
+          style={{width: "100%",backgroundColor:"#fff"}}
         />
       </div>
     </main>

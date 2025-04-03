@@ -1,224 +1,19 @@
 import { useEffect, useState } from "react";
-import { Box, IconButton, Typography, useTheme,Avatar } from "@mui/material";
-import { Menu, MenuItem } from "react-pro-sidebar";
+import { Box, IconButton, Typography,Avatar } from "@mui/material";
 import "./Topbar.scss";
-import { tokens } from "../../theme";
-import Navbar from "components/Navbar";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ContactSupportIcon from "@mui/icons-material/ContactSupport";
-import { MenuData } from "./MenuData.ts";
 import ProfileMenuContainer from "components/ProfileMenu";
-import { CANT_CLAIM_HV_IVE } from "constant/endpoints"
+import Grid from "@mui/material/Grid2";
 
-const Item = ({ title, to, icon, colors, isActive, subItems,cantClaim }) => {
-  const iconPath = `../../icons/${icon}.svg`;
-  const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
-
-
-  const handleTo = () => {
-    navigate(to);
-  };
-  let location = useLocation();
-
-  return (
-    <>
-      {!subItems ? (
-        <MenuItem
-          active={isActive}
-          className={`swt-topbar-links ${title === "Reclamos HV" ? "nav-hv":""}`}
-          onClick={() => handleTo()}
-          component={<Link to={to} />}
-          rel="noopener noreferrer"
-        >
-          {(title === "Reclamos HV") && (cantClaim > 0) && 
-            <Box sx={{
-              position:"absolute",
-              top:"-10px",
-              right:"15px",
-              background:"#B31EA4", 
-              width:"24px",
-              borderRadius:"50%",
-              textAlign:"center",
-              animation: "blink 0.7s infinite",
-              "@keyframes blink": {
-                "100%": { opacity: 1,transform: "scale(1.3)"  }
-              }
-            }}>
-              <Typography sx={{fontSize:"15px"}} >{cantClaim}</Typography>
-            </Box>
-          }
-          <div className="swt-topbar-links-content">   
-            <Box
-              sx={{ display: "flex", alignItems: "center" }}
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              <Typography
-                className="swt-topbar-links-title"
-                color={isActive ? "#fff" : ""}
-              >
-                {title}
-              </Typography>
-            </Box>
-          </div>
-        </MenuItem>
-      ) : (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            width: "100%",
-            contain: "layout",
-            mr:"10px"
-          }}
-        >
-          <MenuItem
-            active={isActive}
-            className="swt-topbar-links"
-            onClick={() => {
-              setIsOpen(!isOpen);
-            }}
-            rel="noopener noreferrer"
-          >
-            <div className="swt-topbar-links-content">
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Typography
-                  className="swt-topbar-links-title"
-                  color={isActive ? "#fff" : ""}
-                >
-                  {title}
-                </Typography>
-              </Box>
-            </div>
-          </MenuItem>
-          {isOpen && subItems && (
-            <Box
-              sx={{
-                position: "fixed",
-                width: "100%",
-                marginTop: "101px",
-                borderRadius: "10px",
-                backgroundColor: "#00AEC3"
-              }}
-            >
-              {subItems.map((subItem, index) => {
-                const isEditUserRoute = subItem.path.startsWith('gestion-de-usuarios/editar-usuario');
-                return (
-                  <MenuItem
-                    key={index}
-                    active={subItem.path === location.pathname.substring(1)}
-                    className="swt-topbar-links-sub-item"
-                    onClick={() => {
-                      if (!isEditUserRoute) {
-                        navigate(subItem.path);
-                        setIsOpen(!isOpen)
-                      }
-                    }}
-                  >
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <Typography
-                        sx={{ fontFamily: "Encode Sans" }}
-                        className="swt-topbar-links-sub-item-title"
-                      >
-                        {subItem.title}
-                      </Typography>
-                    </Box>
-                  </MenuItem>
-                );
-              })}
-            </Box>
-          )}
-        </Box>
-      )}
-    </>
-  );
-};
-
-const getHeaders = (menu, navMenu, path) => {
-  const matchRoute = (itemPath, currentPath) => {
-    const regex = new RegExp(`^${itemPath.replace(/:\w+/g, "[a-zA-Z0-9-]+")}$`);
-    return regex.test(currentPath);
-  };
-
-  for (let item of menu) {
-    if (matchRoute(item.path, path)) {
-      return {
-        headerTitle: item.headerTitle || "Título no encontrado",
-        headerSubTitle: item.headerSubTitle || "Subtítulo no encontrado",
-      };
-    }
-
-    if (item.subItems) {
-      const foundSubItem = item.subItems.find((subItem) =>
-        matchRoute(subItem.path, path)
-      );
-      if (foundSubItem) {
-        return {
-          headerTitle: foundSubItem.headerTitle || "Título no encontrado",
-          headerSubTitle:
-            foundSubItem.headerSubTitle || "Subtítulo no encontrado",
-        };
-      }
-    }
-  }
-
-  for (let item of navMenu) {
-    if (matchRoute(item.path, path)) {
-      return {
-        headerTitle: item.headerTitle || "Título no encontrado",
-        headerSubTitle: item.headerSubTitle || "Subtítulo no encontrado",
-      };
-    }
-
-    if (item.subItems) {
-      const foundSubItem = item.subItems.find((subItem) =>
-        matchRoute(subItem.path, path)
-      );
-      if (foundSubItem) {
-        return {
-          headerTitle: foundSubItem.headerTitle || "Título no encontrado",
-          headerSubTitle:
-            foundSubItem.headerSubTitle || "Subtítulo no encontrado",
-        };
-      }
-    }
-  }
-  return {
-    headerTitle: "Título no encontrado",
-    headerSubTitle: "Subtítulo no encontrado",
-  };
-};
 
 function Topbar(props) {
   const { isNavbarCollapsed, account,setAccount,api } = props;
-  const [menu, setMenu] = useState([]);
-  const [navMenuData, setNavMenuData] = useState([]);
   const [currentPath, setCurrentPath] = useState("");
   const [isMenuOpen, setMenuOpen] = useState(false)
-  const [cantClaim,setCantClaim] = useState(0)
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
 
   let location = useLocation();
-
-  const { headerTitle, headerSubTitle } = getHeaders(
-    menu,
-    navMenuData,
-    location.pathname.substring(1)
-  );
-
-  useEffect(() => {
-    const filteredMenu = MenuData.filter((item) =>
-      item.rolesAllowed.includes(account["roles"][0].name)
-    );
-    setMenu(filteredMenu);
-    api(CANT_CLAIM_HV_IVE).then(({ ok, body }) => {
-          if (ok) {
-            setCantClaim(body.data.total_claims_hv);
-          }
-        });
-  }, []);
 
   useEffect(() => {
     const currentPath = location.pathname.split("/")[1];
@@ -226,9 +21,30 @@ function Topbar(props) {
   }, [location]);
 
   return (
-    <Box className="swt-topbar">
-      <Navbar navMenuData={navMenuData} setNavMenuData={setNavMenuData} />
-      <Box sx={{ width: "100%", p: "10px" }}>
+    <Grid 
+    container 
+    spacing={2} 
+    className="swt-topbar">
+      <Grid 
+      item="true" 
+      size={{ xs: 12, sm: 3, md: 3 }}
+      sx={{p:"10px",display: "flex",flexDirection: "column",alignItems: "center",justifyContent:"end"}}
+      >
+        <a href="/inicio" >
+            <img
+              alt="logo"
+              src={`../../logo.svg`}
+              style={{
+                width:"100%",
+                maxHeight:"140px",
+              }}
+            />
+        </a>
+        </Grid>
+      <Grid 
+      item="true"  
+      size={{ xs: 12, sm: 9, md: 9 }}
+      sx={{ width: "100%", p: "10px" }}>
         <Box
           sx={{
             justifyContent: "right",
@@ -311,52 +127,8 @@ function Topbar(props) {
             Tablero de gestión administrativa
           </Typography>
         </Box>
-        <Menu iconShape="square">
-          <Box
-            sx={{ display: "flex", flexDirection: "row", marginTop: "20px" }}
-          >
-            {menu.map((elem, index) => {
-              const isActive = elem.path.split("/")[0] === currentPath;
-              if (!elem.show) return null;
-              return (
-                <Item
-                  key={index}
-                  title={elem.title}
-                  to={`/${elem.path}`}
-                  isActive={isActive}
-                  colors={colors}
-                  subItems={elem.subItems}
-                  cantClaim={cantClaim}
-                />
-              );
-            })}
-          </Box>
-        </Menu>
-        <Box
-          sx={{
-            borderRadius: "20px",
-            backgroundColor: "#fff",
-            marginTop: "20px",
-            p: "30px",
-            height: '119px',
-            flexDirection: "column",
-            display: "flex",
-            justifyContent: "center"
-          }}
-        >
-          <Typography
-            sx={{ fontFamily: "Encode Sans", fontWeight: "600", fontSize: "22px" }}
-          >
-            {headerTitle}
-          </Typography>
-          <Typography
-            sx={{ fontFamily: "Encode Sans", fontWeight: "300", fontSize: "16px" }}
-          >
-            {headerSubTitle}
-          </Typography>
-        </Box>
-      </Box>
-    </Box>
+      </Grid>
+    </Grid>
   );
 }
 

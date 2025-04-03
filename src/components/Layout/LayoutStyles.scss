@@ -6,6 +6,8 @@
   .swt-layout-content {
     transition: margin-left 0.5s;
     // overflow: auto;
+    background-color: #fff;
+    margin-top: 10px;
     height: auto;
     &.collapsed{
       margin-left: 130px;;

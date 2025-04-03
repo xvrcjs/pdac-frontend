@@ -7,58 +7,68 @@ interface Menu{
     subItems?: Menu[];
     headerTitle?: string;
     headerSubTitle?: string;
+    show?: boolean;
 }
 
 export const MenuData:Menu[] = [{
-    title: "Inicio",
-    path: "inicio",
-    rolesAllowed: ["Admin","Omic"],
-    headerTitle:"Te damos la bienvenida a tu tablero de gestión administrativa",
-    headerSubTitle:"Sed tortor, sed velit ridiculus ipsum pharetra lacus odio gravida augue enim."
-},
-,{
-    title: "Mi perfil",
-    path: "perfil",
-    rolesAllowed: ["Admin","Omic"],
-    headerTitle:"Toda la información que necesitas, está al alcance de tu mano.",
-    headerSubTitle:"Navegá entre las secciones de trabajo de manera intuitiva."
-},{
     title: "Mesa de entrada",
     path: "mesa-de-entrada",
     rolesAllowed: ["Admin","Omic"],
-    headerTitle:"Te damos la bienvenida a tu Mesa de entrada",
-    headerSubTitle:"Acá podras ver los reclamos sin asignar, asignados y filtrarlos por el sistema de semáforos."
-},{
-    title: "Archivados",
-    path: "archivados",
-    rolesAllowed: ["Admin","Omic"],
-    headerTitle:"Te damos la bienvenida a el archivo de reclamos cerrados",
-    headerSubTitle:"Acá podras ver los reclamos cerrados, archivados y tambien podrás reabrirlos."
-},{
-    title: "Derivados",
-    path: "derivados",
-    rolesAllowed: ["Admin","Omic"]
+    headerTitle: "Te damos la bienvenida a tu Mesa de entrada",
+    headerSubTitle: "Acá podras ver los reclamos sin asignar, asignados y filtrarlos por el sistema de semáforos.",
+    show: true,
 },
-{
-    title: "Configuración",
-    path: "configuracion",
+,{
+    title: "Reclamos HV",
+    path: "reclamos-hv",
+    rolesAllowed: ["Admin","Omic"],
+    headerTitle: "Te damos la bienvenida a tu Mesa de reclamos Hiper Vulnerables",
+    headerSubTitle:"Acá podras ver los reclamos y sus diferentes estados.",
+    show: true,
+},{
+    title: "Gestión de usuarios",
+    path: "gestion-de-usuarios",
     rolesAllowed: ["Admin"],
-    subItems: [
+    subItems:[
         {
-            title: "Sistema de Semáforo",
-            path: "configuracion/sistema-de-semaforos",
+            title: "Crear nuevo usuario",
+            path: "gestion-de-usuarios/crear-usuario",
             rolesAllowed: ["Admin"],
-            headerTitle: "Te damos la bienvenida a el Panel de Configuración",
-            headerSubTitle:"Acá podrás ver los controladores de tiempo del sistema de semáforo y modificar su configuración"
-            
+            headerTitle:"Datos del usuario",
+            headerSubTitle:"Modifique los datos, seleccione el tipo de rol y accesos que tendrá este usuario."
         },
         {
-            title: "Datos organismos",
-            path: "configuracion/datos-organismos",
+            title: "Listado general de usuarios",
+            path: "gestion-de-usuarios/listado-de-usuarios",
             rolesAllowed: ["Admin"],
-            headerTitle:"Configuración > Datos de organismos",
-            headerSubTitle:"Acá podras ver las OMICs cargadas en el sistema y tambien podrás dar de alta una nueva."
-        }
+            headerTitle:"Te damos la bienvenida a tu tablero de gestión administrativa",
+            headerSubTitle:"A continuación podrás ver el listado general de usuarios."
+        },
     ],
+    show: true,
+},
+{
+    title: "Estandares y protocolos",
+    path: "estandares-y-protocolos",
+    rolesAllowed: ["Admin","Omic"],
+    headerTitle: "Te damos la bienvenida a tu Biblioteca de estándares y protocolos",
+    headerSubTitle:"Acá podrás consultar y descargar la información que necesites",
+    show: false,
+},
+{
+    title: "Reclamo",
+    path: "mesa-de-entrada/reclamo/:id",
+    rolesAllowed: ["Admin","Omic"],
+    headerTitle: "Vista del reclamo",
+    headerSubTitle:"Acá podras ver toda la información del reclamo, sus movimientos, actividades",
+    show: false,
+},
+{
+    title: "Reclamo IVE",
+    path: "reclamos-hv/reclamo-ive/:id",
+    rolesAllowed: ["Admin","Omic"],
+    headerTitle: "Te damos la bienvenida a tu Mesa de entrada",
+    headerSubTitle:"Acá podras ver los reclamos sin asignar, asignados y filtrarlos por el sistema de semáforos.",
+    show: false,
 }
 ]
