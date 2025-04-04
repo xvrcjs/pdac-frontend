@@ -144,7 +144,7 @@ const Item = ({ title, to, isActive, subItems, cantClaim }) => {
             title === "Reclamos HV" ? "nav-hv" : ""
           }`}
           onClick={() => handleTo()}
-          component={<Link to={to} />}
+          component={<Link to={to} sx={{height:"30px !important"}} />}
           rel="noopener noreferrer"
         >
           {title === "Reclamos HV" && cantClaim > 0 && (
@@ -370,9 +370,9 @@ function Navbar(props) {
           </Menu>
         </Grid>
         <Grid
-          item="true"
+          item
           size={{ xs: 12, sm: 9, md: 9 }}
-          sx={{ height: "auto" }}
+          sx={{ display: "flex", flexDirection: "column"}}
         >
           <Grid item="true" size={{ xs: 12, sm: 12, md: 12 }}>
             <Menu iconShape="square">
@@ -402,18 +402,16 @@ function Navbar(props) {
             </Menu>
           </Grid>
           <Grid
-            item="true"
-            size={{ xs: 12, sm: 12, md: 12 }}
+            item
+            size={{ xs: 12 }}
             sx={{
               borderRadius: "20px",
               backgroundColor: "#fff",
-              marginTop: "20px",
               p: "30px",
-              flexDirection: "column",
+              flexGrow: 1,
               display: "flex",
+              flexDirection: "column",
               justifyContent: "center",
-              maxHeight: "155px",
-              height: "100%",
             }}
           >
             <Typography

@@ -1,0 +1,18 @@
+<svg width="23" height="18" viewBox="0 0 23 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<foreignObject x="-4" y="-5" width="30.8125" height="26"><div xmlns="http://www.w3.org/1999/xhtml" style="backdrop-filter:blur(2.5px);clip-path:url(#bgblur_0_2222_65619_clip_path);height:100%;width:100%"></div></foreignObject><g id="Vector" filter="url(#filter0_d_2222_65619)" data-figma-bg-blur-radius="5">
+<path d="M3 16C2.45 16 1.97933 15.8043 1.588 15.413C1.196 15.021 1 14.55 1 14V2C1 1.45 1.196 0.979333 1.588 0.588C1.97933 0.196 2.45 0 3 0H8.175C8.44167 0 8.696 0.0500001 8.938 0.15C9.17933 0.25 9.39167 0.391666 9.575 0.575L11 2H19C19.55 2 20.021 2.196 20.413 2.588C20.8043 2.97933 21 3.45 21 4H5C4.45 4 3.97933 4.19567 3.588 4.587C3.196 4.979 3 5.45 3 6V14L4.975 7.425C5.10833 6.99167 5.35433 6.64567 5.713 6.387C6.071 6.129 6.46667 6 6.9 6H19.8C20.4833 6 21.021 6.27067 21.413 6.812C21.8043 7.354 21.9083 7.94167 21.725 8.575L19.925 14.575C19.7917 15.0083 19.546 15.3543 19.188 15.613C18.8293 15.871 18.4333 16 18 16H3Z" fill="#F9D978"/>
+</g>
+<defs>
+<filter id="filter0_d_2222_65619" x="-4" y="-5" width="30.8125" height="26" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feGaussianBlur stdDeviation="0.4"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2222_65619"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2222_65619" result="shape"/>
+</filter>
+<clipPath id="bgblur_0_2222_65619_clip_path" transform="translate(4 5)"><path d="M3 16C2.45 16 1.97933 15.8043 1.588 15.413C1.196 15.021 1 14.55 1 14V2C1 1.45 1.196 0.979333 1.588 0.588C1.97933 0.196 2.45 0 3 0H8.175C8.44167 0 8.696 0.0500001 8.938 0.15C9.17933 0.25 9.39167 0.391666 9.575 0.575L11 2H19C19.55 2 20.021 2.196 20.413 2.588C20.8043 2.97933 21 3.45 21 4H5C4.45 4 3.97933 4.19567 3.588 4.587C3.196 4.979 3 5.45 3 6V14L4.975 7.425C5.10833 6.99167 5.35433 6.64567 5.713 6.387C6.071 6.129 6.46667 6 6.9 6H19.8C20.4833 6 21.021 6.27067 21.413 6.812C21.8043 7.354 21.9083 7.94167 21.725 8.575L19.925 14.575C19.7917 15.0083 19.546 15.3543 19.188 15.613C18.8293 15.871 18.4333 16 18 16H3Z"/>
+</clipPath></defs>
+</svg>
