@@ -43,7 +43,7 @@ function ClaimContainer() {
 
   const handleHighlightComment = (index,type) => {
     if (type === "set" && claimInfo.featured_comments.length < 3 || type === "unfix") {
-      api(COMMENT + "/" + id, { method: "PATCH", body: { id: index } }).then(
+      api(COMMENT_IVE + "/" + id, { method: "PATCH", body: { id: index } }).then(
         ({ ok, body }) => {
           if (ok) {
             navigate(0);

@@ -64,7 +64,7 @@ function HomeComponent(props) {
                         Aprendé rapidamente como usarlo
                     </Button>
                 </Box>
-                <Box width={{width:"50%",height:"640px",background: 'url("../../assets/home/img-1.png") lightgray 50% / cover no-repeat'}}>
+                <Box width={{width:"50%",height:"640px",borderTopLeftRadius:"50px",borderBottomRightRadius:"50px", background: 'url("../../assets/home/img-1.png") lightgray 50% / cover no-repeat'}}>
                 </Box>
             </Box>
 

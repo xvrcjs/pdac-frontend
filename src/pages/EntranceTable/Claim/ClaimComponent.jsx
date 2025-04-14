@@ -779,10 +779,11 @@ function ClaimComponent(props) {
                     Descripción del problema
                   </Typography>
 
-                <Box sx={{border:"1px solid #D6D3D1",borderRadius: "15px",boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",display:"flex",flexDirection:"column",alignItems:"end",p:"17px 20px"}}>
+                <Box sx={{border:"1px solid #D6D3D1",borderRadius: "15px",boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",display:"flex",flexDirection:"column",p:"17px 20px"}}>
                   <Box sx={{height:"160px",fontSize:"16px",overflow:"auto",fontWeight:"100"}}>
                     {claimInfo.problem_description}
                   </Box>
+                  <Box sx={{display:"flex",flexDirection:"column",alignItems:"end"}}>
                   <Button
                       variant="outlined"
                       component="label"
@@ -806,6 +807,7 @@ function ClaimComponent(props) {
                     >
                       Descargar reclamo
                     </Button>
+                  </Box>
                     </Box>
                 </Box>
                 <Box
@@ -839,7 +841,7 @@ function ClaimComponent(props) {
                               flexDirection: "row",
                               alignItems: "center",
                               height: "35px",
-                              background: "rgba(217, 217, 217, 0.50)",
+                              background: "#fff",
                               borderRadius: "8px",
                               margin: "5px",
                               width: "auto",
@@ -1098,8 +1100,9 @@ function ClaimComponent(props) {
                           p: "5px 20px",
                           mt: "15px",
                           "&.Mui-disabled": {
-                            backgroundColor: "#8F8881",
-                            color: "#fff",
+                            backgroundColor: "#F3F3F3",
+                            color: "#000",
+                            border:"1px solid #000",
                           },
                         }}
                         disabled={comment===""}

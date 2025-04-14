@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./DataGridStyles.scss";
 import {
   Box,
   Typography,
@@ -193,11 +192,12 @@ const DataGrid = ({
                   style={{
                     textAlign: column.headerAlign || "left",
                     height: column.height || "50px",
-                    padding: "10px",
+                    padding: "5px",
                     cursor: "pointer",
                     color: "#868FA0",
                     width: index === 0 ? "0px" : "auto",
                     backgroundColor: index !== 0 ? "#F3F3F3" : "",
+                    borderTopLeftRadius: index === 1 && "20px"
                   }}
                 >
                   <Box
@@ -376,7 +376,7 @@ const DataGrid = ({
                   </Box>
                 </th>
               ))}
-              <th style={{ backgroundColor: "#F3F3F3" }}></th>
+              <th style={{ backgroundColor: "#F3F3F3",borderTopRightRadius:"20px" }}></th>
             </tr>
           </thead>
           <tbody>
@@ -417,7 +417,8 @@ const DataGrid = ({
                               padding: "8px",
                               wordBreak: "break-word",
                               width: index === 0 ? "80px" : "auto",
-                              backgroundColor: "#CCC",
+                              backgroundColor: "#F3F3F3",
+                              borderBottom:"unset",
                               borderTopLeftRadius: index === 0 ? "30px" : "0px",
                               // borderTopRightRadius: index === 0 ? "30px":"0px",
                               borderBottomLeftRadius:

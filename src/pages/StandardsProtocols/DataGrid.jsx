@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./DataGridStyles.scss";
 import { Box, Typography, IconButton,Button } from "@mui/material";
 import { Menu, MenuItem } from "react-pro-sidebar";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -64,7 +63,7 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit,hasFilter,noDataMes
 
   return (
     <Box className="data-grid" sx={{ width: "100%", overflowX: "auto" }}>
-      <table style={{ width: "100%", backgroundColor: backgroundColor ? backgroundColor:"#D9D9D9" }}>
+      <table style={{ width: "100%", backgroundColor: backgroundColor ? backgroundColor:"#D9D9D9",border:"unset" }}>
         <thead>
           <tr style={{ width: "100%", backgroundColor: "#F3F3F3" }}>
             {columns.map((column, index) => (
@@ -75,7 +74,8 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit,hasFilter,noDataMes
                   height: column.height || "50px",
                   padding: "10px",
                   cursor: "pointer",
-                  color:"#868FA0"
+                  color:"#868FA0",
+                  borderTopLeftRadius: index === 0 ? "20px":""
                 }}
               >
                 <Box
@@ -129,7 +129,7 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit,hasFilter,noDataMes
                 </Box>
               </th>
             ))}
-            <th></th>
+            <th style={{borderTopRightRadius:"20px"}}></th>
           </tr>
         </thead>
         <tbody>
@@ -142,12 +142,19 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit,hasFilter,noDataMes
               </td>
             </tr>
           ) : (
-          paginatedRows.map((row, index) => (
+            [
+              ...paginatedRows,
+              ...Array(pageSize - paginatedRows.length).fill({}),
+            ].map((row, index) => (
             <React.Fragment key={index}>
               <tr
                 key={index}
                 className={selectedRow === row ? "selected" : ""}
                 onClick={() => handleRowClick(row)}
+                style={{
+                  borderLeft:"1px solid #F3F3F3",
+                  borderRight:"1px solid #F3F3F3"
+                }}
               >
                 {columns.map((column, colIndex) => (
                     <td
@@ -161,15 +168,18 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit,hasFilter,noDataMes
                         backgroundColor: (colIndex === 0 && hasFilter)? "#F3F3F3" : "",
                     }}
                     >
-                    {column.renderCell
+                    {Object.keys(row).length != 0 &&
+                      column.renderCell
                       ? column.renderCell({
                           value: row[column.field],
                           id: index,
                         })
-                      : row[column.field]}
+                      : row[column.field]
+                    }
                   </td>
                 ))}
                 <td>
+                  {Object.keys(row).length != 0 &&
                   <Box
                     sx={{
                       display: "flex",
@@ -219,6 +229,7 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit,hasFilter,noDataMes
                       <EditIcon />
                     </IconButton>
                   </Box>
+                  }
                 </td>
               </tr>
               {expandedRows[index] && (

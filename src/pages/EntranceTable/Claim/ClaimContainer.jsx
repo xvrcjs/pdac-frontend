@@ -3,7 +3,7 @@ import ClaimComponent from "./ClaimComponent";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { AppContext } from "context/AppContext";
 import { useFormik } from "formik";
-import { CLAIM, DOWNLOAD_CLAIM, COMMENT,DOWNLOAD_ZIP } from "constant/endpoints";
+import { CLAIM, DOWNLOAD_CLAIM, COMMENT,DOWNLOAD_ZIP,CLAIM_REJECTED} from "constant/endpoints";
 import {
   Dialog,
   DialogTitle,
@@ -11,6 +11,8 @@ import {
   DialogContentText,
   DialogActions,
   Button,
+  Box,
+  TextField,
 } from "@mui/material";
 
 function ClaimContainer() {
@@ -22,6 +24,7 @@ function ClaimContainer() {
   const [showMessageConfirmConfirmChange,setShowMessageConfirmConfirmChange] = useState(false)
   const [showMessageSuccesChange,setShowMessageSuccesChange] = useState(false)
   const [isLoading, setIsLoading] = useState(true);
+  const [commentRejected,setCommentRejected] = useState("")
   const navigate = useNavigate();
 
   const handleDownloadClaim = () => {
@@ -112,7 +115,22 @@ function ClaimContainer() {
       setShowMaxHighlightComment(true);
     }
   };
-
+  const handleRejectClaim = () => {
+    const newComment = {
+      type: "comment",
+      timestamp: new Date().toISOString(),
+      user: account.full_name,
+      content: commentRejected,
+      highlighted: false,
+    };
+    api(CLAIM_REJECTED+"/"+id,{method: "PATCH", body: newComment}).then(
+      ({ ok, body }) => {
+        if (ok) {
+          navigate("/mesa-de-entrada");
+        }
+      }
+    );
+  }
   const handleOnSubmit = () => {
     setShowMessageConfirmConfirmChange(false)
     api(CLAIM+"/"+id,{method: "PATCH", body: values}).then(
@@ -500,6 +518,111 @@ function ClaimContainer() {
             autoFocus
           >
             Aceptar
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={(values.claim_status !== claimInfo?.claim_status) && (values.claim_status === "Rechazado")}
+        onClose={() => navigate(0)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        sx={{
+          "&.MuiDialog-root .MuiDialog-paper": {
+            padding: "20px 20px",
+            border: "3px solid #00AEC3",
+            borderRadius: "30px",
+            maxWidth: "1017px",
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            fontFamily: "Encode Sans",
+            fontSize: "32px",
+            fontWeight: "600",
+          }}
+          id="alert-dialog-title"
+        >
+          Antes de rechazar un reclamo es obligatorio justificar el rechazo.
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            sx={{
+              fontFamily: "Encode Sans",
+              fontSize: "20px",
+              fontWeight: "300",
+              mb: "50px",
+            }}
+            id="alert-dialog-description"
+          >
+            Por favor dejar el motivo del rechazo a continuación, luego podrá rechazarlo con éxito.
+          </DialogContentText>
+          <Box>
+            <TextField
+              maxRows={Infinity}
+              minRows={7}
+              multiline
+              value={commentRejected}
+              onChange={(event)=> setCommentRejected(event.target.value)}
+              name="commentRejected"
+              sx={{
+                width: "100%",
+                backgroundColor: "#fff",
+                border: "1px solid #000",
+                borderRadius: "10px",
+                "& .MuiInputBase-input.MuiOutlinedInput-input": {
+                  fontFamily: "Encode Sans",
+                  overflow: "scroll !important",
+                  maxHeight: "150px",
+                  height: "150px",
+                },
+                "& .MuiOutlinedInput-notchedOutline": {
+                  border: "unset",
+                },
+                "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  border: "unset !important",
+                  borderColor: "unset !important",
+                },
+              }}
+              aria-label="maximum height"
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            sx={{
+              borderRadius: "50px",
+              backgroundColor: "#fff",
+              color: "#000",
+              width:"189px",
+              padding: "12px 60px",
+              fontFamily: "Encode Sans",
+              fontSize: "12px",
+              fontWeight: "500",
+              textTransform: "capitalize",
+              border: "2px solid #838383",
+            }}
+            onClick={() => navigate(0)}
+          >
+            Cancelar
+          </Button>
+          <Button
+            sx={{
+              borderRadius: "50px",
+              backgroundColor: "#00AEC3",
+              color: "#fff",
+              padding: "12px 0px",
+              fontFamily: "Encode Sans",
+              fontSize: "12px",
+              fontWeight: "500",
+              ml: "20px",
+              width: "251px",
+              textTransform: "capitalize",
+              cursor:"pointer",
+            }}
+            onClick={()=>handleRejectClaim()}
+          >
+            Rechazar
           </Button>
         </DialogActions>
       </Dialog>

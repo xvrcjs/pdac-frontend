@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./DataGridStyles.scss";
 import {
   Box,
   Typography,
@@ -174,10 +173,11 @@ const DataGrid = ({
           style={{
             width: "100%",
             backgroundColor: backgroundColor ? backgroundColor : "#D9D9D9",
+            border: "unset",
           }}
         >
           <thead>
-            <tr style={{ width: "100%", backgroundColor: "#F3F3F3" }}>
+            <tr style={{ width: "100%"}}>
               {columns.map((column, index) => (
                 <th
                   key={column.field}
@@ -187,6 +187,8 @@ const DataGrid = ({
                     padding: "10px",
                     cursor: "pointer",
                     color: "#868FA0",
+                    backgroundColor: "#F3F3F3",
+                    borderTopLeftRadius: index === 0 && "20px"
                   }}
                 >
                   <Box
@@ -243,7 +245,7 @@ const DataGrid = ({
                   </Box>
                 </th>
               ))}
-              <th></th>
+              <th style={{ backgroundColor: "#F3F3F3",borderTopRightRadius:"20px" }}></th>
             </tr>
           </thead>
           <tbody>
@@ -268,6 +270,7 @@ const DataGrid = ({
                   <tr
                     key={index}
                     className={selectedRow === row ? "selected" : ""}
+                    style={{border: "1px solid #F3F3F3"}}
                   >
                     {columns.map((column, colIndex) => (
                       <td
@@ -319,7 +322,8 @@ const DataGrid = ({
                         )}
                       </td>
                     ))}
-                    <td>
+                    <td style={{
+                          borderBottomRightRadius: "20px"}}>
                       <Box
                         sx={{
                           display: "flex",
@@ -329,6 +333,7 @@ const DataGrid = ({
                           ml: "10px",
                         }}
                       >
+                        {console.log(index)}
                         {editingRows[index] ? (
                           <>
                             <Button
