@@ -29,56 +29,11 @@ import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import "./NewUser.scss";
 
-const AntSwitch = styled(Switch)(({ theme }) => ({
-  width: 56, //56
-  height: 32, //32
-  padding: 0,
-  display: "flex",
-  "&:active": {
-    "& .MuiSwitch-thumb": {
-      width: 30,
-    },
-    "& .MuiSwitch-switchBase.Mui-checked": {
-      transform: "translateX(18px)",
-    },
-  },
-  "& .MuiSwitch-switchBase": {
-    padding: 4,
-    "&.Mui-checked": {
-      transform: "translateX(24px)",
-      color: "#fff",
-      "& + .MuiSwitch-track": {
-        opacity: 1,
-        backgroundColor: "#1890ff",
-        ...theme.applyStyles("dark", {
-          backgroundColor: "#177ddc",
-        }),
-      },
-    },
-  },
-  "& .MuiSwitch-thumb": {
-    boxShadow: "0 2px 4px 0 rgb(0 35 11 / 20%)",
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    transition: theme.transitions.create(["width"], {
-      duration: 200,
-    }),
-  },
-  "& .MuiSwitch-track": {
-    borderRadius: 32 / 2,
-    opacity: 1,
-    backgroundColor: "rgba(0,0,0,.25)",
-    boxSizing: "border-box",
-    ...theme.applyStyles("dark", {
-      backgroundColor: "rgba(255,255,255,.35)",
-    }),
-  },
-}));
 
 function NewUserComponent(props) {
   const {
     values,
+    setFieldValue,
     touched,
     errors,
     isValid,
@@ -91,12 +46,8 @@ function NewUserComponent(props) {
     permissions,
   } = props;
 
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
   const [files, setFiles] = useState([]);
   const [isDragActive, setIsDragActive] = useState(false);
-  const [rolSelected, setRolSelected] = useState(null);
-  const [omicSelected,setOmicSelected] = useState(null);
   const [omicFiltered,setOmicFiltered] = useState([]);
   const [showConfirmCreate, setShowConfirmCreate] = useState(false);
   const [showConfirmSendEmail, setShowConfirmSendEmail] = useState(false);
@@ -104,9 +55,9 @@ function NewUserComponent(props) {
   const [showOmics, setShowOmics] = useState(true);
   const [showPermissions, setShowPermissions] = useState(false);
   const [selectedPermissions, setSelectedPermissions] = useState({});
-
+  const supportsLevel = ["Nivel 1 (N1)","Nivel 2 (N2)","Nivel 3 (N3)"]
   const filteredPermissions =
-    permissions.find((p) => p.type === rolSelected)?.permissions || [];
+    permissions.find((p) => p.type === values.rol)?.permissions || [];
 
   const navigate = useNavigate();
 
@@ -123,22 +74,25 @@ function NewUserComponent(props) {
 
   const handleSaveUser = () => {
     setShowConfirmCreate(!showConfirmCreate);
-    values.rol = rolSelected;
     values.permissions = JSON.stringify(selectedPermissions);
     values.profile_image = files;
-    values.omic = omicSelected
-    handleOnSubmit(values)
-    setShowConfirmSendEmail(!showConfirmSendEmail);
+    handleOnSubmit(values,setShowConfirmSendEmail)
   };
 
   const handleSelectRol = (role) => {
-    setRolSelected(role);
+    setFieldValue("rol",role)
+    if (role === "admin"){
+      setFieldValue("support_level","Nivel 3 (N3)")
+    }else{
+      setFieldValue("support_level","Nivel 1 (N1)")
+    }
+
     setShowPermissions(true);
     setSelectedPermissions({});
   };
 
   const handleSelectOmic = (omic) => {
-    setOmicSelected(omic);
+    setFieldValue("omic",omic);
   };
 
   const handleTogglePermission = (permissionValue) => {
@@ -175,9 +129,10 @@ function NewUserComponent(props) {
         sx={{
           margin:"auto",
           marginTop:"80px",
-          width:"80%",
           display: "flex",
           flexDirection: "column",
+          justifyContent:"center",
+          width:"80%"
         }}
       >
           <Box
@@ -478,7 +433,7 @@ function NewUserComponent(props) {
                   {roles.map((role) => (
                     <Typography
                       key={role.value}
-                      className={rolSelected === role.value ? "selected" : ""}
+                      className={values.rol === role.value ? "selected" : ""}
                       onClick={() => handleSelectRol(role.value)}
                     >
                       {role.label}
@@ -487,8 +442,7 @@ function NewUserComponent(props) {
                 </Box>
               )}
             </Box>
-           {/* TODO: REVISAR */}
-            {rolSelected === "omic" && 
+            {values.rol === "omic" && 
             <Box sx={{ width: "276px",mt:"50px" }}>
               <Button
                 variant="contained"
@@ -546,10 +500,9 @@ function NewUserComponent(props) {
                         m: 0,
                         p: 0,
                         fontSize:"16px",
-                        borderRadius: "50px",
+                        borderRadius: "15px",
                         border: "1px solid rgba(61, 62, 64, 0.50)",
                         background:"#fff",
-                        boxShadow: "0px 4px 4px 0px #00AEC3",
                         "& fieldset": {
                           borderRadius: "15px",
                         },
@@ -569,7 +522,7 @@ function NewUserComponent(props) {
                   {omicFiltered.map((omic,index) => (
                     <Typography
                       key={index}
-                      className={omicSelected === omic.uuid ? "selected" : ""}
+                      className={values.omic === omic.uuid ? "selected" : ""}
                       onClick={() => handleSelectOmic(omic.uuid)}
                       sx={{fontSize:"16px",p:"5px 10px !important",fontWeight:"400"}}
                     >
@@ -580,6 +533,51 @@ function NewUserComponent(props) {
                 </Box>
               )}
             </Box>
+            }
+            {(values.rol !== "omic" && values.rol !== "")  && 
+              <Box sx={{ width: "276px",mt:"50px" }}>
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "#00AEC3",
+                    color: "#FFF",
+                    fontFamily: "Encode Sans",
+                    fontSize: "16px",
+                    fontStyle: "normal",
+                    fontWeight: "400",
+                    lineHeight: "normal",
+                    width: "100%",
+                    p: "15px 20px",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  Selección de nivel de soporte
+                </Button>
+                <Box className="swt-user-select-content" sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  maxHeight:"120px",
+                  p:"10px 10px"
+                }}>
+                  <Box sx={{overflow:"auto",mt:'5px'}}>
+                    {supportsLevel.map((level,index) => (
+                      <Typography
+                        key={index}
+                        className={values.support_level === level ? "selected" : ""}
+                        onClick={() => setFieldValue("support_level",level)}
+                        sx={{fontSize:"16px",p:"8px 10px !important",fontWeight:"400"}}
+                      >
+                        {level}
+                      </Typography>
+                    ))}
+                  </Box>
+                </Box>
+                {errors.support_level &&
+                    <Typography sx={{color:"#F80000",mt:"5px"}}>
+                      * {errors.support_level}
+                    </Typography>
+                }
+              </Box>
             }
             </Box>
             <Box sx={{ width: "360px" }}>
@@ -686,7 +684,7 @@ function NewUserComponent(props) {
             <Button
               onClick={() => setShowConfirmCreate(!showConfirmCreate)}
               type="submit"
-              disabled={!(isValid && dirty && rolSelected)}
+              disabled={!(isValid && dirty && values.rol)}
               sx={{
                 borderRadius: "50px",
                 backgroundColor: "#00AEC3",

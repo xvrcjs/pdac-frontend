@@ -18,7 +18,7 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
-import DataGrid from "components/DataGrid"
+import DataGrid from "./DataGrid"
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 import { useNavigate } from "react-router-dom";
@@ -31,7 +31,7 @@ function ListUserComponent(props) {
   const colors = tokens(theme.palette.mode);
   const [expandedRowId, setExpandedRowId] = useState(null);
   const navigate = useNavigate()
-
+  console.log(rows)
   const columns = [
     {
       field: "full_name",
@@ -50,7 +50,7 @@ function ListUserComponent(props) {
       headerAlign: "center",
       align: "center",
       renderCell: (params) => (
-        <div className="swt-table-field-name" style={{textTransform:"uppercase"}}>{params.value && params.value.length > 0 ? "Usuario "+params.value[0].name : "Sin rol"}</div>
+        <div className="swt-table-field-name" style={{textTransform:"uppercase"}}>{params.value && params.value.length > 0 && "Usuario "+params.value[0].name}</div>
       ),
     },
     {
@@ -76,61 +76,6 @@ function ListUserComponent(props) {
     },
   ];
 
-  const themeTable = createTheme(
-    {
-      components: {
-        MuiDataGrid: {
-          styleOverrides: {
-            root: {
-              backgroundColor: "#D9D9D9",
-              borderColor: "#D9D9D9",
-              "& .MuiDataGrid-main": {
-                backgroundColor: "#D9D9D9",
-                borderColor: "#D9D9D9",
-              },
-              // "& .MuiDataGrid-cell": {
-              //   backgroundColor: "#D9D9D9",
-              //   color: "#000",
-              // },
-              "& .MuiDataGrid-columnHeaders": {
-                backgroundColor: "#B1B1B1",
-                fontFamily: "Encode Sans",
-                fontSize: "12px",
-                fontWeight: 700,
-                lineHeight: "18px",
-                textAlign: "center",
-              },
-              "& .MuiDataGrid-toolbarContainer .MuiInput-root": {
-                backgroundColor: "#D9D9D9",
-                color: "#000",
-              },
-              "& .MuiDataGrid-gutters": {
-                color: "#000",
-              },
-              "& .Mui-selected": {
-                backgroundColor: "#56D2FF !important",
-              },
-              "& .MuiDataGrid-footerContainer": {
-                backgroundColor: "transparent",
-              }
-            },
-          },
-        },
-        MuiToolbar: {
-          styleOverrides: {
-            root: {
-              color: "#000",
-              "& svg": {
-                color: "#000",
-              },
-            },
-          },
-        },
-      },
-    },
-  );
-
-
   const handleFilter = (e) => {
     const text = e.target.value;
     const filteredRows = users.filter((c) => {
@@ -139,45 +84,9 @@ function ListUserComponent(props) {
     setRows(filteredRows);
   };
 
-  const handleExpandClick = (id) => {
-    setExpandedRowId(expandedRowId === id ? null : id);
-  };
-  
   const handleEdit = (id) => {
     navigate(`/gestion-de-usuarios/editar-usuario/${id}`)
   };
-
-
-  function CustomPagination() {
-    const apiRef = useGridApiContext();
-    const page = useGridSelector(apiRef, gridPageSelector);
-    const pageCount = useGridSelector(apiRef, gridPageCountSelector);
-  
-    return (
-      <Pagination
-        color="primary"
-        variant="outlined"
-        shape="rounded"
-        page={page + 1}
-        count={pageCount}
-        sx={{marginRight: '40px'}}
-        // @ts-expect-error
-        renderItem={(props2) => <PaginationItem {...props2} disableRipple sx={{"&.MuiButtonBase-root":{
-          backgroundColor:'#FFF',
-          boxShadow: '0px 1px 5px 0px #0000001F',
-          boxShadow: '0px 2px 2px 0px #00000024',
-          boxShadow: '0px 3px 1px -2px #00000033',
-
-        },
-        "&.MuiButtonBase-root.MuiPaginationItem-root.Mui-selected":{
-          backgroundColor: '#626262 !important',
-          color: "#FFF",
-        }}} />}
-        onChange={(event, value) => apiRef.current.setPage(value - 1)}
-      />
-    );
-  }
-  
 
   useEffect(() => {
     setRows(users);
@@ -211,10 +120,9 @@ function ListUserComponent(props) {
               m: 0,
               p: 0,
               backgroundColor: "#FFF",
-              borderRadius: "5px",
+              borderRadius: "15px",
               border: "1px solid rgba(61, 62, 64, 0.50)",
               background:"#fff",
-              boxShadow: "0px 4px 4px 0px #00AEC3",
               "& fieldset": {
                 borderRadius: "5px",
               },
@@ -222,21 +130,21 @@ function ListUserComponent(props) {
                 paddingY: "12px",
                 fontFamily: "Encode Sans",
               },
+              "& .MuiOutlinedInput-notchedOutline":{
+                border:"unset !important",
+              },
               width: "100%",
-              maxWidth: "500px",
+              maxWidth: "300px",
             }}
             onChange={handleFilter}
           />
         </Box>
-
-        <ThemeProvider theme={themeTable}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            handleEdit={handleEdit}
-            backgroundColor={"#fbfbfb"}
-          />
-        </ThemeProvider>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          handleEdit={handleEdit}
+          backgroundColor={"#fff"}
+        />
       </div>
     </Content>
   );

@@ -95,6 +95,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 function EditUserComponent(props) {
   const {
     values,
+    setFieldValue,
     touched,
     errors,
     isValid,
@@ -112,8 +113,6 @@ function EditUserComponent(props) {
   ]);
   const [isEditing, setIsEditing] = useState(false);
   const [isDragActive, setIsDragActive] = useState(false);
-  const [rolSelected, setRolSelected] = useState(values.rol);
-  const [omicSelected,setOmicSelected] = useState(values.omic);
   const [omicFiltered,setOmicFiltered] = useState([]);
   const [showConfirmCreate, setShowConfirmCreate] = useState(false);
   const [showConfirmSendEmail, setShowConfirmSendEmail] = useState(false);
@@ -123,10 +122,11 @@ function EditUserComponent(props) {
   const [selectedPermissions, setSelectedPermissions] = useState(
     values.permissions
   );
+  const supportsLevel = ["Nivel 1 (N1)","Nivel 2 (N2)","Nivel 3 (N3)"]
   const [showComments, setShowComments] = useState(true);
   
   const filteredPermissions =
-    permissions.find((p) => p.type === rolSelected)?.permissions || [];
+    permissions.find((p) => p.type === values.rol)?.permissions || [];
 
   const navigate = useNavigate();
 
@@ -138,27 +138,29 @@ function EditUserComponent(props) {
   };
 
   const handleBackWithOutSave = () => {
-    navigate("/");
+    navigate(-1);
   };
 
   const handleSaveUser = () => {
     setShowConfirmCreate(!showConfirmCreate);
-    values.rol = rolSelected;
-    values.omic = omicSelected
     values.permissions = JSON.stringify(selectedPermissions);
     values.profile_image = files;
-    handleOnSubmit(values);
-    setShowConfirmSendEmail(!showConfirmSendEmail);
+    handleOnSubmit(values,setShowConfirmSendEmail);
   };
 
   const handleSelectRol = (role) => {
-    setRolSelected(role);
+    setFieldValue("rol",role)
+    if (role === "admin"){
+      setFieldValue("support_level","Nivel 3 (N3)")
+    }else{
+      setFieldValue("support_level","Nivel 1 (N1)")
+    }
     setShowPermissions(true);
     setSelectedPermissions({});
   };
 
   const handleSelectOmic = (omic) => {
-    setOmicSelected(omic);
+    setFieldValue("omic",omic);
   };
 
   const handleTogglePermission = (permissionValue) => {
@@ -188,6 +190,8 @@ function EditUserComponent(props) {
           marginTop:"80px",
           display: "flex",
           flexDirection: "column",
+          justifyContent:"center",
+          width:"80%"
         }}
       >
         <Box
@@ -570,7 +574,7 @@ function EditUserComponent(props) {
                     {roles.map((role) => (
                       <Typography
                         key={role.value}
-                        className={rolSelected === role.value ? "selected" : ""}
+                        className={values.rol === role.value ? "selected" : ""}
                         onClick={() => handleSelectRol(role.value)}
                       >
                         {role.label}
@@ -579,7 +583,7 @@ function EditUserComponent(props) {
                   </Box>
                 )}
               </Box>
-              {rolSelected === "omic" && 
+              {values.rol === "omic" && 
               <Box sx={{ width: "276px",mt:"50px" }}>
               <Button
                 variant="contained"
@@ -639,8 +643,7 @@ function EditUserComponent(props) {
                         fontSize:"16px",
                         border: "1px solid rgba(61, 62, 64, 0.50)",
                         background:"#fff",
-                        boxShadow: "0px 4px 4px 0px #00AEC3",
-                        borderRadius: "50px",
+                        borderRadius: "15px",
                         "& fieldset": {
                           borderRadius: "15px",
                         },
@@ -660,7 +663,7 @@ function EditUserComponent(props) {
                   {omicFiltered.map((omic,index) => (
                     <Typography
                       key={index}
-                      className={omicSelected === omic.uuid ? "selected" : ""}
+                      className={values.omic === omic.uuid ? "selected" : ""}
                       onClick={() => handleSelectOmic(omic.uuid)}
                       sx={{fontSize:"16px",p:"5px 10px !important",fontWeight:"400"}}
                     >
@@ -672,6 +675,51 @@ function EditUserComponent(props) {
               )}
             </Box>
             }
+            {(values.rol !== "omic" && values.rol !== "")  && 
+                <Box sx={{ width: "276px",mt:"50px" }}>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "#00AEC3",
+                      color: "#FFF",
+                      fontFamily: "Encode Sans",
+                      fontSize: "16px",
+                      fontStyle: "normal",
+                      fontWeight: "400",
+                      lineHeight: "normal",
+                      width: "100%",
+                      p: "15px 20px",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    Selección de nivel de soporte
+                  </Button>
+                  <Box className="swt-user-select-content" sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    maxHeight:"120px",
+                    p:"10px 10px"
+                  }}>
+                    <Box sx={{overflow:"auto",mt:'5px'}}>
+                      {supportsLevel.map((level,index) => (
+                        <Typography
+                          key={index}
+                          className={values.support_level === level ? "selected" : ""}
+                          onClick={() => setFieldValue("support_level",level)}
+                          sx={{fontSize:"16px",p:"8px 10px !important",fontWeight:"400"}}
+                        >
+                          {level}
+                        </Typography>
+                      ))}
+                    </Box>
+                  </Box>
+                  {errors.support_level &&
+                      <Typography sx={{color:"#F80000",mt:"5px"}}>
+                        * {errors.support_level}
+                      </Typography>
+                  }
+                </Box>
+              }
               </Box>
               <Box sx={{ width: "360px", ml: "30px" }}>
                 <Button
@@ -786,6 +834,7 @@ function EditUserComponent(props) {
                     width: "100%",
                     backgroundColor: "#fff",
                     border: "0px",
+                    mt:"2px",
                     "& .MuiInputBase-input.MuiOutlinedInput-input": {
                       p: "20px",
                       fontFamily: "Encode Sans",
@@ -840,7 +889,7 @@ function EditUserComponent(props) {
           <Button
             onClick={() => setShowConfirmCreate(!showConfirmCreate)}
             type="submit"
-            disabled={!(isValid)}
+            disabled={!(isValid && dirty && values.rol)}
             sx={{
               borderRadius: "50px",
               backgroundColor: "#00AEC3",

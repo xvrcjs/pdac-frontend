@@ -21,8 +21,8 @@ function EditUserContainer() {
   const [loading,setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const handleOnSubmit = (values) => {
-    const { fullname, email, profile_image, dni, phone, rol, permissions,active,comments,omic } =
+  const handleOnSubmit = (values,setShowConfirmSendEmail) => {
+    const { fullname, email, profile_image, dni, phone, rol,support_level, permissions,active,comments,omic } =
       values;
     const formData = new FormData();
 
@@ -30,6 +30,7 @@ function EditUserContainer() {
     formData.append("email", email);
     formData.append("permissions", permissions);
     formData.append("roles", rol);
+    formData.append("support_level",support_level)
     formData.append("is_active",active)
     formData.append("comments", comments)
     formData.append('omic_id', omic);
@@ -72,7 +73,8 @@ function EditUserContainer() {
       email: "",
       profile_image: "",
       rol: "",
-      omic: "",
+      omic: null,
+      support_level: "",
       creation_date: "",
       dni: "",
       phone: "",
@@ -106,7 +108,9 @@ function EditUserContainer() {
         values.dni = body.data.dni
         values.phone = body.data.phone
         values.omic = body.data?.omic?.uuid
+        values.support_level = body.data?.omic
         values.rol = body.data.roles[0].name
+        values.support_level = body.data.support_level
         values.profile_image = body.data.profile_image
         values.permissions = body.data.permissions
         values.active = body.data.is_active
@@ -131,6 +135,7 @@ function EditUserContainer() {
     !loading  &&
         <EditUserComponent
             values={values}
+            setFieldValue={setFieldValue}
             roles={roles}
             omics={omics}
             permissions={permissions}

@@ -17,8 +17,8 @@ function NewUserContainer() {
   const [permissions, setPermissions] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
 
-  const handleOnSubmit = (values) => {
-    const { fullname, email, profile_image, dni, phone,rol, permissions,omic} = values;       
+  const handleOnSubmit = (values,setShowConfirmSendEmail) => {
+    const { fullname, email, profile_image, dni, phone,rol,support_level, permissions,omic} = values;       
         const formData = new FormData();
         formData.append('full_name', fullname);
         formData.append('email', email);
@@ -27,6 +27,7 @@ function NewUserContainer() {
         formData.append('permissions', permissions);
         formData.append('roles',rol);
         formData.append('omic_id', omic);
+        formData.append('support_level',support_level)
         if(profile_image.length > 0)
             formData.append('profile_image', profile_image[0]);
         
@@ -38,7 +39,7 @@ function NewUserContainer() {
             }
         }).then(({ok,body}) => {
             if(ok){
-              
+              setShowConfirmSendEmail(true)
             } else {
                 console.log("not ok");
             }
@@ -46,7 +47,7 @@ function NewUserContainer() {
             console.log(err);
         })
   };
-
+  
   const {
     handleSubmit,
     handleChange,
@@ -64,7 +65,8 @@ function NewUserContainer() {
       email: "",
       profile_image: "",
       rol: "",
-      omic:"",
+      omic: null,
+      support_level: "",
       creation_date: "",
       dni: "",
       phone: "",
@@ -116,6 +118,7 @@ function NewUserContainer() {
     !isLoading &&
       <NewUserComponent
         values={values}
+        setFieldValue={setFieldValue}
         touched={touched}
         errors={errors}
         isValid={isValid}
