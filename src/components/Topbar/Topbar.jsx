@@ -55,30 +55,14 @@ function Topbar(props) {
         >
           <Box sx={{display:"flex",flexDirection:"row",alignItems:"center",mr:"20px",cursor:"pointer"}} onClick={()=>navigate('/estandares-y-protocolos')}>
             <img alt="user-profile" src={`../../icons/folder.svg`} style={{ width: "24px",height:"24px" }} />
-            <Typography sx={{fontSize:"14px",fontWeight:"400",ml:"5px"}}>Estándares y protocolos</Typography>
-          </Box>
-          <Box
-            sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
-          >
-            <ContactSupportIcon sx={{color:"#159AB5"}} />
-            <Typography
-              variant="h6"
-              sx={{
-                fontSize: "14px",
-                fontWeight: "400",
-                fontFamily: "Encode Sans",
-              }}
-              color="#000"
-            >
-              Ayuda
-            </Typography>
+            <Typography sx={{fontSize:"14px",fontWeight:"400",ml:"5px"}}>Biblioteca</Typography>
           </Box>
           <Box
             sx={{
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
-              marginLeft: "50px",
+              marginLeft: "20px",
             }}
           >
             <Typography

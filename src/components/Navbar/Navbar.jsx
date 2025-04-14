@@ -223,6 +223,7 @@ const Item = ({ title, to, isActive, subItems, cantClaim }) => {
                 const isEditUserRoute = subItem.path.startsWith(
                   "gestion-de-usuarios/editar-usuario"
                 );
+                if (!subItem.show) return null;
                 return (
                   <MenuItem
                     key={index}

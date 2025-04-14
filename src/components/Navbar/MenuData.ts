@@ -35,14 +35,24 @@ export const MenuData:Menu[] = [{
             path: "gestion-de-usuarios/crear-usuario",
             rolesAllowed: ["Admin"],
             headerTitle:"Datos del usuario",
-            headerSubTitle:"Modifique los datos, seleccione el tipo de rol y accesos que tendrá este usuario."
+            headerSubTitle:"Modifique los datos, seleccione el tipo de rol y accesos que tendrá este usuario.",
+            show: true
+        },
+        {
+            title: "Crear nuevo usuario",
+            path: "gestion-de-usuarios/editar-usuario/:id",
+            rolesAllowed: ["Admin"],
+            headerTitle:"Datos del usuario",
+            headerSubTitle:"Modifique los datos, seleccione el tipo de rol y accesos que tendrá este usuario.",
+            show: false
         },
         {
             title: "Listado general de usuarios",
             path: "gestion-de-usuarios/listado-de-usuarios",
             rolesAllowed: ["Admin"],
             headerTitle:"Te damos la bienvenida a tu tablero de gestión administrativa",
-            headerSubTitle:"A continuación podrás ver el listado general de usuarios."
+            headerSubTitle:"A continuación podrás ver el listado general de usuarios.",
+            show: true
         },
     ],
     show: true,
@@ -59,8 +69,8 @@ export const MenuData:Menu[] = [{
     title: "Reclamo",
     path: "mesa-de-entrada/reclamo/:id",
     rolesAllowed: ["Admin","Omic"],
-    headerTitle: "Vista del reclamo",
-    headerSubTitle:"Acá podras ver toda la información del reclamo, sus movimientos, actividades",
+    headerTitle: "Te damos la bienvenida a la gestión de este reclamo",
+    headerSubTitle:"Acá podras ver la información detallada y gestionar sus avances",
     show: false,
 },
 {

@@ -24,6 +24,7 @@ export const COMMENT_IVE = "/v1/comment-ive";
 export const ASSIGN_CLAIM = "/v1/assign_claim";
 export const ASSIGN_CLAIM_IVE = "/v1/assign-claim-ive";
 export const CANT_CLAIM_HV_IVE = "/v1/cant-claim-hv";
+export const CLAIM_REJECTED = "/v1/claim-rejected";
 
 export const VALIDATE_RECAPTCHA = "/v1/validate-recaptcha";
 

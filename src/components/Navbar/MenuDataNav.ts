@@ -14,7 +14,7 @@ export const MenuDataNav:Menu[] = [{
     path: "inicio",
     rolesAllowed: ["Admin","Omic"],
     headerTitle:"Te damos la bienvenida a tu tablero de gestión administrativa",
-    headerSubTitle:"Sed tortor, sed velit ridiculus ipsum pharetra lacus odio gravida augue enim."
+    headerSubTitle:"Acá tendrás el control y  acceso a todo."
 },
 ,{
     title: "Mi perfil",
