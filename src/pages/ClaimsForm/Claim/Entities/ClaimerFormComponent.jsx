@@ -544,7 +544,7 @@ function ClaimerFormComponent(props) {
           <Button
             onClick={() => setStep(1)}
             disabled={
-              Object.keys(errors).length !== 0 ||
+              Object.keys(errors).some(key => key.endsWith('_cl') && !key.includes('street') && !key.includes('number') && !key.includes('between_streets') && !key.includes('province') && !key.includes('city')) ||
               Object.keys(touched).length === 0
             }
             sx={{
