@@ -50,6 +50,11 @@ function ClaimIVEContainer() {
       email: "",
       email_confirm:"",
       phone:"",
+      street: "",
+      number: "",
+      between_streets: "",
+      province: "",
+      city: "",
       checkbox_social_work_or_company:false,
       checkbox_establishment:false,
       checkbox_other:false,
@@ -84,12 +89,27 @@ function ClaimIVEContainer() {
       } else if (values.email !== values.email_confirm) {
         errors.email_confirm = "Los correos no coinciden.";
       }
+      if (!values.street) {
+        errors.street = "El campo calle es requerido.";
+      }
+      if (!values.number) {
+        errors.number = "El campo numero es requerido.";
+      }
+      if (!values.between_streets) {
+        errors.between_streets = "El campo entre calles es requerido.";
+      }
+      if (!values.province) {
+        errors.province = "El campo provincia es requerido.";
+      }
+      if (!values.city) {
+        errors.city = "El campo ciudad es requerido.";
+      }
       return errors;
     },
   });
-
+  
   return (
-    <div className="container">
+    <div className="container" style={{backgroundColor:"#fff"}}>
       <Box
         sx={{
           background:

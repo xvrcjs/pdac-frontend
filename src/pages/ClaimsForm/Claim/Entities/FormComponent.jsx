@@ -27,6 +27,7 @@ import { tokens } from "theme";
 import Grid from "@mui/material/Grid2";
 import { useNavigate } from "react-router-dom";
 import ClaimerFormComponent from "./ClaimerFormComponent";
+import ClaimerUbicationFormComponent from "./ClaimerUbicationFormComponent"
 import SupplierFormComponent from "./SupplierFormComponent";
 import ReCAPTCHA from "react-google-recaptcha";
 import { VALIDATE_RECAPTCHA } from "constant/endpoints";
@@ -163,222 +164,26 @@ function FormComponent(props) {
         </a>
       </Box>
       {step === 0 && (
-        <>
-          <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <Typography
-                sx={{
-                  fontFamily: "Encode Sans",
-                  fontSize: "3rem",
-                  fontWeight: "700",
-                  marginTop: "55px",
-                }}
-              >
-                Complete <span style={{ color: "#00AEC3" }}>sus datos</span>{" "}
-                para continuar su reclamo.
-              </Typography>
-              <Typography
-                sx={{
-                  fontFamily: "Encode Sans",
-                  fontSize: "1rem",
-                  fontStyle: "normal",
-                  fontWeight: "400",
-                }}
-              >
-                Es necesario que pueda ingresar los datos solicitados para poder
-                enviar su reclamo.
-              </Typography>
-            </Box>
-          </Box>
-          <Grid
-            container
-            spacing={2}
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              p: "2.5rem 0rem",
-            }}
-          >
-            <Grid
-              item="true"
-              size={{ xs: 12, sm: 6, md: 6 }}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <ClaimerFormComponent
-                values={values}
-                touched={touched}
-                errors={errors}
-                handleChange={handleChange}
-                handleBlur={handleBlur}
-                setStep={setStep}
-              />
-            </Grid>
-            <Grid
-              item="true"
-              size={{ xs: 12, sm: 6, md: 6 }}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <Box
-                  sx={{
-                    borderRadius: "94.5px 0px",
-                    background:
-                      "url(../../assets/claims/img-3.png) lightgray 50% / cover no-repeat",
-                    mb: "30px",
-                    height: "190px",
-                    width: "480px",
-                  }}
-                />
-                <Typography sx={{ fontSize: "1.125rem", fontWeight: "400" }}>
-                  ¿Sos el titular del producto o servicio?
-                </Typography>
-                <FormControl>
-                  <RadioGroup
-                    aria-labelledby="demo-controlled-radio-buttons-group"
-                    value={values.radioButton_1_cl}
-                    name="radioButton_1_cl"
-                    onChange={handleChange}
-                    sx={{ flexDirection: "row", m: "10px" }}
-                  >
-                    <FormControlLabel
-                      value="true"
-                      control={<Radio />}
-                      label="NO"
-                    />
-                    <FormControlLabel
-                      value="false"
-                      control={<Radio />}
-                      label="SI"
-                    />
-                  </RadioGroup>
-                </FormControl>
-                <Typography sx={{ fontSize: "1.125rem", fontWeight: "400" }}>
-                  ¿Utilizás el producto o servicio? ¿Sos usuario?
-                </Typography>
-                <FormControl>
-                  <RadioGroup
-                    aria-labelledby="demo-controlled-radio-buttons-group"
-                    name="radioButton_2_cl"
-                    value={values.radioButton_2_cl}
-                    onChange={handleChange}
-                    sx={{ flexDirection: "row", m: "10px" }}
-                  >
-                    <FormControlLabel
-                      value="true"
-                      control={<Radio />}
-                      label="NO"
-                    />
-                    <FormControlLabel
-                      value="false"
-                      control={<Radio />}
-                      label="SI"
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </Box>
-            </Grid>
-          </Grid>
-          <Grid
-            container
-            spacing={2}
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              mb: "50px",
-            }}
-          >
-            <Grid
-              item="true"
-              size={{ xs: 12, sm: 6, md: 6 }}
-              sx={{ display: "flex", justifyContent: "center" }}
-            >
-              <Button
-                onClick={() => navigate(-1)}
-                sx={{
-                  borderRadius: "50px",
-                  backgroundColor: "rgba(143, 136, 129, 0.00)",
-                  color: "#000",
-                  padding: "9px 30px",
-                  fontFamily: "Encode Sans",
-                  fontSize: "1rem",
-                  border: "1px solid #8F8881",
-                  fontWeight: "700",
-                  width: "60%",
-                  textTransform: "capitalize",
-                  boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-                  "&:hover": {
-                    color: "#fff",
-                    backgroundColor: "#00AEC3",
-                    boxShadow: "0px 4px 4px 0px #00000040",
-                  },
-                }}
-              >
-                Volver
-              </Button>
-            </Grid>
-            <Grid
-              item="true"
-              size={{ xs: 12, sm: 6, md: 6 }}
-              sx={{ display: "flex", justifyContent: "center" }}
-            >
-              <Button
-                onClick={() => setStep(1)}
-                disabled={
-                  Object.keys(errors).length !== 0 ||
-                  Object.keys(touched).length === 0
-                }
-                sx={{
-                  borderRadius: "50px",
-                  backgroundColor: "#00AEC3",
-                  color: "#FFF",
-                  padding: "9px 30px",
-                  fontFamily: "Encode Sans",
-                  fontSize: "1rem",
-                  fontWeight: "700",
-                  width: "80%",
-                  textTransform: "capitalize",
-                  maxWidth: "590px",
-                  "&:hover": {
-                    color: "#FFF",
-                    backgroundColor: "#00AEC3",
-                    boxShadow: "0px 4px 4px 0px #00000040",
-                  },
-                  "&.Mui-disabled": {
-                    backgroundColor: "#8F8881",
-                    color: "#fff",
-                  },
-                }}
-              >
-                Continuar
-              </Button>
-            </Grid>
-          </Grid>
-        </>
+        <ClaimerFormComponent
+          values={values}
+          touched={touched}
+          errors={errors}
+          handleChange={handleChange}
+          handleBlur={handleBlur}
+          setStep={setStep}
+        />
       )}
       {step === 1 && (
+        <ClaimerUbicationFormComponent
+          values={values}
+          touched={touched}
+          errors={errors}
+          handleChange={handleChange}
+          handleBlur={handleBlur}
+          setStep={setStep}
+        />
+      )}
+      {step === 2 && (
         <>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <Box
@@ -603,7 +408,7 @@ function FormComponent(props) {
               sx={{ display: "flex", justifyContent: "center" }}
             >
               <Button
-                onClick={() => setStep(2)}
+                onClick={() => setStep(3)}
                 disabled={values.suppliers.length === 0}
                 sx={{
                   borderRadius: "50px",
@@ -636,7 +441,7 @@ function FormComponent(props) {
               sx={{ display: "flex", justifyContent: "center" }}
             >
               <Button
-                onClick={() => setStep(0)}
+                onClick={() => setStep(1)}
                 sx={{
                   borderRadius: "50px",
                   backgroundColor: "rgba(143, 136, 129, 0.00)",
@@ -659,7 +464,7 @@ function FormComponent(props) {
           </Grid>
         </>
       )}
-      {step === 2 && (
+      {step === 3 && (
         <>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <Box
@@ -1030,7 +835,7 @@ function FormComponent(props) {
               sx={{ display: "flex", justifyContent: "center" }}
             >
               <Button
-                onClick={() => setStep(1)}
+                onClick={() => setStep(2)}
                 sx={{
                   borderRadius: "50px",
                   backgroundColor: "rgba(143, 136, 129, 0.00)",

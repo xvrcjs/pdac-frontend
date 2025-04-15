@@ -27,6 +27,7 @@ import { tokens } from "theme";
 import Grid from "@mui/material/Grid2";
 import { useNavigate } from "react-router-dom";
 import ClaimerFormComponent from "./ClaimerFormComponent";
+import ClaimerUbicationFormComponent from "./ClaimerUbicationFormComponent"
 import ReCAPTCHA from "react-google-recaptcha";
 import { VALIDATE_RECAPTCHA } from "constant/endpoints";
 
@@ -303,6 +304,16 @@ function FormComponent(props) {
         </>
       )}
       {step === 1 && (
+        <ClaimerUbicationFormComponent
+          values={values}
+          touched={touched}
+          errors={errors}
+          handleChange={handleChange}
+          handleBlur={handleBlur}
+          setStep={setStep}
+        />
+      )}
+      {step === 2 && (
         <>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <Box
@@ -527,7 +538,7 @@ function FormComponent(props) {
               sx={{ display: "flex", justifyContent: "center" }}
             >
               <Button
-                onClick={() => setStep(0)}
+                onClick={() => setStep(1)}
                 sx={{
                   borderRadius: "50px",
                   backgroundColor: "rgba(143, 136, 129, 0.00)",
@@ -556,7 +567,7 @@ function FormComponent(props) {
               sx={{ display: "flex", justifyContent: "center" }}
             >
               <Button
-                onClick={() => setStep(2)}
+                onClick={() => setStep(3)}
                 sx={{
                   borderRadius: "50px",
                   backgroundColor: "#A83E83",
@@ -585,7 +596,7 @@ function FormComponent(props) {
           </Grid>
         </>
       )}
-      {step === 2 && (
+      {step === 3 && (
         <>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <Box
@@ -856,7 +867,7 @@ function FormComponent(props) {
               sx={{ display: "flex", justifyContent: "center" }}
             >
               <Button
-                onClick={() => setStep(1)}
+                onClick={() => setStep(2)}
                 sx={{
                   borderRadius: "50px",
                   backgroundColor: "rgba(143, 136, 129, 0.00)",

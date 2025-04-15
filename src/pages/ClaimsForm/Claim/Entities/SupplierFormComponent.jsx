@@ -277,6 +277,7 @@ function SupplierFormComponent(props) {
           <Autocomplete
             options={localidades}
             disabled={isNew}
+            noOptionsText={'No se encontre resultado'}
             getOptionLabel={(option) => option.name}
             filterOptions={(options, { inputValue }) =>
               options.filter((option) =>

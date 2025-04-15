@@ -22,6 +22,11 @@ function ClaimContainer() {
       dni: values.dni_cl,
       cuit: values.cuit_cl,
       gender: values.gender_cl,
+      street: values.street_cl,
+      number: values.number_cl,
+      between_streets: values.between_streets_cl,
+      province: values.province_cl,
+      city: values.city_cl
     };
     formData.append("claimer", JSON.stringify(claimerData));
     formData.append("problem_description", values.comments);
@@ -76,6 +81,11 @@ function ClaimContainer() {
       gender_cl: "",
       radioButton_1_cl: "",
       radioButton_2_cl: "",
+      street_cl: "",
+      number_cl: "",
+      between_streets_cl: "",
+      province_cl: "",
+      city_cl: "",
       suppliers: [],
       comments: "",
       files: []
@@ -96,12 +106,27 @@ function ClaimContainer() {
       ) {
         errors.email_cl = "Dirección de correo no valida.";
       } 
+      if (!values.street_cl) {
+        errors.street_cl = "El campo calle es requerido.";
+      }
+      if (!values.number_cl) {
+        errors.number_cl = "El campo numero es requerido.";
+      }
+      if (!values.between_streets_cl) {
+        errors.between_streets_cl = "El campo entre calles es requerido.";
+      }
+      if (!values.province_cl) {
+        errors.province_cl = "El campo provincia es requerido.";
+      }
+      if (!values.city_cl) {
+        errors.city_cl = "El campo ciudad es requerido.";
+      }
       return errors;
     },
   });
 
   return (
-    <div className="container">
+    <div className="container" style={{backgroundColor:"#fff"}}>
       <Box
         sx={{
           background:
