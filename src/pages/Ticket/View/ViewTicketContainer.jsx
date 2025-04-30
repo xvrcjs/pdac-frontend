@@ -1,0 +1,464 @@
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { AppContext } from "context/AppContext";
+import { useFormik } from "formik";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
+  Box,
+  TextField,
+} from "@mui/material";
+import ViewTicketComponent from "./ViewTicketComponent";
+import { TICKET,COMMENT_TICKET,ADD_INFO_ADITIONAL_TICKET } from "constant/endpoints";
+import { eventCenterIcon } from "utils/icons";
+
+const support_level = {
+  "S/A":"unassigned",
+  "Nivel 1 (N1)":"n1",
+  "Nivel 2 (N2)":"n2",
+  "Nivel 3 (N3)":"n3",
+}
+const support_level_order = ["S/A", "Nivel 1 (N1)", "Nivel 2 (N2)", "Nivel 3 (N3)"];
+
+const getNextLevel = (currentLevel) => {
+  const currentIndex = support_level_order.indexOf(currentLevel);
+  if (currentIndex === -1 || currentIndex === support_level_order.length - 1) return null;
+  return support_level_order[currentIndex + 1];
+};
+
+function ViewTicketContainer() {
+  const { id } = useParams();
+  const { api, account } = useContext(AppContext);
+  const [ticket, setTicket] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [showMessageSuccessChange, setShowMessageSuccessChange] = useState(false);
+  const [showMessageConfirmUpgrade,setShowMessageConfirmUpgrade] = useState(false)
+  const [showMessageConfirmCloseTicket,setShowMessageConfirmCloseTicket] = useState(false)
+  const [showMessageSuccessClose,setShowMessageSuccessClose]=useState(false)
+  const [showConfirm, setShowConfirm] = useState(false);
+  const navigate = useNavigate();
+  const [levelToUpgrade, setLevelToUpgrade] = useState(null);
+  
+  const handleAddComment = (comment) => {
+    const newComment = {
+      type: "comment",
+      timestamp: new Date().toISOString(),
+      user: account.full_name,
+      content: comment,
+      highlighted: false,
+    };
+    api(COMMENT_TICKET + "/" + id, { method: "PATCH", body: newComment }).then(
+      ({ ok, body }) => {
+        if (ok) {
+          navigate(0);
+        }
+      }
+    );
+  };
+  const handleAddActivity = (comment) =>{
+    const newComment = {
+      type: "support",
+      timestamp: new Date().toISOString(),
+      user: "(Soporte) "+account.full_name,
+      content: comment,
+      highlighted: false,
+    };
+    api(ADD_INFO_ADITIONAL_TICKET + "/" + id, { method: "PATCH", body: newComment }).then(
+      ({ ok, body }) => {
+        if (ok) {
+          // navigate(0);
+        }
+      }
+    );
+  }
+
+  const handleUpgradeTicket = (level) => {
+    setLevelToUpgrade(level);
+    setShowMessageConfirmUpgrade(true);
+  }
+
+  const confirmUpgradeTicket = () => {
+    if (!levelToUpgrade) return;
+
+    api(TICKET + "/" + id, {
+      method: "PATCH", 
+      body: { 
+        "support_level": levelToUpgrade,
+        "status": "pending_review",
+        "assigned": null
+      }
+    }).then(({ ok, body }) => {
+      if (ok) {
+        setShowMessageConfirmUpgrade(false);
+        setShowMessageSuccessChange(true);
+        let comment = "Se ha elevado el ticket a "+getNextLevel(ticket?.support_level)
+        setLevelToUpgrade(null);
+        handleAddActivity(comment)
+      }
+    });
+  }
+
+  const confirmCloseTicket = () => {
+    api(TICKET + "/" + id, {
+      method: "PATCH", 
+      body: { 
+        "status": "closed",
+        "support_level":"unassigned"
+       }
+    }).then(({ ok, body }) => {
+      if (ok) {
+        setShowMessageConfirmCloseTicket(false);
+        setShowMessageSuccessChange(true);
+        let comment = "El ticket se ha resuelto correctamente"
+        handleAddActivity(comment)
+      }
+    });
+  }
+  const handleAddInfoAditional = (comment) =>{
+    const newComment = {
+      type: "support_add_info",
+      timestamp: new Date().toISOString(),
+      user: "(Soporte) "+account.full_name,
+      content: comment,
+      highlighted: false,
+      ticket: id
+    };
+    api(ADD_INFO_ADITIONAL_TICKET + "/" + id, { method: "PATCH", body: newComment }).then(
+      ({ ok, body }) => {
+        if (ok) {
+          // navigate(0);
+        }
+      }
+    );
+  }
+  const handleOnSubmit = () => {
+    api(TICKET+ "/" + id,{method: "PATCH", body: {"tasks":ticket.tasks}}).then(
+      ({ ok, body }) => {
+        if (ok) {
+          setShowConfirm(false)
+          setShowMessageSuccessChange(true)
+        }
+      }
+    );
+  };
+
+  useEffect(() => {
+    api(TICKET + "/" + id).then(({ ok, body }) => {
+      if (ok) {
+        setTicket(body.data);
+        setIsLoading(false);
+      }
+    });
+  }, []);
+  
+  return (
+    <>
+      {!isLoading && (
+        <ViewTicketComponent
+          ticket={ticket}
+          setTicket={setTicket}
+          navigate={navigate}
+          handleOnSubmit={handleOnSubmit}
+          handleAddComment={handleAddComment}
+          showConfirm={showConfirm}
+          setShowConfirm={setShowConfirm}
+          handleUpgradeTicket={handleUpgradeTicket}
+          handleAddInfoAditional={handleAddInfoAditional}
+          setShowMessageConfirmCloseTicket={setShowMessageConfirmCloseTicket}
+        />
+      )}
+      <Dialog
+        open={showMessageSuccessChange}
+        onClose={() => setShowMessageSuccessChange(!showMessageSuccessChange)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        sx={{
+          "&.MuiDialog-root .MuiDialog-paper": {
+            padding: "30px 20px",
+            borderRadius: "50px",
+            maxWidth: "100%",
+            minHeight:"250px",
+            width: "961px",
+            display:"flex",
+            flexDirection:"column",
+            justifyContent:"space-between"
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            fontFamily: "Encode Sans",
+            fontSize: "32px",
+            fontWeight: "600",
+          }}
+          id="alert-dialog-title"
+        >
+          Los cambios fueron aplicados exitosamente.
+        </DialogTitle>
+        <DialogActions sx={{ mr: "24px", p: "0px" }}>
+          <Button
+            onClick={() => navigate(0)}
+            sx={{
+              borderRadius: "50px",
+              color: "#000",
+              padding: "12px 24px",
+              fontFamily: "Encode Sans",
+              fontSize: "16px",
+              fontWeight: "500",
+              width: "189px",
+              textTransform: "capitalize",
+              cursor: "pointer",
+              border: "1px solid #838383",
+            }}
+          >
+            Cerrar
+          </Button>
+          <Button
+            onClick={() => navigate(0)}
+            sx={{
+              borderRadius: "50px",
+              backgroundColor: "#00AEC3",
+              color: "#fff",
+              padding: "12px 24px",
+              fontFamily: "Encode Sans",
+              fontSize: "16px",
+              fontWeight: "500",
+              width: "197px",
+              ml: "20px",
+              textTransform: "capitalize",
+              cursor: "pointer",
+              boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+              "&.Mui-disabled": {
+                backgroundColor: "#8F8881",
+                color: "#fff",
+              },
+            }}
+          >
+            Aceptar
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={showMessageConfirmUpgrade}
+        onClose={() => setShowMessageConfirmUpgrade(!showMessageConfirmUpgrade)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        sx={{
+          "&.MuiDialog-root .MuiDialog-paper": {
+            padding: "30px 20px",
+            borderRadius: "50px",
+            maxWidth: "100%",
+            width: "961px",
+            margin: "auto",
+            minHeight:"280px"
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            fontFamily: "Encode Sans",
+            fontSize: "32px",
+            fontWeight: "600",
+          }}
+          id="alert-dialog-title"
+        >
+          ¿Desea confirmar la elevación del ticket a {getNextLevel(ticket?.support_level)}?
+        </DialogTitle>
+        <DialogContent>
+          En caso de no querer confirmar la actualización, haga click en “cancelar”
+        </DialogContent>
+        <DialogActions sx={{ mr: "24px", p: "0px" }}>
+          <Button
+            onClick={() => setShowMessageConfirmUpgrade(!showMessageConfirmUpgrade)}
+            sx={{
+              borderRadius: "50px",
+              color: "#000",
+              padding: "12px 24px",
+              fontFamily: "Encode Sans",
+              fontSize: "16px",
+              fontWeight: "500",
+              width: "189px",
+              textTransform: "capitalize",
+              cursor: "pointer",
+              border: "1px solid #838383",
+            }}
+          >
+            Cancelar
+          </Button>
+          <Button
+            onClick={() => confirmUpgradeTicket()}
+            sx={{
+              borderRadius: "50px",
+              backgroundColor: "#00AEC3",
+              color: "#fff",
+              padding: "12px 24px",
+              fontFamily: "Encode Sans",
+              fontSize: "16px",
+              fontWeight: "500",
+              width: "197px",
+              ml: "20px",
+              textTransform: "capitalize",
+              cursor: "pointer",
+              boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+              "&.Mui-disabled": {
+                backgroundColor: "#8F8881",
+                color: "#fff",
+              },
+            }}
+          >
+            Confirmar
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={showMessageConfirmCloseTicket}
+        onClose={() => setShowMessageConfirmCloseTicket(!showMessageConfirmCloseTicket)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        sx={{
+          "&.MuiDialog-root .MuiDialog-paper": {
+            padding: "30px 20px",
+            borderRadius: "50px",
+            maxWidth: "100%",
+            width: "961px",
+            minHeight:"250px",
+            margin: "auto",
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            fontFamily: "Encode Sans",
+            fontSize: "32px",
+            fontWeight: "600",
+          }}
+          id="alert-dialog-title"
+        >
+          ¿Desea confirmar el cierre del ticket?
+        </DialogTitle>
+        <DialogContent>
+          En caso de no querer confirmar la actualización, haga click en “cancelar”
+        </DialogContent>
+        <DialogActions sx={{ mr: "24px", p: "0px" }}>
+          <Button
+            onClick={() => setShowMessageConfirmCloseTicket(!showMessageConfirmCloseTicket)}
+            sx={{
+              borderRadius: "50px",
+              color: "#000",
+              padding: "12px 24px",
+              fontFamily: "Encode Sans",
+              fontSize: "16px",
+              fontWeight: "500",
+              width: "189px",
+              textTransform: "capitalize",
+              cursor: "pointer",
+              border: "1px solid #838383",
+            }}
+          >
+            Cancelar
+          </Button>
+          <Button
+            onClick={() => confirmCloseTicket()}
+            sx={{
+              borderRadius: "50px",
+              backgroundColor: "#00AEC3",
+              color: "#fff",
+              padding: "12px 24px",
+              fontFamily: "Encode Sans",
+              fontSize: "16px",
+              fontWeight: "500",
+              width: "197px",
+              ml: "20px",
+              textTransform: "capitalize",
+              cursor: "pointer",
+              boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+              "&.Mui-disabled": {
+                backgroundColor: "#8F8881",
+                color: "#fff",
+              },
+            }}
+          >
+            Confirmar
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={showMessageSuccessClose}
+        onClose={() => setShowMessageSuccessClose(!showMessageSuccessClose)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        sx={{
+          "&.MuiDialog-root .MuiDialog-paper": {
+            padding: "30px 20px",
+            borderRadius: "50px",
+            maxWidth: "100%",
+            minHeight:"250px",
+            width: "961px",
+            display:"flex",
+            flexDirection:"column",
+            justifyContent:"space-between"
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            fontFamily: "Encode Sans",
+            fontSize: "32px",
+            fontWeight: "600",
+          }}
+          id="alert-dialog-title"
+        >
+          El cierre del ticket fue exitoso.
+        </DialogTitle>
+        <DialogActions sx={{ mr: "24px", p: "0px" }}>
+          <Button
+            onClick={() => navigate(0)}
+            sx={{
+              borderRadius: "50px",
+              color: "#000",
+              padding: "12px 24px",
+              fontFamily: "Encode Sans",
+              fontSize: "16px",
+              fontWeight: "500",
+              width: "189px",
+              textTransform: "capitalize",
+              cursor: "pointer",
+              border: "1px solid #838383",
+            }}
+          >
+            Cerrar
+          </Button>
+          <Button
+            onClick={() => navigate(0)}
+            sx={{
+              borderRadius: "50px",
+              backgroundColor: "#00AEC3",
+              color: "#fff",
+              padding: "12px 24px",
+              fontFamily: "Encode Sans",
+              fontSize: "16px",
+              fontWeight: "500",
+              width: "197px",
+              ml: "20px",
+              textTransform: "capitalize",
+              cursor: "pointer",
+              boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+              "&.Mui-disabled": {
+                backgroundColor: "#8F8881",
+                color: "#fff",
+              },
+            }}
+          >
+            Aceptar
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
+}
+
+export default ViewTicketContainer;

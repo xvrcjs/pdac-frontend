@@ -28,6 +28,8 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import FolderZipOutlinedIcon from "@mui/icons-material/FolderZipOutlined";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
+import TicketContainer from "pages/Ticket/Create/index.js";
+import ViewTicketContainer from "../Ticket/ViewTicketContainer.jsx";
 
 const CircularItemFilter = ({ status }) => {
   const statusColors = {
@@ -112,6 +114,9 @@ function ClaimComponent(props) {
   const [showComments, setShowComments] = useState(true);
   const [comment, setComment] = useState("");
   const [activityFilter, setActivityFilter] = useState("");
+  const [showCreateTicket,setShowCreateTicket] = useState(false)
+  const [ticket,setTicket] = useState()
+  const [showViewTicket,setShowViewTicket] = useState(false)
 
   const prefix = `${account.full_name}: `; 
 
@@ -120,6 +125,10 @@ function ClaimComponent(props) {
       return item.type === "status_activity"; 
     } else if (activityFilter === 'comment') {
       return item.type === 'comment'; 
+    }else if (activityFilter === 'support') {
+      return item.type === 'support'; 
+    }else if (activityFilter === 'support_add_info') {
+      return item.type === 'support_add_info'; 
     }
     return true; 
   });
@@ -498,41 +507,43 @@ function ClaimComponent(props) {
                     </Select>
                   </Box>
                   {claimInfo.suppliers.map((supplier,index)=>(
-                    <>
                   <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      mt: "10px",
-                      width: "100%",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography sx={{ fontSize: "14px", fontWeight: "500"}}>
-                      Empresa ({index+1}):
-                    </Typography>
-                    <Typography sx={{p:"5px",border:"1px solid #000",borderRadius:"7px",mt:"10px"}}>
-                      {supplier.fullname}
-                    </Typography>
+                    key={index}
+                    >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        mt: "10px",
+                        width: "100%",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Typography sx={{ fontSize: "14px", fontWeight: "500"}}>
+                        Empresa ({index+1}):
+                      </Typography>
+                      <Typography sx={{p:"5px",border:"1px solid #000",borderRadius:"7px",mt:"10px"}}>
+                        {supplier.fullname}
+                      </Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        mt: "10px",
+                        width: "100%",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography sx={{ fontSize: "14px", fontWeight: "500" }}>
+                        Cuit ({index+1}):
+                      </Typography>
+                      <Typography sx={{p:"5px",border:"1px solid #000",borderRadius:"7px",width:"80%"}}>
+                        {supplier.cuil}
+                      </Typography>
+                    </Box>
                   </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      mt: "10px",
-                      width: "100%",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Typography sx={{ fontSize: "14px", fontWeight: "500" }}>
-                      Cuit ({index+1}):
-                    </Typography>
-                    <Typography sx={{p:"5px",border:"1px solid #000",borderRadius:"7px",width:"80%"}}>
-                      {supplier.cuil}
-                    </Typography>
-                  </Box>
-                  </>
                   ))}
                   <Box
                     sx={{
@@ -977,6 +988,12 @@ function ClaimComponent(props) {
                         <MenuItem sx={{ fontSize: "14px",display:"flex",flexDirection:"column",alignItems:"center" }} value="comment">
                           Comentarios
                         </MenuItem>
+                        <MenuItem sx={{ fontSize: "14px",display:"flex",flexDirection:"column",alignItems:"center" }} value="support">
+                          Soporte
+                        </MenuItem>
+                        <MenuItem sx={{ fontSize: "14px",display:"flex",flexDirection:"column",alignItems:"center" }} value="support_add_info">
+                          Solicitud de info adicional
+                        </MenuItem>
                       </Select>
                     </Box>
                     </Box>
@@ -1016,6 +1033,11 @@ function ClaimComponent(props) {
                               {(!activity.highlighted && activity.type === "comment") && 
                                 <span style={{marginLeft:"15px",fontSize:"13px",color:"#E81F76",cursor:"pointer"}} onClick={()=> handleHighlightComment(activity.id,"set")}>
                                   Destacar mensaje
+                                </span>
+                              }
+                              {activity.type === "support_add_info" && 
+                                <span style={{marginLeft:"15px",fontSize:"13px",color:"#E81F76",cursor:"pointer"}} onClick={()=>( setTicket(activity.ticket),setShowViewTicket(!showViewTicket))}>
+                                  Ver solicitud
                                 </span>
                               }
                             </Typography>
@@ -1121,7 +1143,8 @@ function ClaimComponent(props) {
                   flexDirection: "column",
                 }}
               >
-                <Box>
+                <Box sx={{display:"flex",flexDirection:"row",alignItems:"end"}}>
+                  <Box>
                   <Typography sx={{ fontSize: "16px", fontWeight: "400" }}>
                     Estado actual del reclamo:
                   </Typography>
@@ -1133,8 +1156,8 @@ function ClaimComponent(props) {
                     input={<OutlinedInput />}
                     inputProps={{ "aria-label": "Without label" }}
                     sx={{
-                      height: "40px",
-                      width: "250px",
+                      height: "30px",
+                      width: "160px",
                       textAlign: "center",
                       background: "#00AEC3",
                       borderRadius: "20px",
@@ -1156,12 +1179,31 @@ function ClaimComponent(props) {
                       <MenuItem
                         key={index}
                         value={item}
-                        sx={{ fontSize: "14px" }}
+                        sx={{ fontSize: "12px" }}
                       >
                         {item}
                       </MenuItem>
                     ))}
                   </Select>
+                  </Box>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "#00AEC3",
+                      color: "#FFF",
+                      fontFamily: "Encode Sans",
+                      fontSize: "12px",
+                      fontStyle: "normal",
+                      fontWeight: "500",
+                      lineHeight: "normal",
+                      borderRadius: "20px",
+                      height:"30px",
+                      justifyContent: "space-between",
+                    }}
+                    onClick={() => setShowCreateTicket(!showCreateTicket)}
+                  >
+                    Solicitar soporte
+                  </Button>
                 </Box>
                 <Box sx={{ mt: "10px" }}>
                   <Button
@@ -1401,6 +1443,18 @@ function ClaimComponent(props) {
           </Box>
         </Box>
       </Box>
+      <TicketContainer 
+        showCreateTicket={showCreateTicket}
+        setShowCreateTicket={setShowCreateTicket}
+        claim={claimInfo}
+      />
+      {ticket &&
+        <ViewTicketContainer
+          id={ticket}
+          showViewTicket={showViewTicket}
+          setShowViewTicket={setShowViewTicket}
+        />
+      }
     </Content>
   );
 }
