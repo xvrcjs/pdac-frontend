@@ -22,6 +22,8 @@ import ProfilePage from "../../pages/UserManagment/Profile";
 import ClaimViewPage from "pages/EntranceTable/Claim";
 import ClaimIVEViewPage from "pages/ClaimsHV/ClaimIVE";
 import StandardsProtocolsPage from "pages/StandardsProtocols"
+import TicketsPage from "pages/Ticket/List"
+import TicketsViewPage from "pages/Ticket/View"
 import { AppContext } from "../../context/AppContext";
 
 function RouterContainer() {
@@ -96,6 +98,16 @@ function RouterContainer() {
                     exact
                     path="/estandares-y-protocolos"
                     element={<StandardsProtocolsPage />}
+                />
+                <Route
+                    exact
+                    path="/tickets"
+                    element={<TicketsPage />}
+                />
+                <Route
+                    exact
+                    path="/tickets/:id"
+                    element={<TicketsViewPage />}
                 />
             </Route>
             <Route element={<PublicRoute />}>

@@ -351,7 +351,7 @@ function Navbar(props) {
         spacing={1}
         className={`swt-navbar ${isNavbarCollapsed ? "collapsed" : ""}`}
       >
-        <Grid item="true" size={{ xs: 12, sm: 3, md: 3 }}>
+        <Grid item size={{ xs: 12, sm: 3, md: 3 }}>
           <Menu iconShape="square" className="swt-navbar-content">
             {navMenuData.map((elem, index) => {
               const isActive = location.pathname.startsWith(`/${elem.path}`);
@@ -375,7 +375,7 @@ function Navbar(props) {
           size={{ xs: 12, sm: 9, md: 9 }}
           sx={{ display: "flex", flexDirection: "column"}}
         >
-          <Grid item="true" size={{ xs: 12, sm: 12, md: 12 }}>
+          <Grid item size={{ xs: 12, sm: 12, md: 12 }}>
             <Menu iconShape="square">
               <Box
                 sx={{

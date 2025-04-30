@@ -1,4 +1,4 @@
-type Rol = "Omic" | "Admin" | "Soporte"
+type Rol = "Omic" | "Admin" | "Support"
 
 interface Menu{
     title: string;
@@ -12,14 +12,14 @@ interface Menu{
 export const MenuDataNav:Menu[] = [{
     title: "Inicio",
     path: "inicio",
-    rolesAllowed: ["Admin","Omic"],
+    rolesAllowed: ["Admin","Omic","Support"],
     headerTitle:"Te damos la bienvenida a tu tablero de gestión administrativa",
     headerSubTitle:"Acá tendrás el control y  acceso a todo."
 },
 ,{
     title: "Mi perfil",
     path: "perfil",
-    rolesAllowed: ["Admin","Omic"],
+    rolesAllowed: ["Admin","Omic","Support"],
     headerTitle:"Toda la información que necesitas, está al alcance de tu mano.",
     headerSubTitle:"Navegá entre las secciones de trabajo de manera intuitiva."
 },{

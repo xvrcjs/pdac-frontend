@@ -1,4 +1,4 @@
-type Rol = "Omic" | "Admin" | "Soporte"
+type Rol = "Omic" | "Admin" | "Support"
 
 interface Menu{
     title: string;
@@ -79,6 +79,22 @@ export const MenuData:Menu[] = [{
     rolesAllowed: ["Admin","Omic"],
     headerTitle: "Te damos la bienvenida a tu Mesa de entrada",
     headerSubTitle:"Acá podras ver los reclamos sin asignar, asignados y filtrarlos por el sistema de semáforos.",
+    show: false,
+},
+{
+    title: "Buzón general de Tickets",
+    path: "tickets",
+    rolesAllowed: ["Admin","Support"],
+    headerTitle: "Te damos la bienvenida a tu Buzón de Tickets de soporte ",
+    headerSubTitle:"Acá podrás gestionarlos y darle el seguimiento que cada ticket necesita, dependiendo los niveles técnicos N1 - N2 - N3",
+    show: true,
+},
+{
+    title: "Buzón general de Tickets",
+    path: "tickets/:id",
+    rolesAllowed: ["Admin","Support"],
+    headerTitle: "Te damos la bienvenida a tu Buzón de Tickets de soporte ",
+    headerSubTitle:"Acá podrás gestionarlos y darle el seguimiento que cada ticket necesita, dependiendo los niveles técnicos N1 - N2 - N3",
     show: false,
 }
 ]
