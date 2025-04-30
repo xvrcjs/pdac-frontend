@@ -11,6 +11,7 @@ export const GET_PROFILE_ENDPOINT = "/v1/profile";
 export const GET_PERMISSIONS = "/v1/permissions";
 export const CREATE_USER = "/v1/account";
 export const GET_USERS = "/v1/account";
+export const GET_USERS_SUPPORT = "/v1/supports";
 
 // FORMULARIO DE RECLAMO
 export const CLAIM = "/v1/claim";
@@ -37,3 +38,9 @@ export const OMICS = "/v1/omic";
 
 export const CREATE_STANDARDS_PROTOCOLS = "v1/standards-and-protocols"
 export const GET_ZIP_STANDARDS_PROTOCOLS = "v1/standards-and-protocols/zip"
+
+//TICKETS
+export const TICKET = "v1/ticket"
+export const ASSIGN_TICKET = "v1/ticket/assign"
+export const COMMENT_TICKET = "v1/ticket/comment"
+export const ADD_INFO_ADITIONAL_TICKET = "v1/ticket/aditional-info"

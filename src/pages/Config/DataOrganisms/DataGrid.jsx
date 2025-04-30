@@ -333,7 +333,6 @@ const DataGrid = ({
                           ml: "10px",
                         }}
                       >
-                        {console.log(index)}
                         {editingRows[index] ? (
                           <>
                             <Button

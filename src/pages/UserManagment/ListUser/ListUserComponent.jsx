@@ -31,7 +31,6 @@ function ListUserComponent(props) {
   const colors = tokens(theme.palette.mode);
   const [expandedRowId, setExpandedRowId] = useState(null);
   const navigate = useNavigate()
-  console.log(rows)
   const columns = [
     {
       field: "full_name",
