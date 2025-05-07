@@ -1,13 +1,14 @@
 import React ,{ useState, useCallback} from 'react';
-import { Snackbar, Box } from '@mui/material/';
+import { Snackbar, Box,Alert, Typography } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
+import { BorderAllRounded } from '@mui/icons-material';
 
 const useAlert = () => {
   const [alerts, setAlerts] = useState([]);
   const [ state, setState ] = useState({
     open: false,
     vertical:"top",
-    horizontal:"center",
+    horizontal:"left",
   })
 
   const {vertical, horizontal,open} = state;
@@ -41,21 +42,21 @@ const useAlert = () => {
       <div className={`p-toast p-component p-toast-top-right`} style={{ zIndex: 1350 }}>
         {alerts.map((alert,index) => (   
             <Snackbar
-            anchorOrigin={{vertical,horizontal}}
-            open={open}
-            onClose={handleClose}
-            key={index}
-            autoHideDuration={alert.life}
-          >
-            <Box className={`swt-alert ${alert.type}`}>
-              <img
-                  src={`../../assets/${alert.type}.svg`} 
-                  alt="stage-complete"
-                />
-              <div>
-                <span>{alert.title}</span>
-              </div>
-            </Box>
+              anchorOrigin={{vertical,horizontal}}
+              open={open}
+              onClose={handleClose}
+              key={index}
+              autoHideDuration={alert.life}
+            >
+              <Alert
+                onClose={handleClose}
+                severity="error"
+                variant="filled"
+                sx={{ width: '100%',borderRadius:'20px',backgroundColor:"#C72C41" }}
+              >
+                <Typography sx={{fontSize:"32px",fontWeight:"500"}}>{alert.title}</Typography>
+                <Typography sx={{fontSize:"13px",fontWeight:"400"}}>{alert.detail}</Typography>
+              </Alert>
           </Snackbar>
         ))}
       </div>

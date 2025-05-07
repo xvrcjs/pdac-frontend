@@ -94,7 +94,7 @@ function App() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
           <Suspense fallback={<CircularProgress sx={{ m: '-40px auto 0' }} />}>
-            {/* {alertNode} */}
+            {alertNode}
             <AppContext.Provider value={appContextValues}>
               <Router />
             </AppContext.Provider>

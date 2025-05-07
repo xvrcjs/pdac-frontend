@@ -53,16 +53,23 @@ const useApi = ({ alert, setIsLoading, onLogout, onError }) => {
         })
         .catch((error) => {
           setIsLoading(false);
-
+          if(error.status !== 401) {
+            alert({
+              type: "error",
+              title: "Upss!",
+              detail: "Algo no salió como esperabamos, por favor intentá nuevamente.",
+              life: 4000  
+            })  
+          }
           if (jwtAxios.isCancel(error)) {
             // Manejar cancelaciones si es necesario
           } else if (error.response) { 
             if(config.method && error.response.data.messages) {
               // alert({
               //   type: "error",
-              //   title: error.response.data.messages[0].field+":"+ error.response.data.messages[0].description,
+              //   title: "Upss!",
               //   life: 5000  
-              // })      
+              // })    
             }    
             onError(error.response.data);
           } else if (error.request) {
