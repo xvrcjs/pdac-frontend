@@ -98,6 +98,7 @@ function ViewTicketContainer() {
         let comment = "Se ha elevado el ticket a "+getNextLevel(ticket?.support_level)
         setLevelToUpgrade(null);
         handleAddActivity(comment)
+        navigate("/tickets")
       }
     });
   }
@@ -130,7 +131,7 @@ function ViewTicketContainer() {
     api(ADD_INFO_ADITIONAL_TICKET + "/" + id, { method: "PATCH", body: newComment }).then(
       ({ ok, body }) => {
         if (ok) {
-          // navigate(0);
+          navigate(0);
         }
       }
     );

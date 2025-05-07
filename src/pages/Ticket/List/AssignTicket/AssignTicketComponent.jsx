@@ -86,6 +86,7 @@ function AssignTicketComponent(props) {
     users,
     handleOnSubmit,
     ticketSelected,
+    ticketData,
     showAssignTicket,
     setShowAssignTicket
   } = props;
@@ -146,6 +147,15 @@ function AssignTicketComponent(props) {
     );
     setRows(filteredUsers);
   }, [users, typeLevelSelected]);
+
+  useEffect(() => {
+    if (ticketData?.support_level) {
+      const level = levels.find(l => l.label.toLowerCase() === ticketData.support_level);
+      if (level) {
+        setTypeLevelSelected(level.value);
+      }
+    }
+  }, [ticketData]);
 
   return (
     <>

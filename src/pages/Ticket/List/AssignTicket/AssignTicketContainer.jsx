@@ -22,9 +22,9 @@ function AssignTicketContainer(props) {
   const { api, account } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const ticketData = tickets.find(ticket => ticket.id === ticketSelected);
 
   const handleOnSubmit = (assigned) => {
-    const ticketData = tickets.find(ticket => ticket.id === ticketSelected);
        
     if (ticketData) {
       api(ASSIGN_TICKET + "/" + ticketData.uuid, {
@@ -53,6 +53,7 @@ function AssignTicketContainer(props) {
       <AssignTicketComponent
         users={users}
         ticketSelected={ticketSelected}
+        ticketData={ticketData}
         handleOnSubmit={handleOnSubmit}
         showAssignTicket={showAssignTicket}
         setShowAssignTicket={setShowAssignTicket}
