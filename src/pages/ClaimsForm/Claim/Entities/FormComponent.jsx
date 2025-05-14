@@ -32,6 +32,10 @@ import SupplierFormComponent from "./SupplierFormComponent";
 import ReCAPTCHA from "react-google-recaptcha";
 import { VALIDATE_RECAPTCHA } from "constant/endpoints";
 
+const extensionMap = {
+  docx: "doc",
+};
+
 function FormComponent(props) {
   const {
     api,
@@ -659,7 +663,7 @@ function FormComponent(props) {
                           >
                             <img
                               style={{ width: "18px" }}
-                              src="../../icons/file-jpg.svg"
+                              src={`../../icons/file-${extensionMap[file.name.split(".").pop().toLowerCase()] || file.name.split(".").pop().toLowerCase() }.svg`}
                             />
                             <Typography
                               sx={{
