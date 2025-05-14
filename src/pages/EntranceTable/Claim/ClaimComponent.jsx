@@ -31,6 +31,10 @@ import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import TicketContainer from "pages/Ticket/Create/index.js";
 import ViewTicketContainer from "../Ticket/ViewTicketContainer.jsx";
 
+const extensionMap = {
+  docx: "doc",
+};
+
 const CircularItemFilter = ({ status }) => {
   const statusColors = {
     verde: "green",
@@ -188,7 +192,7 @@ function ClaimComponent(props) {
               <Typography sx={{ width: "150px", ml: "70px" }}>
                 {claimInfo.id}
               </Typography>
-              <Typography>{claimInfo.derived_to_omic ? claimInfo.derived_to_omic.name +" - "+ claimInfo.derived_to_omic.responsible:claimInfo.derived_to_user ? claimInfo.derived_to_user:"S/A"}</Typography>
+              <Typography>{claimInfo.derived_to_omic ? claimInfo.derived_to_omic.name +" - "+ claimInfo.derived_to_omic.responsible:claimInfo.derived_to_user ? claimInfo.assigned:"S/A"}</Typography>
             </Box>
             <Grid
               container
@@ -867,7 +871,7 @@ function ClaimComponent(props) {
                           >
                             <img
                               style={{ width: "18px" }}
-                              src="../../icons/file-jpg.svg"
+                              src={`../../icons/file-${extensionMap[file.file_name.split(".").pop().toLowerCase()] || file.file_name.split(".").pop().toLowerCase() }.svg`}
                             />
                             <Typography
                               sx={{
@@ -1024,7 +1028,7 @@ function ClaimComponent(props) {
                       ) : (
                         filteredActivity.map((activity, index) => (
                             <Typography sx={{ width: "80%",p:"10px" }}>
-                              {activity.user}: “{activity.content}”{" "}
+                              <span style={{fontWeight:"500"}}>{activity.user}</span>: “{activity.content}”{" "}
                               <span
                                 style={{ fontStyle: "italic", fontWeight: "300" }}
                               >
@@ -1036,7 +1040,8 @@ function ClaimComponent(props) {
                                 </span>
                               }
                               {activity.type === "support_add_info" && 
-                                <span style={{marginLeft:"15px",fontSize:"13px",color:"#E81F76",cursor:"pointer"}} onClick={()=>( setTicket(activity.ticket),setShowViewTicket(!showViewTicket))}>
+                                <span style={{marginLeft:"15px",fontSize:"13px",color:"#E81F76",cursor:"pointer"}} onClick={()=>( setTicket(activity.ticket),
+                                setShowViewTicket(!showViewTicket))}>
                                   Ver solicitud
                                 </span>
                               }
@@ -1186,24 +1191,26 @@ function ClaimComponent(props) {
                     ))}
                   </Select>
                   </Box>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      backgroundColor: "#00AEC3",
-                      color: "#FFF",
-                      fontFamily: "Encode Sans",
-                      fontSize: "12px",
-                      fontStyle: "normal",
-                      fontWeight: "500",
-                      lineHeight: "normal",
-                      borderRadius: "20px",
-                      height:"30px",
-                      justifyContent: "space-between",
-                    }}
-                    onClick={() => setShowCreateTicket(!showCreateTicket)}
-                  >
-                    Solicitar soporte
-                  </Button>
+                  {!claimInfo.has_ticket &&
+                    <Button
+                      variant="contained"
+                      sx={{
+                        backgroundColor: "#00AEC3",
+                        color: "#FFF",
+                        fontFamily: "Encode Sans",
+                        fontSize: "12px",
+                        fontStyle: "normal",
+                        fontWeight: "500",
+                        lineHeight: "normal",
+                        borderRadius: "20px",
+                        height:"30px",
+                        justifyContent: "space-between",
+                      }}
+                      onClick={() => setShowCreateTicket(!showCreateTicket)}
+                    >
+                      Solicitar soporte
+                    </Button>
+                  }
                 </Box>
                 <Box sx={{ mt: "10px" }}>
                   <Button

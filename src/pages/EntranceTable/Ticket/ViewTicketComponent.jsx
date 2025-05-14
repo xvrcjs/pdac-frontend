@@ -15,9 +15,13 @@ import {
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
+import BackupOutlinedIcon from "@mui/icons-material/BackupOutlined";
+import PublishOutlinedIcon from '@mui/icons-material/PublishOutlined';
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
+const extensionMap = {
+  docx: "doc",
+}
 const themeTable = createTheme({
   components: {
     MuiDataGrid: {
@@ -96,17 +100,19 @@ function ViewTicketComponent(props) {
     showConfirm,
     setShowConfirm,
     showViewTicket,
-    setShowViewTicket
+    setShowViewTicket,
+    handleAddFile
   } = props;
 
   const tabs = [
-    "Listado de incidencias",
     "Descripción del problema",
+    "Listado de incidencias",
     "Documentación adjunta",
   ];
-  const [tabSelected, setTabSelected] = useState("Listado de incidencias");
+  const [tabSelected, setTabSelected] = useState("Descripción del problema");
   const [comment, setComment] = useState("");
   const [showCreateComment, setShowCreateComment] = useState(false);
+  const [file, setFile] = useState(null);
 
   function CustomNoRowsOverlay() {
     return (
@@ -206,8 +212,13 @@ function ViewTicketComponent(props) {
               p: "5px 10px",
               fontSize: "15px",
               cursor: "pointer",
-              backgroundColor: params.value === "resolved" && "#E81F76",
-              color: params.value === "resolved" ? "#fff" : params.value === "unsolved" ? "#bbb":"#000",
+              backgroundColor: params.value === "resolved" ? "#E81F76" : "#fff",
+              color:
+                params.value === "resolved"
+                  ? "#fff"
+                  : params.value === "unsolved"
+                  ? "#bbb"
+                  : "#000",
             }}
           >
             Resuelto
@@ -222,8 +233,13 @@ function ViewTicketComponent(props) {
               p: "5px 10px",
               fontSize: "15px",
               cursor: "pointer",
-              backgroundColor: params.value === "unsolved" && "#E81F76",
-              color: params.value === "unsolved" ? "#fff" : params.value === "resolved" ? "#bbb":"#000",
+              backgroundColor: params.value === "unsolved" ? "#E81F76" : "#fff",
+              color:
+                params.value === "unsolved"
+                  ? "#fff"
+                  : params.value === "resolved"
+                  ? "#bbb"
+                  : "#000",
             }}
           >
             No resuelto
@@ -240,7 +256,17 @@ function ViewTicketComponent(props) {
       headerAlign: "center",
       align: "center",
       renderCell: (params) => (
-        <div className="swt-table-field-name">{params.value}</div>
+        <div
+          className="swt-table-field-name"
+          style={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            width: "70%",
+          }}
+        >
+          {params.value}
+        </div>
       ),
     },
     {
@@ -270,10 +296,6 @@ function ViewTicketComponent(props) {
               textAlign: "center",
               minWidth: "80px",
               p: "5px 10px",
-              "&:hover":{
-                backgroundColor:"#E81F76",
-                color:"#fff"
-              }
             }}
           >
             Ver
@@ -288,10 +310,6 @@ function ViewTicketComponent(props) {
               minWidth: "80px",
               textAlign: "center",
               p: "5px 10px",
-              "&:hover":{
-                backgroundColor:"#E81F76",
-                color:"#fff"
-              }
             }}
           >
             Descargar
@@ -311,6 +329,17 @@ function ViewTicketComponent(props) {
     },
   ];
 
+  const handleFileUpload = (event) => {
+    const uploadedFile = event.target.files[0];
+    if (uploadedFile) {
+      const allowedExtensions = ["pdf", "doc", "docx", "png", "jpg", "jpeg"];
+      const fileExtension = uploadedFile.name.split(".").pop().toLowerCase();
+
+      if (allowedExtensions.includes(fileExtension)) {
+        setFile(uploadedFile);
+      }
+    }
+  };
   return (
     <Dialog 
       open={showViewTicket}
@@ -419,7 +448,6 @@ function ViewTicketComponent(props) {
                 </Box>
               </Box>
               {tabSelected === "Listado de incidencias" && (
-                <>
                 <ThemeProvider theme={themeTable}>
                   <DataGrid
                     rows={ticket.tasks}
@@ -440,6 +468,179 @@ function ViewTicketComponent(props) {
                     rowHeight={33}
                   />
                 </ThemeProvider>
+              )}
+              {tabSelected === "Documentación adjunta" && (
+                <>
+                <ThemeProvider theme={themeTable}>
+                  <DataGrid
+                    rows={ticket.files}
+                    columns={columnsTab2}
+                    getRowId={(row) => row.uuid} // Usamos uuid como id
+                    disableColumnMenu
+                    disableColumnSorting
+                    hideFooter
+                    columnHeaderHeight={40}
+                    initialState={{
+                      sorting: {
+                        sortModel: [{ field: "name", sort: "asc" }],
+                      },
+                    }}
+                    slots={{
+                      noRowsOverlay: CustomNoRowsOverlay,
+                    }}
+                    rowHeight={33}
+                  />
+                </ThemeProvider>
+                 <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "end",
+                      mr:"20px",
+                      mt: "10px",
+                    }}
+                  >
+                    {file ? (
+                      <Box sx={{display:"flex",flexDirection:"row"}}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                            height: "40px",
+                            background: "rgba(217, 217, 217, 0.50)",
+                            borderRadius: "8px",
+                            p: "0px 10px",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <img
+                            style={{ width: "25px" }}
+                            src={`../../icons/file-${
+                              extensionMap[
+                                file.name.split(".").pop().toLowerCase()
+                              ] || file.name.split(".").pop().toLowerCase()
+                            }.svg`}
+                          />
+                          <Typography
+                            sx={{
+                              fontSize: "0.75rem",
+                              width: "100px",
+                              overflow: "hidden",
+                              whiteSpace: "nowrap",
+                              textOverflow: "ellipsis",
+                              textAlign: "center",
+                              ml: "5px",
+                            }}
+                          >
+                            {file.name}
+                          </Typography>
+                          <img
+                            style={{ width: "13px", cursor: "pointer" }}
+                            onClick={() => setFile(null)}
+                            src="../../icons/delete.png"
+                          />
+                        </Box>
+                        <Button
+                          component="label"
+                          sx={{
+                            borderRadius: "10px",
+                            backgroundColor: "#00AEC3",
+                            color: "#fff",
+                            padding: "5px 20px",
+                            fontFamily: "Encode Sans",
+                            fontSize: "12px",
+                            fontWeight: "500",
+                            ml: "20px",
+                            textTransform: "capitalize",
+                            cursor: "pointer",
+                            ":hover": {
+                              color: "#FFF",
+                              backgroundColor: "#E81F76",
+                            },
+                          }}
+                          onClick={() => handleAddFile(file)}
+                          startIcon={<PublishOutlinedIcon />}
+                        >
+                          Subir archivo
+                        </Button>
+                      </Box>
+                    ) : (
+                      <Button
+                        component="label"
+                        sx={{
+                          borderRadius: "10px",
+                          backgroundColor: "#00AEC3",
+                          color: "#fff",
+                          padding: "5px 20px",
+                          fontFamily: "Encode Sans",
+                          fontSize: "12px",
+                          fontWeight: "500",
+                          ml: "20px",
+                          height: "40px",
+                          textTransform: "capitalize",
+                          cursor: "pointer",
+                          ":hover": {
+                            color: "#FFF",
+                            backgroundColor: "#E81F76",
+                          },
+                        }}
+                        startIcon={<BackupOutlinedIcon />}
+                      >
+                        Agregar documentación
+                        <input
+                          type="file"
+                          accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                          hidden
+                          onChange={handleFileUpload}
+                        />
+                      </Button>
+                    )}
+                  </Box>
+                  </>
+              )}
+              {tabSelected === "Descripción del problema" && (
+                <>
+                <Box
+                  sx={{
+                    border: "1px solid #D6D3D1",
+                    p: "20px",
+                    borderRadius: "10px 0px 10px 10px",
+                    backgroundColor: "#fff",
+                  }}
+                >
+                  <Typography>Descripción del problema</Typography>
+                  <TextField
+                    maxRows={Infinity}
+                    minRows={12}
+                    multiline
+                    value={ticket.problem_description}
+                    disabled
+                    name="description"
+                    className="swt-user-select-content"
+                    sx={{
+                      width: "100%",
+                      backgroundColor: "#fff",
+                      border: "1px solid #D6D3D1",
+                      mt: "5px",
+                      "& .MuiInputBase-input.MuiOutlinedInput-input": {
+                        p: "0px 10px",
+                        fontFamily: "Encode Sans",
+                        overflow: "scroll !important",
+                        // maxHeight: "550px",
+                        // height: "250px",
+                      },
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        border: "unset",
+                      },
+                      "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+                        border: "unset !important",
+                        borderColor: "unset !important",
+                      },
+                    }}
+                    aria-label="maximum height"
+                  />
+                </Box>
                 <Box
                 sx={{
                   mt: "10px",
@@ -529,70 +730,6 @@ function ViewTicketComponent(props) {
               </Box>
               </>
               )}
-              {tabSelected === "Documentación adjunta" && (
-                <ThemeProvider theme={themeTable}>
-                  <DataGrid
-                    rows={ticket.files}
-                    columns={columnsTab2}
-                    getRowId={(row) => row.uuid} // Usamos uuid como id
-                    disableColumnMenu
-                    disableColumnSorting
-                    hideFooter
-                    columnHeaderHeight={40}
-                    initialState={{
-                      sorting: {
-                        sortModel: [{ field: "name", sort: "asc" }],
-                      },
-                    }}
-                    slots={{
-                      noRowsOverlay: CustomNoRowsOverlay,
-                    }}
-                    rowHeight={33}
-                  />
-                </ThemeProvider>
-              )}
-              {tabSelected === "Descripción del problema" && (
-                <Box
-                  sx={{
-                    border: "1px solid #D6D3D1",
-                    p: "20px",
-                    borderRadius: "10px 0px 10px 10px",
-                    backgroundColor: "#fff",
-                  }}
-                >
-                  <Typography>Descripción del problema</Typography>
-                  <TextField
-                    maxRows={Infinity}
-                    minRows={12}
-                    multiline
-                    value={ticket.problem_description}
-                    disabled
-                    name="description"
-                    className="swt-user-select-content"
-                    sx={{
-                      width: "100%",
-                      backgroundColor: "#fff",
-                      border: "1px solid #D6D3D1",
-                      mt: "5px",
-                      "& .MuiInputBase-input.MuiOutlinedInput-input": {
-                        p: "0px 10px",
-                        fontFamily: "Encode Sans",
-                        overflow: "scroll !important",
-                        // maxHeight: "550px",
-                        // height: "250px",
-                      },
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        border: "unset",
-                      },
-                      "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
-                        border: "unset !important",
-                        borderColor: "unset !important",
-                      },
-                    }}
-                    aria-label="maximum height"
-                  />
-                </Box>
-              )}
             </Box>
           </Box>
         </Box>
@@ -666,7 +803,7 @@ function ViewTicketComponent(props) {
           </DialogContent>
           <DialogActions sx={{ mr: "24px", p: "0px" }}>
             <Button
-              onClick={() => setShowCreateComment(!showCreateComment)}
+              onClick={() => (setComment(""),setShowCreateComment(!showCreateComment))}
               sx={{
                 borderRadius: "4px",
                 color: "#000",
@@ -682,7 +819,7 @@ function ViewTicketComponent(props) {
               CERRAR
             </Button>
             <Button
-              onClick={() => handleAddComment(comment)}
+              onClick={() => handleAddInfoAditional(comment)}
               sx={{
                 borderRadius: "4px",
                 backgroundColor: "#E81F76",

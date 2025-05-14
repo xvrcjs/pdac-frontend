@@ -127,37 +127,29 @@ const DataGrid = ({
   setClaimSelected,
   setShowTypeAssignClaim,
   setShowMessageConfirmReAssign,
-  account
+  account,
+  cantElement,
+  setCantElement,
+  currentPage,
+  setCurrentPage
 }) => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [sortField, setSortField] = useState("id");
   const [sortDirection, setSortDirection] = useState("desc");
-  const [currentPage, setCurrentPage] = useState(1);
   const [showFilter, setShowFilter] = useState(false);
   const [filter, setFilter] = useState(null);
   const [filterSelected, setFilterSelected] = useState("");
 
   const navigate = useNavigate();
   
-  const filteredRows = filterSelected
+  // Aplicar filtros si es necesario
+  const displayedRows = filterSelected
     ? rows.filter((row) => row.type_of_claim === filterSelected)
     : rows;
 
-  const sortedRows = [...filteredRows].sort((a, b) => {
-    if (!sortField) return 0;
-    if (sortDirection === "asc") {
-      return a[sortField] > b[sortField] ? 1 : -1;
-    } else {
-      return a[sortField] < b[sortField] ? 1 : -1;
-    }
-  });
 
-  const paginatedRows = sortedRows.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  );
 
-  const handleEdit = (index, rowIndex,type) => {
+  const handleEdit = (index) => {
     navigate(`reclamo/${index.uuid}`);
   };
 
@@ -170,7 +162,7 @@ const DataGrid = ({
     }
   };
 
-  const totalPages = Math.ceil(sortedRows.length / pageSize);
+  const totalPages = Math.ceil(cantElement / pageSize);
 
   const handlePageChange = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
@@ -397,16 +389,9 @@ const DataGrid = ({
             </tr>
           </thead>
           <tbody>
-            {paginatedRows.length === 0 ? (
+            {displayedRows.length === 0 ? (
               <tr>
-                <td
-                  colSpan={columns.length}
-                  style={{
-                    height: "600px",
-                    textAlign: "center",
-                    padding: "20px",
-                  }}
-                >
+                <td colSpan={columns.length} style={{height:"400px", textAlign: "center", padding: "20px" }}>
                   <Typography variant="body1" color="textSecondary">
                     {noDataMessage}
                   </Typography>
@@ -414,14 +399,15 @@ const DataGrid = ({
               </tr>
             ) : (
               [
-                ...paginatedRows,
-                ...Array(pageSize - paginatedRows.length).fill({}),
+                ...displayedRows,
+                ...Array(pageSize - displayedRows.length).fill({}),
               ].map((row, index) => (
                 <React.Fragment key={index}>
                   <tr
-                    key={index}
-                    className={selectedRow === row ? "selected" : ""}
-                    style={{ borderRight: "1px solid #F3F3F3" }}
+                    style={{
+                      backgroundColor:
+                        selectedRow === index ? "#56D2FF" : "transparent",
+                    }}
                   >
                     {columns.map((column, colIndex) => (
                       <>
@@ -471,6 +457,7 @@ const DataGrid = ({
                       </>
                     ))}
                     <td>
+                      {Object.keys(row).length != 0 &&
                       <Box
                         sx={{
                           display: "flex",
@@ -489,6 +476,9 @@ const DataGrid = ({
                             :
                               <img src="../../assets/claims/table/forward_circle.svg" alt="re-asignar-reclamo" onClick={() => handleReAssignClaim(row, index)} style={{cursor:"pointer",marginRight:"40px"}}/>
                           }
+                          </>
+                        )
+                      }
                           <IconButton
                             onClick={() => handleEdit(row, index)}
                             aria-label="row"
@@ -498,10 +488,8 @@ const DataGrid = ({
                               sx={{ cursor: "pointer", width: "fit-content" }}
                             />
                           </IconButton>
-                          </>
-                        )
-                      }
                       </Box>
+                      }
                     </td>
                   </tr>
                 </React.Fragment>

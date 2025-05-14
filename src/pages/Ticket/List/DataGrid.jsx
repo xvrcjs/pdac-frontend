@@ -1,16 +1,10 @@
 import React, { useState } from "react";
 import { Box, Typography, IconButton,Button } from "@mui/material";
-import { Menu, MenuItem } from "react-pro-sidebar";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import EditIcon from "@mui/icons-material/Edit";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import OpenInBrowserOutlinedIcon from '@mui/icons-material/OpenInBrowserOutlined';
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 
 
 const DataGrid = ({ columns, rows, pageSize = 10, handleEdit,hasFilter,noDataMessage,backgroundColor, handleDelete,setTicketSelected,setShowAssignTicket,setShowMessageConfirmReAssign,setShowMessageConfirmReOpen,account}) => {
@@ -208,7 +202,7 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit,hasFilter,noDataMes
                       {account.roles[0].name === "Admin" && (
                         <>
                        
-                        {row.status === "Cerrado" ? (
+                        {row.status.data === "Cerrado" ? (
                           <img src="../../assets/claims/table/re_open.svg" alt="asignar-reclamo" onClick={() => handleReOpenTicket(row)} style={{cursor:"pointer",marginRight:"40px"}}/>
                         ):(
                           row.assigned === null ? (

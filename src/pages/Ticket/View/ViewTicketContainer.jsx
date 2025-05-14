@@ -108,8 +108,7 @@ function ViewTicketContainer() {
       method: "PATCH", 
       body: { 
         "status": "closed",
-        "support_level":"unassigned"
-       }
+      }
     }).then(({ ok, body }) => {
       if (ok) {
         setShowMessageConfirmCloseTicket(false);
@@ -146,6 +145,21 @@ function ViewTicketContainer() {
       }
     );
   };
+  const handleAddFile = (file) => {
+    const formData = new FormData();
+    formData.append("files", file);
+    api(TICKET + "/" + id, {
+      method: "PATCH",
+      body: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }).then(({ ok, body }) => {
+      if (ok) {
+        navigate(0);
+      }
+    });
+  };
 
   useEffect(() => {
     api(TICKET + "/" + id).then(({ ok, body }) => {
@@ -160,6 +174,7 @@ function ViewTicketContainer() {
     <>
       {!isLoading && (
         <ViewTicketComponent
+          account={account}
           ticket={ticket}
           setTicket={setTicket}
           navigate={navigate}
@@ -170,6 +185,7 @@ function ViewTicketContainer() {
           handleUpgradeTicket={handleUpgradeTicket}
           handleAddInfoAditional={handleAddInfoAditional}
           setShowMessageConfirmCloseTicket={setShowMessageConfirmCloseTicket}
+          handleAddFile={handleAddFile}
         />
       )}
       <Dialog
@@ -219,7 +235,7 @@ function ViewTicketContainer() {
             Cerrar
           </Button>
           <Button
-            onClick={() => navigate(0)}
+            onClick={() => navigate('/tickets')}
             sx={{
               borderRadius: "50px",
               backgroundColor: "#00AEC3",

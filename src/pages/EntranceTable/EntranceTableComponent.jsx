@@ -19,49 +19,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 function EntranceTableComponent(props) {
-  const { claims, setClaimSelected, setShowTypeAssignClaim,setShowMessageConfirmReAssign,account} = props;
+  const { claims, setClaimSelected, setShowTypeAssignClaim,setShowMessageConfirmReAssign,account,currentPage,setCurrentPage,cantElement,setCantElement} = props;
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   const [rows, setRows] = useState([]);
   const [originalRows, setOriginalRows] = useState([]);
-
-  function CustomPagination() {
-    const apiRef = useGridApiContext();
-    const page = useGridSelector(apiRef, gridPageSelector);
-    const pageCount = useGridSelector(apiRef, gridPageCountSelector);
-
-    return (
-      <Pagination
-        color="primary"
-        variant="outlined"
-        shape="rounded"
-        page={page + 1}
-        count={pageCount}
-        sx={{ marginRight: "40px" }}
-        // @ts-expect-error
-        renderItem={(props2) => (
-          <PaginationItem
-            {...props2}
-            disableRipple
-            sx={{
-              "&.MuiButtonBase-root": {
-                backgroundColor: "#FFF",
-                boxShadow: "0px 1px 5px 0px #0000001F",
-                boxShadow: "0px 2px 2px 0px #00000024",
-                boxShadow: "0px 3px 1px -2px #00000033",
-              },
-              "&.MuiButtonBase-root.MuiPaginationItem-root.Mui-selected": {
-                backgroundColor: "#626262 !important",
-                color: "#FFF",
-              },
-            }}
-          />
-        )}
-        onChange={(event, value) => apiRef.current.setPage(value - 1)}
-      />
-    );
-  }
 
   const CircularItem = ({ status="none" }) => {
     const statusColors = {
@@ -211,12 +174,13 @@ function EntranceTableComponent(props) {
         },
       },
   });
-
   useEffect(() => {
-    setRows(claims);
-    setOriginalRows(claims);
-  }, [claims]);
-
+    if (claims) {
+      setRows(claims);
+      setOriginalRows(claims);
+    }
+  }, [claims, currentPage]);
+  
   return (
     <Content className="swt-dashboard" isLoaded="true">
       <Box sx={{ margin: "50px 50px" }}>
@@ -230,20 +194,21 @@ function EntranceTableComponent(props) {
             initialState={{
               pagination: {
                 paginationModel: {
-                  page: 0,
+                  page: currentPage - 1,
                   pageSize: 10,
                 },
               },
             }}
             disableColumnMenu
             pageSizeOptions={[10, 15, 30]}
-            slots={{
-              pagination: CustomPagination,
-            }}
             setClaimSelected={setClaimSelected}
             setShowTypeAssignClaim={setShowTypeAssignClaim}
             setShowMessageConfirmReAssign={setShowMessageConfirmReAssign}
             account={account}
+            cantElement={cantElement}
+            setCantElement={setCantElement}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
         </ThemeProvider>
       </Box>

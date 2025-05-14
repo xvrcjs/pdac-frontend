@@ -84,7 +84,34 @@ function ListTicketComponent(props) {
       headerAlign: "center",
       align: "center",
       renderCell: (params) => (
-        <div className="swt-table-field-name">{params.value}</div>
+        <Box sx={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"baseline",gap:"5px"}}>
+          <Typography>{params.value.data}</Typography>
+          {params.value.has_new_info === true && (
+              <Box
+                sx={{
+                  width: "8px",
+                  height: "8px",
+                  borderRadius: "50%",
+                  backgroundColor: "#E30000",
+                  animation: "pulse 1.5s ease-in-out infinite",
+                  "@keyframes pulse": {
+                    "0%": {
+                      opacity: 1,
+                      boxShadow: "0 0 0 0 rgba(227, 0, 0, 0.4)",
+                    },
+                    "70%": {
+                      opacity: 0.7,
+                      boxShadow: "0 0 0 10px rgba(227, 0, 0, 0)",
+                    },
+                    "100%": {
+                      opacity: 1,
+                      boxShadow: "0 0 0 0 rgba(227, 0, 0, 0)",
+                    },
+                  },
+                }}
+              />
+          )}
+        </Box>
       ),
     },
     {
@@ -164,8 +191,8 @@ function ListTicketComponent(props) {
       if (selectedSupportLevel === "closed") {
         filtered = filtered.filter(
           (ticket) =>
-            ticket.status &&
-            ticket.status.toLowerCase() === "cerrado"
+            ticket.status.data &&
+            ticket.status.data.toLowerCase() === "cerrado"
         );
       } else {
         filtered = filtered.filter(
@@ -219,7 +246,7 @@ function ListTicketComponent(props) {
           </Box>
           <Box sx={{ minWidth: "350px" }}>
             <TextField
-              placeholder="Buscar..."
+              placeholder="Buscar por numero de ticket"
               InputProps={{
                 endAdornment: (
                   <SearchIcon

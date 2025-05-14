@@ -15,6 +15,10 @@ import {
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import BackupOutlinedIcon from "@mui/icons-material/BackupOutlined";
+import PublishOutlinedIcon from '@mui/icons-material/PublishOutlined';
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -107,6 +111,7 @@ const themeTable = createTheme({
 
 function ViewTicketComponent(props) {
   const {
+    account,
     ticket,
     setTicket,
     navigate,
@@ -116,20 +121,21 @@ function ViewTicketComponent(props) {
     handleUpgradeTicket,
     showConfirm,
     setShowConfirm,
-    setShowMessageConfirmCloseTicket
+    setShowMessageConfirmCloseTicket,
+    handleAddFile
   } = props;
 
   const [task, setTask] = useState("");
-  const [rows, setRows] = useState([]);
   const tabs = [
-    "Listado de incidencias",
     "Descripción del problema",
+    "Listado de incidencias",
     "Documentación adjunta",
   ];
-  const [tabSelected, setTabSelected] = useState("Listado de incidencias");
+  const [tabSelected, setTabSelected] = useState("Descripción del problema");
   const [taskSelected, setTaskSelected] = useState();
   const [showTask, setShowTask] = useState(false);
   const [comment, setComment] = useState("");
+  const [file, setFile] = useState(null);
   const [showCreateComment, setShowCreateComment] = useState(false);
   const [
     showRequestAdditionalInformation,
@@ -156,10 +162,86 @@ function ViewTicketComponent(props) {
     );
   }
 
-  const handleShowTask = (task) => {
-    setTaskSelected(task);
+  const handleOpenTaskDialog = (taskItem = null) => {
+    if (taskItem) {
+      setTaskSelected(taskItem);
+      setTask(taskItem.text);
+    } else {
+      setTaskSelected(null);
+      setTask("");
+    }
     setShowTask(true);
   };
+  const handleCloseTaskDialog = () => {
+    setShowTask(false);
+    setTask("");
+    setTaskSelected(null);
+  };
+  const handleAddTask = () => {
+    if (task.trim()) {
+      const newTask = {
+        id: ticket.tasks ? ticket.tasks.length : 0,
+        text: task.trim(),
+        resolved: "",
+      };
+      setTicket((prev) => ({
+        ...prev,
+        tasks: [...prev.tasks, newTask],
+      }));
+      setTask("");
+      setShowTask(false);
+    }
+  };
+
+  function CustomNoTasksOverlay() {
+    return (
+      <Box
+        sx={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Typography sx={{ mb: "10px" }}>No se encontraron tareas</Typography>
+        <Button
+          sx={{
+            borderRadius: "20px",
+            backgroundColor: "#00AEC3",
+            color: "#fff",
+            padding: "5px 20px",
+            fontFamily: "Encode Sans",
+            fontSize: "12px",
+            fontWeight: "500",
+            textTransform: "capitalize",
+            ":hover": {
+              color: "#FFF",
+              backgroundColor: "#E81F76",
+            },
+          }}
+          startIcon={<AddCircleOutlineIcon />}
+          onClick={() => handleOpenTaskDialog()}
+        >
+          Agregar tarea
+        </Button>
+        <Typography sx={{ mt: "10px" }}>
+          Al finalizar la carga aplique los cambios
+        </Typography>
+      </Box>
+    );
+  }
+
+  const handleDeleteTask = (taskToDelete) => {
+    const updatedTasks = ticket.tasks.filter(
+      (task) => task.id !== taskToDelete.id
+    );
+    setTicket((prev) => ({
+      ...prev,
+      tasks: updatedTasks,
+    }));
+  };
+
   const handleTaskChange = (id, value) => {
     const updatedTasks = [...ticket.tasks];
     const taskIndex = updatedTasks.findIndex((task) => task.id === id);
@@ -195,16 +277,14 @@ function ViewTicketComponent(props) {
   const columnsTab1 = [
     {
       field: "action",
-      headerName: "Ver",
+      headerName: "Acciones",
       flex: 0.2,
       headerAlign: "center",
       align: "center",
       renderCell: (params) => (
-        <div
-          className="swt-table-field-name"
-        >
+        <div className="swt-table-field-name">
           <IconButton
-            onClick={() => handleShowTask(params.id)}
+            onClick={() => handleOpenTaskDialog(params.row)}
             aria-label="row"
             size="medium"
             sx={{
@@ -222,6 +302,27 @@ function ViewTicketComponent(props) {
               }}
             />
           </IconButton>
+          {account.roles[0].name === "Admin" && (
+            <IconButton
+              onClick={() => handleDeleteTask(params.row)}
+              aria-label="row"
+              size="medium"
+              sx={{
+                "&.MuiButtonBase-root.MuiIconButton-root:hover": {
+                  backgroundColor: "unset",
+                  transform: "scale(1.10)",
+                },
+              }}
+            >
+              <DeleteOutlineIcon
+                sx={{
+                  cursor: "pointer",
+                  width: "fit-content",
+                  color: "#00AEC3",
+                }}
+              />
+            </IconButton>
+          )}
         </div>
       ),
     },
@@ -259,7 +360,6 @@ function ViewTicketComponent(props) {
             alignItems: "center",
             justifyContent: "center",
             gap: "10px",
-            
           }}
         >
           <Typography
@@ -272,12 +372,17 @@ function ViewTicketComponent(props) {
               p: "5px 10px",
               fontSize: "15px",
               cursor: "pointer",
-              backgroundColor: params.value === "resolved" && "#E81F76",
-              color: params.value === "resolved" ? "#fff" : params.value === "unsolved" ? "#bbb":"#000",
-              "&:hover":{
-                backgroundColor:"#E81F76",
-                color:"#fff"
-              }
+              backgroundColor: params.value === "resolved" ? "#E81F76" : "#fff",
+              color:
+                params.value === "resolved"
+                  ? "#fff"
+                  : params.value === "unsolved"
+                  ? "#bbb"
+                  : "#000",
+              "&:hover": {
+                backgroundColor: "#E81F76",
+                color: "#fff",
+              },
             }}
             onClick={() => handleTaskChange(params.row.id, "resolved")}
           >
@@ -293,12 +398,17 @@ function ViewTicketComponent(props) {
               p: "5px 10px",
               fontSize: "15px",
               cursor: "pointer",
-              backgroundColor: params.value === "unsolved" && "#E81F76",
-              color: params.value === "unsolved" ? "#fff" : params.value === "resolved" ? "#bbb":"#000",
-              "&:hover":{
-                backgroundColor:"#E81F76",
-                color:"#fff"
-              }
+              backgroundColor: params.value === "unsolved" ? "#E81F76" : "#fff",
+              color:
+                params.value === "unsolved"
+                  ? "#fff"
+                  : params.value === "resolved"
+                  ? "#bbb"
+                  : "#000",
+              "&:hover": {
+                backgroundColor: "#E81F76",
+                color: "#fff",
+              },
             }}
             onClick={() => handleTaskChange(params.row.id, "unsolved")}
           >
@@ -316,7 +426,17 @@ function ViewTicketComponent(props) {
       headerAlign: "center",
       align: "center",
       renderCell: (params) => (
-        <div className="swt-table-field-name">{params.value}</div>
+        <div
+          className="swt-table-field-name"
+          style={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            width: "70%",
+          }}
+        >
+          {params.value}
+        </div>
       ),
     },
     {
@@ -346,10 +466,10 @@ function ViewTicketComponent(props) {
               textAlign: "center",
               minWidth: "80px",
               p: "5px 10px",
-              "&:hover":{
-                backgroundColor:"#E81F76",
-                color:"#fff"
-              }
+              "&:hover": {
+                backgroundColor: "#E81F76",
+                color: "#fff",
+              },
             }}
             onClick={() =>
               window.open(
@@ -370,10 +490,10 @@ function ViewTicketComponent(props) {
               minWidth: "80px",
               textAlign: "center",
               p: "5px 10px",
-              "&:hover":{
-                backgroundColor:"#E81F76",
-                color:"#fff"
-              }
+              "&:hover": {
+                backgroundColor: "#E81F76",
+                color: "#fff",
+              },
             }}
             onClick={() =>
               handleDownload(params.value, params.value.split("/").pop())
@@ -395,6 +515,17 @@ function ViewTicketComponent(props) {
       ),
     },
   ];
+  const handleFileUpload = (event) => {
+    const uploadedFile = event.target.files[0];
+    if (uploadedFile) {
+      const allowedExtensions = ["pdf", "doc", "docx", "png", "jpg", "jpeg"];
+      const fileExtension = uploadedFile.name.split(".").pop().toLowerCase();
+
+      if (allowedExtensions.includes(fileExtension)) {
+        setFile(uploadedFile);
+      }
+    }
+  };
 
   return (
     <Content className="swt-dashboard" isLoaded="true">
@@ -436,9 +567,10 @@ function ViewTicketComponent(props) {
               <span style={{ fontWeight: "700" }}>{ticket.id}</span>
             </Typography>
             <Typography
-              sx={{ ml:"20px",fontSize: "20px", fontWeight: "200" }}
+              sx={{ ml: "20px", fontSize: "20px", fontWeight: "200" }}
             >
-              Reclamo asignado a: {ticket.assigned ? ticket.assigned.full_name:"S/A"}
+              Reclamo asignado a:{" "}
+              {ticket.assigned ? ticket.assigned.full_name : "S/A"}
             </Typography>
           </Box>
           <Box sx={{ mt: "20px" }}>
@@ -451,13 +583,13 @@ function ViewTicketComponent(props) {
             >
               <Box
                 sx={{
-                   display:"flex",
-                   flexDirection:"row",
-                   justifyContent:"space-between",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
                 }}
-                >
+              >
                 <Typography
-                  sx={{ fontSize: "15px", fontWeight: "200",mt:"5px" }}
+                  sx={{ fontSize: "15px", fontWeight: "200", mt: "5px" }}
                 >
                   Reclamo de origen: {ticket.claim}
                 </Typography>
@@ -488,178 +620,328 @@ function ViewTicketComponent(props) {
               </Box>
               {tabSelected === "Listado de incidencias" && (
                 <>
-                <ThemeProvider theme={themeTable}>
-                  <DataGrid
-                    rows={ticket.tasks}
-                    columns={columnsTab1}
-                    getRowId={(row) => row.id}
-                    disableColumnMenu
-                    disableColumnSorting
-                    hideFooter
-                    columnHeaderHeight={40}
-                    initialState={{
-                      sorting: {
-                        sortModel: [{ field: "name", sort: "asc" }],
-                      },
-                    }}
-                    slots={{
-                      noRowsOverlay: CustomNoRowsOverlay,
-                    }}
-                    rowHeight={33}
-                  />
-                </ThemeProvider>
-                <Box
-                sx={{
-                  mt: "10px",
-                  backgroundColor: "#fff",
-                  borderRadius: "8px",
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: "14px",
-                    fontWeight: "400",
-                    p: "20px",
-                    borderBottom: "0.5px solid #B1B1B1",
-                    borderCollapse: "collapse",
-                  }}
-                >
-                  Historial de acciones y comentarios
-                </Typography>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    borderRadius: "15px",
-                    ml: "20px",
-                    mt: "20px",
-                    overflow: "auto",
-                    height: "150px",
-                  }}
-                >
-                  {ticket.activity.length === 0 ? (
+                  <ThemeProvider theme={themeTable}>
+                    <DataGrid
+                      rows={ticket.tasks}
+                      columns={columnsTab1}
+                      getRowId={(row) => row.id}
+                      disableColumnMenu
+                      disableColumnSorting
+                      hideFooter
+                      columnHeaderHeight={40}
+                      initialState={{
+                        sorting: {
+                          sortModel: [{ field: "name", sort: "asc" }],
+                        },
+                      }}
+                      slots={{
+                        noRowsOverlay: CustomNoTasksOverlay,
+                      }}
+                      rowHeight={33}
+                    />
+                  </ThemeProvider>
+                  {ticket.tasks.length > 0 && (
                     <Box
                       sx={{
                         display: "flex",
                         flexDirection: "row",
+                        justifyContent: "end",
                         alignItems: "center",
-                        justifyContent:"center",
-                        height: "100%",
+                        mt: "10px",
+                        mr:"20px",
                       }}
                     >
-                      <Typography
+                      <Typography sx={{ fontSize: "12px" }}>
+                        Al finalizar la carga aplique los cambios
+                      </Typography>
+                      <Button
                         sx={{
+                          borderRadius: "10px",
+                          backgroundColor: "#00AEC3",
+                          color: "#fff",
+                          padding: "5px 20px",
+                          fontFamily: "Encode Sans",
                           fontSize: "12px",
-                          fontWeight: "300",
-                          color: "rgba(29, 28, 29, 0.70",
+                          fontWeight: "500",
+                          ml: "20px",
+                          height: "40px",
+                          textTransform: "capitalize",
+                          ":hover": {
+                            color: "#FFF",
+                            backgroundColor: "#E81F76",
+                          },
                         }}
+                        startIcon={<AddCircleOutlineIcon />}
+                        onClick={() => handleOpenTaskDialog()}
                       >
-                        No hay movimientos para mostrar.
-                      </Typography>
+                        Agregar tarea
+                      </Button>
                     </Box>
-                  ) : (
-                    ticket.activity.map((activity, index) => (
-                      <Typography sx={{ width: "80%", p: "10px" }}>
-                        {activity.user}: “{activity.content}”{" "}
-                        <span
-                          style={{ fontStyle: "italic", fontWeight: "300" }}
-                        >
-                          {activity.timestamp}
-                        </span>
-                      </Typography>
-                    ))
                   )}
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "end",
-                    width: "98%",
-                  }}
-                >
-                  <Button
-                    sx={{
-                      borderRadius: "10px",
-                      backgroundColor: "#00AEC3",
-                      color: "#fff",
-                      padding: "2px 15px",
-                      fontFamily: "Encode Sans",
-                      fontSize: "14px",
-                      fontWeight: "400",
-                      mb: "20px",
-                    }}
-                    onClick={() => setShowCreateComment(!showCreateComment)}
-                  >
-                    Agregar comentario
-                  </Button>
-                </Box>
-              </Box>
-              </>
+                </>
               )}
               {tabSelected === "Documentación adjunta" && (
-                <ThemeProvider theme={themeTable}>
-                  <DataGrid
-                    rows={ticket.files}
-                    columns={columnsTab2}
-                    getRowId={(row) => row.uuid} // Usamos uuid como id
-                    disableColumnMenu
-                    disableColumnSorting
-                    hideFooter
-                    columnHeaderHeight={40}
-                    initialState={{
-                      sorting: {
-                        sortModel: [{ field: "name", sort: "asc" }],
-                      },
+                <>
+                  <ThemeProvider theme={themeTable}>
+                    <DataGrid
+                      rows={ticket.files}
+                      columns={columnsTab2}
+                      getRowId={(row) => row.uuid} // Usamos uuid como id
+                      disableColumnMenu
+                      disableColumnSorting
+                      hideFooter
+                      columnHeaderHeight={40}
+                      initialState={{
+                        sorting: {
+                          sortModel: [{ field: "name", sort: "asc" }],
+                        },
+                      }}
+                      slots={{
+                        noRowsOverlay: CustomNoRowsOverlay,
+                      }}
+                      rowHeight={33}
+                    />
+                  </ThemeProvider>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "end",
+                      mr:"20px",
+                      mt: "10px",
                     }}
-                    slots={{
-                      noRowsOverlay: CustomNoRowsOverlay,
-                    }}
-                    rowHeight={33}
-                  />
-                </ThemeProvider>
+                  >
+                    {file ? (
+                      <Box sx={{display:"flex",flexDirection:"row"}}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                            height: "40px",
+                            background: "rgba(217, 217, 217, 0.50)",
+                            borderRadius: "8px",
+                            p: "0px 10px",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <img
+                            style={{ width: "25px" }}
+                            src={`../../icons/file-${
+                              extensionMap[
+                                file.name.split(".").pop().toLowerCase()
+                              ] || file.name.split(".").pop().toLowerCase()
+                            }.svg`}
+                          />
+                          <Typography
+                            sx={{
+                              fontSize: "0.75rem",
+                              width: "100px",
+                              overflow: "hidden",
+                              whiteSpace: "nowrap",
+                              textOverflow: "ellipsis",
+                              textAlign: "center",
+                              ml: "5px",
+                            }}
+                          >
+                            {file.name}
+                          </Typography>
+                          <img
+                            style={{ width: "13px", cursor: "pointer" }}
+                            onClick={() => setFile(null)}
+                            src="../../icons/delete.png"
+                          />
+                        </Box>
+                        <Button
+                          component="label"
+                          sx={{
+                            borderRadius: "10px",
+                            backgroundColor: "#00AEC3",
+                            color: "#fff",
+                            padding: "5px 20px",
+                            fontFamily: "Encode Sans",
+                            fontSize: "12px",
+                            fontWeight: "500",
+                            ml: "20px",
+                            textTransform: "capitalize",
+                            cursor: "pointer",
+                            ":hover": {
+                              color: "#FFF",
+                              backgroundColor: "#E81F76",
+                            },
+                          }}
+                          onClick={() => handleAddFile(file)}
+                          startIcon={<PublishOutlinedIcon />}
+                        >
+                          Subir archivo
+                        </Button>
+                      </Box>
+                    ) : (
+                      <Button
+                        component="label"
+                        sx={{
+                          borderRadius: "10px",
+                          backgroundColor: "#00AEC3",
+                          color: "#fff",
+                          padding: "5px 20px",
+                          fontFamily: "Encode Sans",
+                          fontSize: "12px",
+                          fontWeight: "500",
+                          ml: "20px",
+                          height: "40px",
+                          textTransform: "capitalize",
+                          cursor: "pointer",
+                          ":hover": {
+                            color: "#FFF",
+                            backgroundColor: "#E81F76",
+                          },
+                        }}
+                        startIcon={<BackupOutlinedIcon />}
+                      >
+                        Agregar documentación
+                        <input
+                          type="file"
+                          accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                          hidden
+                          onChange={handleFileUpload}
+                        />
+                      </Button>
+                    )}
+                  </Box>
+                </>
               )}
               {tabSelected === "Descripción del problema" && (
-                <Box
-                  sx={{
-                    border: "1px solid #D6D3D1",
-                    p: "20px",
-                    borderRadius: "10px 0px 10px 10px",
-                    backgroundColor: "#fff",
-                  }}
-                >
-                  <Typography>Descripción del problema</Typography>
-                  <TextField
-                    maxRows={Infinity}
-                    minRows={12}
-                    multiline
-                    value={ticket.problem_description}
-                    disabled
-                    name="description"
-                    className="swt-user-select-content"
+                <>
+                  <Box
                     sx={{
-                      width: "100%",
-                      backgroundColor: "#fff",
                       border: "1px solid #D6D3D1",
-                      mt: "5px",
-                      "& .MuiInputBase-input.MuiOutlinedInput-input": {
-                        p: "0px 10px",
-                        fontFamily: "Encode Sans",
-                        overflow: "scroll !important",
-                        // maxHeight: "550px",
-                        // height: "250px",
-                      },
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        border: "unset",
-                      },
-                      "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
-                        border: "unset !important",
-                        borderColor: "unset !important",
-                      },
+                      p: "20px",
+                      borderRadius: "10px 0px 10px 10px",
+                      backgroundColor: "#fff",
                     }}
-                    aria-label="maximum height"
-                  />
-                </Box>
+                  >
+                    <Typography>Descripción del problema</Typography>
+                    <TextField
+                      maxRows={Infinity}
+                      minRows={12}
+                      multiline
+                      value={ticket.problem_description}
+                      disabled
+                      name="description"
+                      className="swt-user-select-content"
+                      sx={{
+                        width: "100%",
+                        backgroundColor: "#fff",
+                        border: "1px solid #D6D3D1",
+                        mt: "5px",
+                        "& .MuiInputBase-input.MuiOutlinedInput-input": {
+                          p: "0px 10px",
+                          fontFamily: "Encode Sans",
+                          overflow: "scroll !important",
+                          // maxHeight: "550px",
+                          // height: "250px",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          border: "unset",
+                        },
+                        "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+                          border: "unset !important",
+                          borderColor: "unset !important",
+                        },
+                      }}
+                      aria-label="maximum height"
+                    />
+                  </Box>
+                  <Box
+                    sx={{
+                      mt: "10px",
+                      backgroundColor: "#fff",
+                      borderRadius: "8px",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: "14px",
+                        fontWeight: "400",
+                        p: "20px",
+                        borderBottom: "0.5px solid #B1B1B1",
+                        borderCollapse: "collapse",
+                      }}
+                    >
+                      Historial de acciones y comentarios
+                    </Typography>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        borderRadius: "15px",
+                        mt: "20px",
+                        overflow: "auto",
+                        height: "150px",
+                        p:"20px",
+                        width:"100%"
+                      }}
+                    >
+                      {ticket.activity.length === 0 ? (
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            height: "100%",
+                          }}
+                        >
+                          <Typography
+                            sx={{
+                              fontSize: "12px",
+                              fontWeight: "300",
+                              color: "rgba(29, 28, 29, 0.70",
+                            }}
+                          >
+                            No hay movimientos para mostrar.
+                          </Typography>
+                        </Box>
+                      ) : (
+                        ticket.activity.map((activity, index) => (
+                          <Typography sx={{ width: "100%", p: "10px" }}>
+                            <span style={{ fontWeight: "600",color: activity.type === "user_add_info" ? "#00AEC3":"#E81F76" }}>{activity.user}</span>: “{activity.content}”{" "}
+                            <span
+                              style={{ fontStyle: "italic", fontWeight: "300" }}
+                            >
+                              {activity.timestamp}
+                              {console.log(activity)}
+                            </span>
+                          </Typography>
+                        ))
+                      )}
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "end",
+                        width: "98%",
+                      }}
+                    >
+                      <Button
+                        sx={{
+                          borderRadius: "10px",
+                          backgroundColor: "#00AEC3",
+                          color: "#fff",
+                          padding: "2px 15px",
+                          fontFamily: "Encode Sans",
+                          fontSize: "14px",
+                          fontWeight: "400",
+                          mb: "20px",
+                        }}
+                        onClick={() => setShowCreateComment(!showCreateComment)}
+                      >
+                        Agregar comentario
+                      </Button>
+                    </Box>
+                  </Box>
+                </>
               )}
             </Box>
           </Box>
@@ -765,7 +1047,7 @@ function ViewTicketComponent(props) {
                 },
               }}
               disabled={ticket.status === "closed"}
-              onClick={()=>setShowMessageConfirmCloseTicket(true)}
+              onClick={() => setShowMessageConfirmCloseTicket(true)}
             >
               Marcar como ticket resuelto
             </Button>
@@ -823,7 +1105,7 @@ function ViewTicketComponent(props) {
         </Box>
         <Dialog
           open={showTask}
-          onClose={() => setShowTask(!showTask)}
+          onClose={handleCloseTaskDialog}
           PaperProps={{
             sx: {
               width: "600px",
@@ -832,7 +1114,9 @@ function ViewTicketComponent(props) {
             },
           }}
         >
-          <DialogTitle>Detalle de la tarea</DialogTitle>
+          <DialogTitle>
+            {taskSelected ? "Ver Tarea" : "Agregar Nueva Tarea"}
+          </DialogTitle>
           <DialogContent>
             <TextField
               autoFocus
@@ -840,8 +1124,10 @@ function ViewTicketComponent(props) {
               fullWidth
               multiline
               rows={4}
-              value={ticket.tasks[taskSelected]?.text}
-              disabled={true}
+              value={task}
+              onChange={(e) => setTask(e.target.value)}
+              disabled={taskSelected !== null}
+              placeholder="Describe la tarea..."
               sx={{
                 border: "1px solid #D6D3D1",
                 borderRadius: "10px",
@@ -857,7 +1143,7 @@ function ViewTicketComponent(props) {
           </DialogContent>
           <DialogActions sx={{ mr: "24px", p: "0px" }}>
             <Button
-              onClick={() => setShowTask(!showTask)}
+              onClick={handleCloseTaskDialog}
               sx={{
                 borderRadius: "20px",
                 color: "#000",
@@ -870,30 +1156,56 @@ function ViewTicketComponent(props) {
                 border: "1px solid #838383",
               }}
             >
-              Cerrar
+              {taskSelected ? "Cerrar" : "Cancelar"}
             </Button>
-            <Button
-              onClick={() => setShowTask(!showTask)}
-              sx={{
-                borderRadius: "20px",
-                backgroundColor: "#00AEC3",
-                color: "#fff",
-                padding: "7px 24px",
-                fontFamily: "Encode Sans",
-                fontSize: "15px",
-                fontWeight: "500",
-                ml: "20px",
-                textTransform: "capitalize",
-                cursor: "pointer",
-                boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-                "&.Mui-disabled": {
-                  backgroundColor: "#8F8881",
+            {!taskSelected ? (
+              <Button
+                onClick={handleAddTask}
+                disabled={!task.trim()}
+                sx={{
+                  borderRadius: "20px",
+                  backgroundColor: "#00AEC3",
                   color: "#fff",
-                },
-              }}
-            >
-              Aceptar
-            </Button>
+                  padding: "7px 24px",
+                  fontFamily: "Encode Sans",
+                  fontSize: "15px",
+                  fontWeight: "500",
+                  ml: "20px",
+                  textTransform: "capitalize",
+                  cursor: "pointer",
+                  boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+                  "&.Mui-disabled": {
+                    backgroundColor: "#8F8881",
+                    color: "#fff",
+                  },
+                }}
+              >
+                Agregar
+              </Button>
+            ) : (
+              <Button
+                onClick={handleCloseTaskDialog}
+                sx={{
+                  borderRadius: "20px",
+                  backgroundColor: "#00AEC3",
+                  color: "#fff",
+                  padding: "7px 24px",
+                  fontFamily: "Encode Sans",
+                  fontSize: "15px",
+                  fontWeight: "500",
+                  ml: "20px",
+                  textTransform: "capitalize",
+                  cursor: "pointer",
+                  boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+                  "&.Mui-disabled": {
+                    backgroundColor: "#8F8881",
+                    color: "#fff",
+                  },
+                }}
+              >
+                Aceptar
+              </Button>
+            )}
           </DialogActions>
         </Dialog>
         <Dialog
@@ -1144,52 +1456,63 @@ function ViewTicketComponent(props) {
             <Typography sx={{ fontSize: "14px", fontWeight: "300", mt: "5px" }}>
               Detallá la solicitud de la información adicional necesaria
             </Typography>
-            <Box sx={{backgroundColor:"#ECEAEA",borderRadius:"10px",border:"1px solid #646464",p:"10px"}}>
-              <Box sx={{backgroundColor:"#fff",borderRadius:"8px"}}>
-              <Typography 
-                sx={{
-                  fontSize: "14px",
-                  fontWeight: "400",
-                  p: "20px",
-                  borderRadius:"8px",
-                  border: "0.5px solid #B1B1B1",
-                  borderCollapse: "collapse",
-                  backgroundColor:"#fff",
-                }}
-              >
-                Solicitud de información adicional
-              </Typography>
-              <TextField
-                fullWidth
-                multiline
-                rows={10}
-                value={comment}
-                onChange={(event) => setComment(event.target.value)}
-                sx={{
-                  borderRadius: "0px 0px 10px 10px",
-                  "& .MuiOutlinedInput-root": {
+            <Box
+              sx={{
+                backgroundColor: "#ECEAEA",
+                borderRadius: "10px",
+                border: "1px solid #646464",
+                p: "10px",
+              }}
+            >
+              <Box sx={{ backgroundColor: "#fff", borderRadius: "8px" }}>
+                <Typography
+                  sx={{
+                    fontSize: "14px",
+                    fontWeight: "400",
+                    p: "20px",
+                    borderRadius: "8px",
+                    border: "0.5px solid #B1B1B1",
+                    borderCollapse: "collapse",
+                    backgroundColor: "#fff",
+                  }}
+                >
+                  Solicitud de información adicional
+                </Typography>
+                <TextField
+                  fullWidth
+                  multiline
+                  rows={10}
+                  value={comment}
+                  onChange={(event) => setComment(event.target.value)}
+                  sx={{
                     borderRadius: "0px 0px 10px 10px",
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      border: "none"
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "0px 0px 10px 10px",
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        border: "none",
+                      },
+                      "&:hover .MuiOutlinedInput-notchedOutline": {
+                        border: "none",
+                      },
+                      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                        border: "none",
+                      },
+                      "& fieldset": {
+                        border: "none",
+                      },
                     },
-                    "&:hover .MuiOutlinedInput-notchedOutline": {
-                      border: "none"
-                    },
-                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                      border: "none"
-                    },
-                    "& fieldset": {
-                      border: "none"
-                    }
-                  }
-                }}
-              />
+                  }}
+                />
               </Box>
             </Box>
           </DialogContent>
-          <DialogActions sx={{ mr: "24px", p: "0px",gap:"10px" }}>
+          <DialogActions sx={{ mr: "24px", p: "0px", gap: "10px" }}>
             <Button
-              onClick={() => setShowRequestAdditionalInformation(!showRequestAdditionalInformation)}
+              onClick={() =>
+                setShowRequestAdditionalInformation(
+                  !showRequestAdditionalInformation
+                )
+              }
               sx={{
                 borderRadius: "4px",
                 color: "#000",

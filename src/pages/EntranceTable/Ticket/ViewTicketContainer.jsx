@@ -38,41 +38,40 @@ function ViewTicketContainer(props) {
   const [showMessageSuccessChange, setShowMessageSuccessChange] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const navigate = useNavigate();
-  
-  const handleAddComment = (comment) => {
+
+  const handleAddInfoAditional = (comment) =>{
     const newComment = {
-      type: "comment",
+      type: "user_add_info",
       timestamp: new Date().toISOString(),
       user: account.full_name,
       content: comment,
       highlighted: false,
+      ticket: id,
+      view: false,
     };
-    api(COMMENT_TICKET + "/" + id, { method: "PATCH", body: newComment }).then(
+    api(ADD_INFO_ADITIONAL_TICKET + "/" + id, { method: "PATCH", body: newComment }).then(
       ({ ok, body }) => {
         if (ok) {
           navigate(0);
         }
       }
     );
-  };
-
-  const handleAddInfoAditional = (comment) =>{
-    const newComment = {
-      type: "support_add_info",
-      timestamp: new Date().toISOString(),
-      user: "(Soporte) "+account.full_name,
-      content: comment,
-      highlighted: false,
-      ticket: id,
-    };
-    api(ADD_INFO_ADITIONAL_TICKET + "/" + id, { method: "PATCH", body: newComment }).then(
-      ({ ok, body }) => {
-        if (ok) {
-          // navigate(0);
-        }
-      }
-    );
   }
+  const handleAddFile = (file) => {
+    const formData = new FormData();
+    formData.append("files", file);
+    api(TICKET + "/" + id, {
+      method: "PATCH",
+      body: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }).then(({ ok, body }) => {
+      if (ok) {
+        navigate(0);
+      }
+    });
+  };
   const handleOnSubmit = () => {
     api(TICKET+ "/" + id,{method: "PATCH", body: {"tasks":ticket.tasks}}).then(
       ({ ok, body }) => {
@@ -101,12 +100,12 @@ function ViewTicketContainer(props) {
           setTicket={setTicket}
           navigate={navigate}
           handleOnSubmit={handleOnSubmit}
-          handleAddComment={handleAddComment}
           showConfirm={showConfirm}
           setShowConfirm={setShowConfirm}
           handleAddInfoAditional={handleAddInfoAditional}
           showViewTicket={showViewTicket}
           setShowViewTicket={setShowViewTicket}
+          handleAddFile={handleAddFile}
         />
       )}
       <Dialog
