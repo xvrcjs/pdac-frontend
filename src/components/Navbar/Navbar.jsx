@@ -158,10 +158,24 @@ const Item = ({ title, to, isActive, subItems, cantClaim }) => {
                 borderRadius: "50%",
                 marginBottom: { xs: "20px", md: "0px" },
                 textAlign: "center",
-                animation: "blink 0.7s infinite",
-                "@keyframes blink": {
-                  "100%": { opacity: 1, transform: "scale(1.3)" },
-                },
+                animation: "pulse 1.5s ease-in-out infinite",
+                  "@keyframes pulse": {
+                    "0%": {
+                      opacity: 1,
+                      transform: "scale(1)",
+                      boxShadow: "0 0 0 0 rgba(179, 30, 164,0.4)",
+                    },
+                    "70%": {
+                      opacity: 1,
+                      transform: "scale(1.05)",
+                      boxShadow: "0 0 0 10px rgba(179, 30, 164, 0)",
+                    },
+                    "100%": {
+                      opacity: 1,
+                      transform: "scale(1.1)",
+                      boxShadow: "0 0 0 0 rgba(179, 30, 164, 0)",
+                    },
+                  },
               }}
             >
               <Typography sx={{ fontSize: "15px" }}>{cantClaim}</Typography>
