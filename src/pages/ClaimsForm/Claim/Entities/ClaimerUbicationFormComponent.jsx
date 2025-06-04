@@ -191,7 +191,7 @@ function ClaimerUbicationFormComponent(props) {
               Entre calles
             </Typography>
             <TextField
-              value={values.between_streets}
+              value={values.between_streets_cl}
               onChange={handleChange}
               placeholder="Entre calles"
               variant="outlined"

@@ -228,6 +228,9 @@ function ClaimComponent(props) {
                   <Typography>
                     Datos del denunciante: {claimInfo.claimer.fullname}
                   </Typography>
+                  <Typography>
+                    Domicilio: {claimInfo.claimer.street} {claimInfo.claimer.between_streets} N° {claimInfo.claimer.number ? claimInfo.claimer.number : "S/N"}, {claimInfo.claimer.city}, {claimInfo.claimer.province}
+                  </Typography>
                   <Typography>Género: {gender[claimInfo.claimer.gender]}</Typography>
                   <Typography>DNI: {claimInfo.claimer.dni}</Typography>
                   <Typography>E-mail: {claimInfo.claimer.email}</Typography>
