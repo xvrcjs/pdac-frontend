@@ -24,6 +24,7 @@ import ClaimIVEViewPage from "pages/ClaimsHV/ClaimIVE";
 import StandardsProtocolsPage from "pages/StandardsProtocols"
 import TicketsPage from "pages/Ticket/List"
 import TicketsViewPage from "pages/Ticket/View"
+import ReportsViewPage from "pages/Reports"
 import { AppContext } from "../../context/AppContext";
 
 function RouterContainer() {
@@ -108,6 +109,11 @@ function RouterContainer() {
                     exact
                     path="/tickets/:id"
                     element={<TicketsViewPage />}
+                />
+                <Route
+                    exact
+                    path="/reportes/"
+                    element={<ReportsViewPage />}
                 />
             </Route>
             <Route element={<PublicRoute />}>

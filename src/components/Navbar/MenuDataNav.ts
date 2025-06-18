@@ -35,9 +35,11 @@ export const MenuDataNav:Menu[] = [{
     headerTitle:"Te damos la bienvenida a el archivo de reclamos cerrados",
     headerSubTitle:"Acá podras ver los reclamos cerrados, archivados y tambien podrás reabrirlos."
 },{
-    title: "Derivados",
-    path: "derivados",
-    rolesAllowed: ["Admin","Omic"]
+    title: "Reportes",
+    path: "reportes",
+    rolesAllowed: ["Admin"],
+    headerTitle:"Te damos la bienvenida a tu tablero de gestión de reportes",
+    headerSubTitle:"Acá podrás filtrar la información necesaria por el periodo indicado."
 },
 {
     title: "Configuración",

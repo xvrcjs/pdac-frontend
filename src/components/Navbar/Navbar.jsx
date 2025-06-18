@@ -14,7 +14,7 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import IosShareRoundedIcon from "@mui/icons-material/IosShareRounded";
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
 import TrafficRoundedIcon from "@mui/icons-material/TrafficRounded";
 import ApartmentRoundedIcon from "@mui/icons-material/ApartmentRounded";
 import { CANT_CLAIM_HV_IVE } from "constant/endpoints";
@@ -44,7 +44,7 @@ const ItemNav = ({
       "/perfil": <PersonOutlineOutlinedIcon sx={{ marginRight: "10px" }} />,
       "/mesa-de-entrada": <GridViewIcon sx={{ marginRight: "10px" }} />,
       "/archivados": <FolderOutlinedIcon sx={{ marginRight: "10px" }} />,
-      "/derivados": <IosShareRoundedIcon sx={{ marginRight: "10px" }} />,
+      "/reportes": <AssessmentOutlinedIcon sx={{ marginRight: "10px" }} />,
       "/configuracion": <SettingsOutlinedIcon sx={{ marginRight: "10px" }} />,
       "configuracion/sistema-de-semaforos": (
         <TrafficRoundedIcon sx={{ marginRight: "10px" }} />
