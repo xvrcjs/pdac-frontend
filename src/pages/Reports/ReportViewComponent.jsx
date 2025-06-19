@@ -10,11 +10,20 @@ import {
   FormControl,
   InputLabel,
   Alert,
+  Checkbox,
+  FormControlLabel,
+  Label,
+  Tooltip,
 } from "@mui/material";
 import { PieChart, BarChart, LineChart } from "@mui/x-charts";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Content from "components/Content";
 import DataGrid from "./DataGrid";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import es from "dayjs/locale/es";
+import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import FullscreenOutlinedIcon from "@mui/icons-material/FullscreenOutlined";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import {
@@ -29,7 +38,7 @@ import {
   gender,
 } from "./dataSelect.jsx";
 
-function ReportViewComponent({ reportData = {}, onBack }) {
+function ReportViewComponent({ reportData = {}, onBack, startDate, endDate }) {
   // Estados para cada filtro
   const [filters, setFilters] = useState({
     status: "Todo",
@@ -61,9 +70,9 @@ function ReportViewComponent({ reportData = {}, onBack }) {
 
   // Función para filtrar los datos
   const getFilteredData = () => {
-    if (!Array.isArray(reportData.dataGrid)) return [];
+    if (!Array.isArray(reportData.data)) return [];
 
-    return reportData.dataGrid.filter((row) => {
+    return reportData.data.filter((row) => {
       // Si todos los filtros están en "Todo", retornar true
       if (Object.values(filters).every((filter) => filter === "Todo")) {
         return true;
@@ -96,22 +105,83 @@ function ReportViewComponent({ reportData = {}, onBack }) {
   const filteredRows = getFilteredData();
 
   // Datos para el gráfico de torta (ejemplo)
-  const pieData = reportData?.chartData || [{ name: "Sin datos", value: 1 }];
+  const pieData = reportData?.data || [{ name: "Sin datos", value: 1 }];
 
   // Columnas para la grilla
   const columns = [
-    { field: "nro_reclamo", headerName: "NRO DE RECLAMO", flex: 1 },
-    { field: "rubro", headerName: "RUBRO", flex: 1 },
-    { field: "tipo_reclamo", headerName: "TIPO DE RECLAMO", flex: 1 },
-    { field: "empresa", headerName: "EMPRESA", flex: 1 },
-    { field: "estado", headerName: "ESTADO DEL RECLAMO", flex: 1 },
+    { field: "id", headerName: "NRO DE RECLAMO", flex: 1 },
+    { field: "heading", headerName: "RUBRO", flex: 1 },
+    { field: "claim_type", headerName: "TIPO DE RECLAMO", flex: 1 ,renderCell: (params) => (
+      <Tooltip title={params.value} placement="top-start">
+      <div
+        style={{
+          width: "100px",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          margin: "auto",
+        }}
+      >
+        {params.value}
+      </div>
+    </Tooltip>),
+    },
+    { field: "suppliers", headerName: "EMPRESAS", flex: 1,width:"80px",renderCell: (params) => (
+      <Tooltip title={params.value} placement="top-start">
+        <div
+          style={{
+            width: "100px",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            margin: "auto",
+          }}
+        >
+          {params.value}
+        </div>
+      </Tooltip>
+    ), },
+    { field: "claim_status", headerName: "ESTADO DEL RECLAMO", flex: 1 ,renderCell: (params) => (
+      <Tooltip title={params.value} placement="top-start">
+      <div
+        style={{
+          width: "100px",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          margin: "auto",
+        }}
+      >
+        {params.value}
+      </div>
+    </Tooltip>),
+    },
   ];
-
   // Datos para la grilla - usando los datos filtrados
   const rows = filteredRows;
   const handleFullScreenChart = () => {};
   const [isChartFull, setIsChartFull] = useState(false);
   const [showPieHv, setShowPieHv] = useState(false);
+
+  const [yearSelected, setYearSelected] = useState(null);
+  const [monthSelected, setMonthSelected] = useState(null);
+  const [showMonthPicker, setShowMonthPicker] = useState(false);
+  const [showBarChart, setShowBarChart] = useState(false);
+
+  const handleYearChange = (newValue) => {
+    setYearSelected(newValue);
+  };
+
+  const handleMonthChange = (newValue) => {
+    setMonthSelected(newValue);
+  };
+
+  const handleCheckboxChange = (event) => {
+    setShowMonthPicker(event.target.checked);
+    if (!event.target.checked) {
+      setMonthSelected(null);
+    }
+  };
   return (
     <Content className="swt-dashboard" isLoaded="true">
       <Box sx={{ margin: "50px 100px" }}>
@@ -129,7 +199,7 @@ function ReportViewComponent({ reportData = {}, onBack }) {
                   Desde periodo
                 </Typography>
                 <Typography>
-                  {reportData?.startDate || "No seleccionado"}
+                  {startDate || "No seleccionado"}
                 </Typography>
               </Grid>
               <Grid item xs={3}>
@@ -137,7 +207,7 @@ function ReportViewComponent({ reportData = {}, onBack }) {
                   Hasta periodo
                 </Typography>
                 <Typography>
-                  {reportData?.endDate || "No seleccionado"}
+                  {endDate || "No seleccionado"}
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -182,6 +252,23 @@ function ReportViewComponent({ reportData = {}, onBack }) {
                     onChange={(e) =>
                       handleFilterChange("status", e.target.value)
                     }
+                    MenuProps={{
+                      anchorOrigin: {
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                      },
+                      transformOrigin: {
+                        vertical: 'top',
+                        horizontal: 'left',
+                      },
+                      PaperProps: {
+                        sx: {
+                          backgroundColor: "white",
+                          borderRadius: "8px",
+                          marginTop: "4px",
+                        }
+                      }
+                    }}
                     sx={{
                       background: "#00AEC3",
                       border: "unset",
@@ -234,6 +321,23 @@ function ReportViewComponent({ reportData = {}, onBack }) {
                     onChange={(e) =>
                       handleFilterChange("company", e.target.value)
                     }
+                    MenuProps={{
+                      anchorOrigin: {
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                      },
+                      transformOrigin: {
+                        vertical: 'top',
+                        horizontal: 'left',
+                      },
+                      PaperProps: {
+                        sx: {
+                          backgroundColor: "white",
+                          borderRadius: "8px",
+                          marginTop: "4px",
+                        }
+                      }
+                    }}
                     sx={{
                       background: "#00AEC3",
                       border: "unset",
@@ -285,6 +389,23 @@ function ReportViewComponent({ reportData = {}, onBack }) {
                     onChange={(e) =>
                       handleFilterChange("municipality", e.target.value)
                     }
+                    MenuProps={{
+                      anchorOrigin: {
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                      },
+                      transformOrigin: {
+                        vertical: 'top',
+                        horizontal: 'left',
+                      },
+                      PaperProps: {
+                        sx: {
+                          backgroundColor: "white",
+                          borderRadius: "8px",
+                          marginTop: "4px",
+                        }
+                      }
+                    }}
                     sx={{
                       background: "#00AEC3",
                       border: "unset",
@@ -336,6 +457,23 @@ function ReportViewComponent({ reportData = {}, onBack }) {
                     onChange={(e) =>
                       handleFilterChange("access", e.target.value)
                     }
+                    MenuProps={{
+                      anchorOrigin: {
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                      },
+                      transformOrigin: {
+                        vertical: 'top',
+                        horizontal: 'left',
+                      },
+                      PaperProps: {
+                        sx: {
+                          backgroundColor: "white",
+                          borderRadius: "8px",
+                          marginTop: "4px",
+                        }
+                      }
+                    }}
                     sx={{
                       background: "#00AEC3",
                       border: "unset",
@@ -387,6 +525,23 @@ function ReportViewComponent({ reportData = {}, onBack }) {
                     onChange={(e) =>
                       handleFilterChange("claimType", e.target.value)
                     }
+                    MenuProps={{
+                      anchorOrigin: {
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                      },
+                      transformOrigin: {
+                        vertical: 'top',
+                        horizontal: 'left',
+                      },
+                      PaperProps: {
+                        sx: {
+                          backgroundColor: "white",
+                          borderRadius: "8px",
+                          marginTop: "4px",
+                        }
+                      }
+                    }}
                     sx={{
                       background: "#00AEC3",
                       border: "unset",
@@ -438,6 +593,23 @@ function ReportViewComponent({ reportData = {}, onBack }) {
                     onChange={(e) =>
                       handleFilterChange("category", e.target.value)
                     }
+                    MenuProps={{
+                      anchorOrigin: {
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                      },
+                      transformOrigin: {
+                        vertical: 'top',
+                        horizontal: 'left',
+                      },
+                      PaperProps: {
+                        sx: {
+                          backgroundColor: "white",
+                          borderRadius: "8px",
+                          marginTop: "4px",
+                        }
+                      }
+                    }}
                     sx={{
                       background: "#00AEC3",
                       border: "unset",
@@ -489,6 +661,23 @@ function ReportViewComponent({ reportData = {}, onBack }) {
                     onChange={(e) =>
                       handleFilterChange("heading", e.target.value)
                     }
+                    MenuProps={{
+                      anchorOrigin: {
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                      },
+                      transformOrigin: {
+                        vertical: 'top',
+                        horizontal: 'left',
+                      },
+                      PaperProps: {
+                        sx: {
+                          backgroundColor: "white",
+                          borderRadius: "8px",
+                          marginTop: "4px",
+                        }
+                      }
+                    }}
                     sx={{
                       background: "#00AEC3",
                       border: "unset",
@@ -540,6 +729,23 @@ function ReportViewComponent({ reportData = {}, onBack }) {
                     onChange={(e) =>
                       handleFilterChange("subheading", e.target.value)
                     }
+                    MenuProps={{
+                      anchorOrigin: {
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                      },
+                      transformOrigin: {
+                        vertical: 'top',
+                        horizontal: 'left',
+                      },
+                      PaperProps: {
+                        sx: {
+                          backgroundColor: "white",
+                          borderRadius: "8px",
+                          marginTop: "4px",
+                        }
+                      }
+                    }}
                     sx={{
                       background: "#00AEC3",
                       border: "unset",
@@ -584,9 +790,10 @@ function ReportViewComponent({ reportData = {}, onBack }) {
                   border: "1px solid rgba(0, 0, 0, 0.12)",
                   height: "100%",
                   boxShadow: "0px 10px 10px 0px rgba(0, 0, 0, 0.25);",
+                  position: "relative",
                 }}
               >
-                <Box sx={{ ml: "20px", mt: "15px", display: "block" }}>
+                <Box sx={{ ml: "20px", mt: "15px", display: "block", position: "absolute",zIndex: 1 }}>
                   <FormControl size="small">
                     <Box
                       sx={{
@@ -610,6 +817,23 @@ function ReportViewComponent({ reportData = {}, onBack }) {
                       <Select
                         value={chartSelected}
                         onChange={(e) => handleChangeChart(e.target.value)}
+                        MenuProps={{
+                          anchorOrigin: {
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                          },
+                          transformOrigin: {
+                            vertical: 'top',
+                            horizontal: 'left',
+                          },
+                          PaperProps: {
+                            sx: {
+                              backgroundColor: "white",
+                              borderRadius: "8px",
+                              marginTop: "4px",
+                            }
+                          }
+                        }}
                         sx={{
                           background: "#E81F76",
                           border: "unset",
@@ -648,6 +872,7 @@ function ReportViewComponent({ reportData = {}, onBack }) {
                       justifyContent: "center",
                       width: "100%",
                       position: "relative",
+                      height: "100%",
                     }}
                   >
                     {chartSelected === "Tipos de reclamo" &&
@@ -705,7 +930,7 @@ function ReportViewComponent({ reportData = {}, onBack }) {
                           ]}
                           height={500}
                           width={isChartFull ? 800 : 400}
-                          margin={{ top: 10, bottom: 80, left: 10, right: 10 }}
+                          margin={{ top: 80, bottom: 80, left: 10, right: 10 }}
                           slotProps={{
                             legend: {
                               direction: "row",
@@ -723,7 +948,7 @@ function ReportViewComponent({ reportData = {}, onBack }) {
                         />
                       ) : (
                         <>
-                          <Typography sx={{ mt: "20px", fontWeight: "500" }}>
+                          <Typography sx={{ mt: "80px", fontWeight: "500" }}>
                             Subcategoria de reclamos HV
                           </Typography>
                           <svg
@@ -841,7 +1066,7 @@ function ReportViewComponent({ reportData = {}, onBack }) {
                             height={500}
                             width={isChartFull ? 800 : 400}
                             margin={{
-                              top: 10,
+                              top: 0,
                               bottom: 80,
                               left: 10,
                               right: 10,
@@ -947,6 +1172,7 @@ function ReportViewComponent({ reportData = {}, onBack }) {
                             color: "#417099",
                           },
                         ]}
+                        margin={{ top: 80 }}
                         layout="horizontal"
                         xAxis={[{ label: "Reclamos" }]}
                         height={isChartFull ? 500 : 450}
@@ -959,86 +1185,221 @@ function ReportViewComponent({ reportData = {}, onBack }) {
                     )}
                     {chartSelected ===
                       "Empresas mas reclamadas por periodo (Anual/Mensual)" && (
-                      <BarChart
-                        dataset={[
-                          {
-                            cantForType: 86,
-                            cantClaims: 21,
-                            month: "Ene",
-                          },
-                          {
-                            cantForType: 78,
-                            cantClaims: 28,
-                            month: "Feb",
-                          },
-                          {
-                            cantForType: 106,
-                            cantClaims: 41,
-                            month: "Mar",
-                          },
-                          {
-                            cantForType: 92,
-                            cantClaims: 73,
-                            month: "Abr",
-                          },
-                          {
-                            cantForType: 92,
-                            cantClaims: 99,
-                            month: "May",
-                          },
-                          {
-                            cantForType: 103,
-                            cantClaims: 144,
-                            month: "Jun",
-                          },
-                          {
-                            cantForType: 105,
-                            cantClaims: 319,
-                            month: "Jul",
-                          },
-                          {
-                            cantForType: 65,
-                            cantClaims: 60,
-                            month: "Ago",
-                          },
-                          {
-                            cantForType: 95,
-                            cantClaims: 131,
-                            month: "Sept",
-                          },
-                          {
-                            cantForType: 97,
-                            cantClaims: 55,
-                            month: "Oct",
-                          },
-                          {
-                            cantForType: 76,
-                            cantClaims: 48,
-                            month: "Nov",
-                          },
-                          {
-                            cantForType: 10,
-                            cantClaims: 25,
-                            month: "Dic",
-                          },
-                        ]}
-                        xAxis={[{ scaleType: "band", dataKey: "month" }]}
-                        series={[
-                          {
-                            dataKey: "cantClaims",
-                            label: "Cantidad de reclamos mensuales",
-                            color: "#417099",
-                          },
-                        ]}
-                        layout="vertical"
-                        yAxis={[{ label: "Reclamos" }]}
-                        height={isChartFull ? 500 : 450}
-                        slotProps={{
-                          legend: {
-                            hidden: true,
-                          },
-                        }}
-                      />
+                      <Box display="flex" flexDirection="column" gap={2} width="90%">
+                        {!showBarChart ? (
+                          <Box
+                            display="flex"
+                            height="100%"
+                            width="100%"
+                            gap={2}
+                            flexDirection="column"
+                            justifyContent="center"
+                            alignItems="center"
+                          >
+                            <LocalizationProvider
+                              dateAdapter={AdapterDayjs}
+                              adapterLocale={es}
+                            >
+                              <FormControl size="small" sx={{ minWidth: 120 }}>
+                                <DatePicker
+                                  views={["year"]}
+                                  value={yearSelected}
+                                  onChange={handleYearChange}
+                                  slotProps={{
+                                    textField: {
+                                      placeholder: "AÑO",
+                                    },
+                                  }}
+                                  sx={{
+                                    width: "300px",
+                                    "& .MuiOutlinedInput-notchedOutline": {
+                                      borderColor:
+                                        "rgba(0, 0, 0, 0.23) !important",
+                                      borderRadius: "15px",
+                                    },
+                                  }}
+                                />
+                              </FormControl>
+
+                              <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    checked={showMonthPicker}
+                                    onChange={handleCheckboxChange}
+                                    sx={{
+                                      color: "#00AEC3",
+                                      "&.Mui-checked": {
+                                        color: "#00AEC3",
+                                      },
+                                    }}
+                                  />
+                                }
+                                label="Filtrar por mes"
+                              />
+
+                              <FormControl size="small" sx={{ minWidth: 120 }}>
+                                <DatePicker
+                                  views={["month"]}
+                                  value={monthSelected}
+                                  onChange={handleMonthChange}
+                                  disabled={!showMonthPicker}
+                                  slotProps={{
+                                    textField: {
+                                      placeholder: "MES",
+                                    },
+                                  }}
+                                  sx={{
+                                    width: "300px",
+                                    "& .MuiOutlinedInput-notchedOutline": {
+                                      borderColor:
+                                        "rgba(0, 0, 0, 0.23) !important",
+                                      borderRadius: "15px",
+                                    },
+                                  }}
+                                />
+                              </FormControl>
+
+                              <Button
+                                sx={{
+                                  borderRadius: "20px",
+                                  backgroundColor: "#00AEC3",
+                                  color: "#FFF",
+                                  padding: "9px 30px",
+                                  fontFamily: "Encode Sans",
+                                  fontSize: "16px",
+                                  textTransform: "capitalize",
+                                  mt: 2,
+                                  width: "300px",
+                                  ":hover": {
+                                    backgroundColor: "#417099",
+                                    transform: "scale(1.01)",
+                                  },
+                                }}
+                                onClick={() => setShowBarChart(true)}
+                                disabled={!yearSelected}
+                              >
+                                Generar
+                              </Button>
+                            </LocalizationProvider>
+                          </Box>
+                        ) : (
+                          <Box
+                            display="flex"
+                            flexDirection="column"
+                            width="100%"
+                            mt={8}
+                          >
+                            <Box
+                              display="flex"
+                              justifyContent="flex-end"
+                            >
+                              <Button
+                                startIcon={<FilterAltOutlinedIcon />}
+                                sx={{
+                                  borderRadius: "15px",
+                                  backgroundColor: "#fff",
+                                  color: "#000",
+                                  padding: "9px 10px",
+                                  fontFamily: "Encode Sans",
+                                  fontSize: "12px",
+                                  textTransform: "capitalize",
+                                  border: "1px solid #000",
+                                  mt: 2,
+                                  ":hover": {
+                                    backgroundColor: "#00AEC3",
+                                    color: "#fff",
+                                    borderColor: "transparent",
+                                  },
+                                }}
+                                onClick={() => setShowBarChart(false)}
+                              >
+                                Filtrar
+                              </Button>
+                            </Box>
+                            <BarChart
+                              dataset={[
+                                {
+                                  cantForType: 86,
+                                  cantClaims: 21,
+                                  month: "Ene",
+                                },
+                                {
+                                  cantForType: 78,
+                                  cantClaims: 28,
+                                  month: "Feb",
+                                },
+                                {
+                                  cantForType: 106,
+                                  cantClaims: 41,
+                                  month: "Mar",
+                                },
+                                {
+                                  cantForType: 92,
+                                  cantClaims: 73,
+                                  month: "Abr",
+                                },
+                                {
+                                  cantForType: 92,
+                                  cantClaims: 99,
+                                  month: "May",
+                                },
+                                {
+                                  cantForType: 103,
+                                  cantClaims: 144,
+                                  month: "Jun",
+                                },
+                                {
+                                  cantForType: 105,
+                                  cantClaims: 319,
+                                  month: "Jul",
+                                },
+                                {
+                                  cantForType: 65,
+                                  cantClaims: 60,
+                                  month: "Ago",
+                                },
+                                {
+                                  cantForType: 95,
+                                  cantClaims: 131,
+                                  month: "Sept",
+                                },
+                                {
+                                  cantForType: 97,
+                                  cantClaims: 55,
+                                  month: "Oct",
+                                },
+                                {
+                                  cantForType: 76,
+                                  cantClaims: 48,
+                                  month: "Nov",
+                                },
+                                {
+                                  cantForType: 10,
+                                  cantClaims: 25,
+                                  month: "Dic",
+                                },
+                              ]}
+                              xAxis={[{ scaleType: "band", dataKey: "month",width: 100 }]}
+                              series={[
+                                {
+                                  dataKey: "cantClaims",
+                                  label: "Cantidad de reclamos mensuales",
+                                  color: "#417099",
+                                },
+                              ]}
+                              margin={{ top: 10 }}
+                              layout="vertical"
+                              yAxis={[{ label: "Reclamos"},]}
+                              height={isChartFull ? 500 : 450}
+                              slotProps={{
+                                legend: {
+                                  hidden: true,
+                                },
+                              }}
+                            />
+                          </Box>
+                        )}
+                      </Box>
                     )}
                   </Box>
                 ) : (

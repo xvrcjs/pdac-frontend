@@ -75,6 +75,7 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit,hasFilter,noDataMes
                   padding: "10px",
                   cursor: "pointer",
                   color:"#868FA0",
+                  width: column.width || "auto",
                 }}
               >
                 <Box
@@ -162,6 +163,8 @@ const DataGrid = ({ columns, rows, pageSize = 10, handleEdit,hasFilter,noDataMes
                           wordBreak: "break-word",
                           width: column.width || "auto",
                           backgroundColor: "#fff",
+                          fontSize: "13px",
+                          cursor:"pointer",
                           border: "0.5px solid #B1B1B1",
                           borderLeft: colIndex === 0 ? "1px solid #B1B1B1" : "none",
                           borderRight: colIndex === columns.length - 1 ? "1px solid #B1B1B1" : "none",

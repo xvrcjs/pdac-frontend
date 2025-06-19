@@ -40,10 +40,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import es from "dayjs/locale/es";
 
 function ReportsComponent(props) {
-  const { onGenerateReport, isLoading } = props;
-
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const { onGenerateReport, isLoading, startDate,setStartDate, endDate,setEndDate } = props;
+  
   const [activeButtons, setActiveButtons] = useState([]);
   const [selectedTexts, setSelectedTexts] = useState([]);
   const [error, setError] = useState(null);
