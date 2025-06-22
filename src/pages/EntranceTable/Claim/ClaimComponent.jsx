@@ -178,7 +178,7 @@ function ClaimComponent(props) {
             <Typography sx={{ width: "150px", ml: "70px" }}>RECLAMO</Typography>
             <Typography>ASIGNADO</Typography>
           </Box>
-          <Box sx={{ border: "1px solid #000" }}>
+          <Box>
             <Box
               sx={{
                 display: "flex",

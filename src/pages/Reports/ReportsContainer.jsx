@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { format } from 'date-fns';
 import dayjs from "dayjs";
 import ReportsComponent from "./ReportsComponent";
-import ReportViewComponent from "./ReportViewComponent"; // Added import for ReportViewComponent
 import { AppContext } from "context/AppContext";
 
 function ReportsContainer() {
@@ -12,6 +11,7 @@ function ReportsContainer() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(dayjs());
   const [reportData, setReportData] = useState(null);
+  const [chartsData,setChartsData] = useState(null);
 
   const handleGenerateReport = async (startDate, endDate, selectedReports) => {
     setIsLoading(true);
@@ -23,8 +23,9 @@ function ReportsContainer() {
         method: "GET"
       });
 
-      setStartDate(formattedStartDate);
-      setEndDate(formattedEndDate);
+      // setStartDate(formattedStartDate);
+      // setEndDate(formattedEndDate);
+      // handleGenerateCharts(selectedReports);
       setReportData(response.body);
       setShowReport(true);
 
@@ -35,32 +36,31 @@ function ReportsContainer() {
     }
   };
 
+  // const handleGenerateCharts = async (selectedReports) => {
+  //   try {
 
-  const handleBack = () => {
-    setShowReport(false);
-    setReportData(null);
-  };
+  //     const response = await api(`v1/reports/charts/?start_date=${startDate}&finish_date=${endDate}&filter=${selectedReports}`, {
+  //       method: "GET"
+  //     });
+  //     setChartsData(response.body);
+
+  //   } catch (error) {
+  //     console.error('Error generating report:', error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   return (
-    <>
-      {showReport ? (
-        <ReportViewComponent 
-          reportData={reportData} 
-          onBack={handleBack}
-          startDate={startDate}
-          endDate={endDate}
-        />
-      ) : (
-        <ReportsComponent 
-          startDate={startDate}
-          setStartDate={setStartDate}
-          endDate={endDate}
-          setEndDate={setEndDate}
-          onGenerateReport={handleGenerateReport}
-          isLoading={isLoading}
-        />
-      )}
-    </>
+      <ReportsComponent 
+        startDate={startDate}
+        setStartDate={setStartDate}
+        endDate={endDate}
+        setEndDate={setEndDate}
+        onGenerateReport={handleGenerateReport}
+        isLoading={isLoading}
+        reportData={reportData}
+      />
   );
 }
 
