@@ -41,24 +41,34 @@ import {
 
 function ReportsComponent({ 
   reportData = null, 
+  chartsData = null,
+  suppliersData = null,
   startDate,
   endDate,
   setStartDate,
   setEndDate,
   onGenerateReport,
-  isLoading 
+  isLoading,
+  page,
+  pageSize,
+  filters,
+  onPageChange,
+  onFilterChange,
+  handleGenerateSuppliersCharts
 }) {
   // Estados para cada filtro
-  const [filters, setFilters] = useState({
-    status: "Todo",
-    company: "Todo",
-    municipality: "Todo",
-    access: "Todo",
-    claimType: "Todo",
-    category: "Todo",
-    heading: "Todo",
-    subheading: "Todo",
-  });
+  const handleFilterChange = (filterName, value) => {
+    const newFilters = {
+      ...filters,
+      [filterName]: value,
+    };
+    onFilterChange(newFilters);
+  };
+
+  const handlePageChange = (event, newPage) => {
+    onPageChange(newPage);
+  };
+
   const charts = [
     "Tipos de reclamo",
     "Reclamos por mes",
@@ -69,58 +79,23 @@ function ReportsComponent({
   const handleChangeChart = (value) => {
     setChartSelected(value);
   };
-  // Función para actualizar filtros
-  const handleFilterChange = (filterName, value) => {
-    setFilters((prev) => ({
-      ...prev,
-      [filterName]: value,
-    }));
-  };
 
-  // Función para filtrar los datos
-  const getFilteredData = () => {
-    if (!reportData || !reportData.data || !Array.isArray(reportData.data)) return [];
 
-    return reportData.data.filter((row) => {
-      // Si todos los filtros están en "Todo", retornar true
-      if (Object.values(filters).every((filter) => filter === "Todo")) {
-        return true;
-      }
+  // Datos para los gráficos y la grilla
+  const rows = reportData?.data || [];
+  const totalRows = reportData?.total || 0;
+  const totalPages = Math.ceil(totalRows / pageSize);
 
-      // Aplicar cada filtro
-      const filterChecks = {
-        status: filters.status === "Todo" || row.estado === filters.status,
-        company: filters.company === "Todo" || row.empresa === filters.company,
-        municipality:
-          filters.municipality === "Todo" ||
-          row.municipio === filters.municipality,
-        access: filters.access === "Todo" || row.acceso === filters.access,
-        claimType:
-          filters.claimType === "Todo" ||
-          row.tipo_reclamo === filters.claimType,
-        category:
-          filters.category === "Todo" || row.categoria === filters.category,
-        heading: filters.heading === "Todo" || row.rubro === filters.heading,
-        subheading:
-          filters.subheading === "Todo" || row.subrubro === filters.subheading,
-      };
-
-      // Retornar true solo si todos los filtros aplicables pasan
-      return Object.values(filterChecks).every((check) => check);
-    });
-  };
-
-  // Datos filtrados para la grilla
-  const filteredRows = getFilteredData();
-
-  // Datos para el gráfico de torta (ejemplo)
-  const pieData = reportData?.data || [];
+  // Datos para los gráficos
+  const pieData = chartsData?.data.pie_data || [];
+  const barData = chartsData?.data.bar_data || [];
+  const lineData = chartsData?.data.line_data || [];
 
   // Columnas para la grilla
   const columns = [
     { field: "id", headerName: "NRO DE RECLAMO", flex: 1 },
     { field: "heading", headerName: "RUBRO", flex: 1 },
-    { field: "claim_type", headerName: "TIPO DE RECLAMO", flex: 1 ,renderCell: (params) => (
+    { field: "type_of_claim", headerName: "TIPO DE RECLAMO", flex: 1 ,renderCell: (params) => (
       <Tooltip title={params.value} placement="top-start">
       <div
         style={{
@@ -166,8 +141,7 @@ function ReportsComponent({
     </Tooltip>),
     },
   ];
-  // Datos para la grilla - usando los datos filtrados
-  const rows = filteredRows || [];
+
   const handleFullScreenChart = () => {};
   const [isChartFull, setIsChartFull] = useState(false);
   const [showPieHv, setShowPieHv] = useState(false);
@@ -204,7 +178,7 @@ function ReportsComponent({
               Indicá el periodo deseado para generar el informe
             </Typography>
             <Grid container spacing={2}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={es}>
               <Grid item xs={3}>
                 <Typography variant="body2" mb={2} color="textSecondary">
                   Desde periodo
@@ -263,9 +237,9 @@ function ReportsComponent({
                         '&:hover': {
                             transform: 'scale(1.05)'
                         },
-                        '&:disabled': {
-                            opacity: 0.7,
-                            background: '#00AEC3'
+                        "&:disabled": {
+                          backgroundColor: "#8F8881",
+                          color: "#fff",
                         }
                     }}
                     onClick={() => onGenerateReport(startDate, endDate)}
@@ -329,9 +303,9 @@ function ReportsComponent({
                     Estado:
                   </Typography>
                   <Select
-                    value={filters.status}
+                    value={filters.claim_status}
                     onChange={(e) =>
-                      handleFilterChange("status", e.target.value)
+                      handleFilterChange("claim_status", e.target.value)
                     }
                     MenuProps={{
                       anchorOrigin: {
@@ -466,9 +440,9 @@ function ReportsComponent({
                     Municipio:
                   </Typography>
                   <Select
-                    value={filters.municipality}
+                    value={filters.omic}
                     onChange={(e) =>
-                      handleFilterChange("municipality", e.target.value)
+                      handleFilterChange("omic", e.target.value)
                     }
                     MenuProps={{
                       anchorOrigin: {
@@ -534,9 +508,9 @@ function ReportsComponent({
                     Acceso del reclamo:
                   </Typography>
                   <Select
-                    value={filters.access}
+                    value={filters.claim_access}
                     onChange={(e) =>
-                      handleFilterChange("access", e.target.value)
+                      handleFilterChange("claim_access", e.target.value)
                     }
                     MenuProps={{
                       anchorOrigin: {
@@ -602,9 +576,9 @@ function ReportsComponent({
                     Tipo de reclamo:
                   </Typography>
                   <Select
-                    value={filters.claimType}
+                    value={filters.type_of_claim}
                     onChange={(e) =>
-                      handleFilterChange("claimType", e.target.value)
+                      handleFilterChange("type_of_claim", e.target.value)
                     }
                     MenuProps={{
                       anchorOrigin: {
@@ -944,7 +918,7 @@ function ReportsComponent({
                     </Box>
                   </FormControl>
                 </Box>
-                {pieData.length > 0 ? (
+                {pieData.total_claims > 0 ? (
                   <Box
                     sx={{
                       display: "flex",
@@ -956,12 +930,12 @@ function ReportsComponent({
                       height: "100%",
                     }}
                   >
-                    {chartSelected === "Tipos de reclamo" &&
+                    {chartSelected === "Tipos de reclamo" && pieData.total_claims > 0 &&
                       (!showPieHv ? (
                         <PieChart
                           onClick={(event, itemData) => {
                             const fillColor = event.target.getAttribute("fill");
-                            if (fillColor == "#000") {
+                            if (fillColor === "#000") {
                               setShowPieHv(!showPieHv);
                             }
                           }}
@@ -970,25 +944,25 @@ function ReportsComponent({
                               data: [
                                 {
                                   id: 0,
-                                  value: 75,
+                                  value: pieData.common_claims,
                                   label: "Comun",
                                   color: "#00AEC3",
                                 },
                                 {
                                   id: 1,
-                                  value: 15,
+                                  value: pieData.hv_claims,
                                   label: "HV",
                                   color: "#000",
                                 },
                                 {
                                   id: 2,
-                                  value: 5,
+                                  value: pieData.unassigned_claims,
                                   label: "Sin Asignar",
                                   color: "grey",
                                 },
                                 {
                                   id: 3,
-                                  value: 3,
+                                  value: pieData.ive_claims,
                                   label: "IVE",
                                   color: "#B31EA4",
                                 },
@@ -1181,74 +1155,13 @@ function ReportsComponent({
                           </Button>
                         </>
                       ))}
-                    {chartSelected === "Reclamos por mes" && (
+                    {chartSelected === "Reclamos por mes" && barData && (
                       <BarChart
-                        dataset={[
-                          {
-                            cantForType: 86,
-                            cantClaims: 21,
-                            month: "Ene",
-                          },
-                          {
-                            cantForType: 78,
-                            cantClaims: 28,
-                            month: "Feb",
-                          },
-                          {
-                            cantForType: 106,
-                            cantClaims: 41,
-                            month: "Mar",
-                          },
-                          {
-                            cantForType: 92,
-                            cantClaims: 73,
-                            month: "Abr",
-                          },
-                          {
-                            cantForType: 92,
-                            cantClaims: 99,
-                            month: "May",
-                          },
-                          {
-                            cantForType: 103,
-                            cantClaims: 144,
-                            month: "Jun",
-                          },
-                          {
-                            cantForType: 105,
-                            cantClaims: 319,
-                            month: "Jul",
-                          },
-                          {
-                            cantForType: 65,
-                            cantClaims: 60,
-                            month: "Ago",
-                          },
-                          {
-                            cantForType: 95,
-                            cantClaims: 131,
-                            month: "Sept",
-                          },
-                          {
-                            cantForType: 97,
-                            cantClaims: 55,
-                            month: "Oct",
-                          },
-                          {
-                            cantForType: 76,
-                            cantClaims: 48,
-                            month: "Nov",
-                          },
-                          {
-                            cantForType: 10,
-                            cantClaims: 25,
-                            month: "Dic",
-                          },
-                        ]}
-                        yAxis={[{ scaleType: "band", dataKey: "month" }]}
+                        dataset={barData.data}
+                        yAxis={[{ scaleType: "band", dataKey: "name" }]}
                         series={[
                           {
-                            dataKey: "cantClaims",
+                            dataKey: "value",
                             label: "Cantidad de reclamos mensuales",
                             color: "#417099",
                           },
@@ -1355,8 +1268,12 @@ function ReportsComponent({
                                     backgroundColor: "#417099",
                                     transform: "scale(1.01)",
                                   },
+                                  "&:disabled": {
+                                    backgroundColor: "#8F8881",
+                                    color: "#fff",
+                                  }
                                 }}
-                                onClick={() => setShowBarChart(true)}
+                                onClick={() => handleGenerateSuppliersCharts(yearSelected, monthSelected)}
                                 disabled={!yearSelected}
                               >
                                 Generar
@@ -1536,15 +1453,21 @@ function ReportsComponent({
               </Box>
             </Grid>
             <Grid item xs={12} md={7} sx={{ display: isChartFull && "none" }}>
-              <DataGrid
-                rows={rows}
-                columns={columns}
-                pageSize={10}
-                rowsPerPageOptions={[5]}
-                noDataMessage="No hay datos disponibles"
-                disableSelectionOnClick
-                backgroundColor="#fff"
-              />
+              <Box sx={{ width: '100%', height: '100%' }}>
+                <DataGrid
+                  rows={rows}
+                  columns={columns}
+                  page={page - 1}
+                  pageSize={pageSize}
+                  rowCount={totalRows}
+                  paginationMode="server"
+                  onPageChange={handlePageChange}
+                  rowsPerPageOptions={[10]}
+                  noDataMessage="No hay datos disponibles"
+                  disableSelectionOnClick
+                  backgroundColor="#fff"
+                />
+              </Box>
             </Grid>
           </Grid>
           <Box

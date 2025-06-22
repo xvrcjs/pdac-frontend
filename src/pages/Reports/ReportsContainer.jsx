@@ -11,21 +11,48 @@ function ReportsContainer() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(dayjs());
   const [reportData, setReportData] = useState(null);
-  const [chartsData,setChartsData] = useState(null);
+  const [chartsData, setChartsData] = useState(null);
+  const [suppliersData, setSuppliersData] = useState(null);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [filters, setFilters] = useState({
+    claim_status: "Todo",
+    supplier: "Todo",
+    omic: "Todo",
+    claim_access: "Todo",
+    type_of_claim: "Todo",
+    category: "Todo",
+    heading: "Todo",
+    subheading: "Todo",
+  });
 
-  const handleGenerateReport = async (startDate, endDate, selectedReports) => {
+  const handleGenerateReport = async (startDate, endDate, selectedReports, newPage = 1, newFilters = null) => {
     setIsLoading(true);
     try {
       const formattedStartDate = format(new Date(startDate), 'yyyy-MM-dd');
       const formattedEndDate = format(new Date(endDate), 'yyyy-MM-dd');
 
-      const response = await api(`v1/reports/generate/?page=1&start_date=${formattedStartDate}&finish_date=${formattedEndDate}`, {
+      const currentFilters = newFilters || filters;
+      const activeFilters = Object.fromEntries(
+        Object.entries(currentFilters)
+          .filter(([_, value]) => value !== "Todo")
+      );
+
+      const filtersParam = Object.keys(activeFilters).length > 0 
+        ? `&filters=${JSON.stringify(activeFilters)}` 
+        : '';
+
+      const response = await api(`v1/reports/generate/?page=${newPage}&page_size=${pageSize}&start_date=${formattedStartDate}&finish_date=${formattedEndDate}${filtersParam}`, {
         method: "GET"
       });
 
-      // setStartDate(formattedStartDate);
-      // setEndDate(formattedEndDate);
-      // handleGenerateCharts(selectedReports);
+      if (newFilters) {
+        setFilters(newFilters);
+      }
+      if (newPage !== page) {
+        setPage(newPage);
+      }
+      handleGenerateCharts(selectedReports, filtersParam);
       setReportData(response.body);
       setShowReport(true);
 
@@ -36,20 +63,37 @@ function ReportsContainer() {
     }
   };
 
-  // const handleGenerateCharts = async (selectedReports) => {
-  //   try {
+  const handleGenerateCharts = async (selectedReports, filtersParam) => {
+    try {
 
-  //     const response = await api(`v1/reports/charts/?start_date=${startDate}&finish_date=${endDate}&filter=${selectedReports}`, {
-  //       method: "GET"
-  //     });
-  //     setChartsData(response.body);
+      const formattedStartDate = format(new Date(startDate), 'yyyy-MM-dd');
+      const formattedEndDate = format(new Date(endDate), 'yyyy-MM-dd');
 
-  //   } catch (error) {
-  //     console.error('Error generating report:', error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+      const response = await api(`v1/reports/generate-charts/?start_date=${formattedStartDate}&finish_date=${formattedEndDate}${filtersParam}`, {
+        method: "GET"
+      });
+      setChartsData(response.body);
+
+    } catch (error) {
+      console.error('Error generating report:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleGenerateSuppliersCharts = async (yearSelected, monthSelected) => {
+    try {
+      const formattedYear = format(new Date(yearSelected), 'yyyy');
+      const formattedMonth = format(new Date(monthSelected), 'MM');
+      const response = await api(`v1/reports/generate-suppliers-charts/?year=${formattedYear}&month=${formattedMonth}`, {
+        method: "GET"
+      });
+      setSuppliersData(response.body);
+    } catch (error) {
+      console.error('Error generating report:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
       <ReportsComponent 
@@ -60,6 +104,14 @@ function ReportsContainer() {
         onGenerateReport={handleGenerateReport}
         isLoading={isLoading}
         reportData={reportData}
+        chartsData={chartsData}
+        suppliersData={suppliersData}
+        handleGenerateSuppliersCharts={handleGenerateSuppliersCharts}
+        page={page}
+        pageSize={pageSize}
+        filters={filters}
+        onPageChange={(newPage) => handleGenerateReport(startDate, endDate, [], newPage)}
+        onFilterChange={(newFilters) => handleGenerateReport(startDate, endDate, [], 1, newFilters)}
       />
   );
 }
