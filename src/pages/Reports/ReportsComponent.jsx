@@ -54,7 +54,8 @@ function ReportsComponent({
   filters,
   onPageChange,
   onFilterChange,
-  handleGenerateSuppliersCharts
+  handleGenerateSuppliersCharts,
+  setSuppliersData
 }) {
   // Estados para cada filtro
   const handleFilterChange = (filterName, value) => {
@@ -918,7 +919,7 @@ function ReportsComponent({
                     </Box>
                   </FormControl>
                 </Box>
-                {pieData.total_claims > 0 ? (
+                {/* {pieData.total_claims > 0 ? ( */}
                   <Box
                     sx={{
                       display: "flex",
@@ -1180,10 +1181,11 @@ function ReportsComponent({
                     {chartSelected ===
                       "Empresas mas reclamadas por periodo (Anual/Mensual)" && (
                       <Box display="flex" flexDirection="column" gap={2} width="90%">
-                        {!showBarChart ? (
+                        {!suppliersData ? (
                           <Box
                             display="flex"
                             height="100%"
+                            minHeight="400px"
                             width="100%"
                             gap={2}
                             flexDirection="column"
@@ -1273,7 +1275,7 @@ function ReportsComponent({
                                     color: "#fff",
                                   }
                                 }}
-                                onClick={() => handleGenerateSuppliersCharts(yearSelected, monthSelected)}
+                                onClick={() => handleGenerateSuppliersCharts(yearSelected, showMonthPicker ? monthSelected : null)}
                                 disabled={!yearSelected}
                               >
                                 Generar
@@ -1309,90 +1311,40 @@ function ReportsComponent({
                                     borderColor: "transparent",
                                   },
                                 }}
-                                onClick={() => setShowBarChart(false)}
+                                onClick={() => setSuppliersData(null)}
                               >
                                 Filtrar
                               </Button>
                             </Box>
                             <BarChart
                               dataset={[
-                                {
-                                  cantForType: 86,
-                                  cantClaims: 21,
-                                  month: "Ene",
-                                },
-                                {
-                                  cantForType: 78,
-                                  cantClaims: 28,
-                                  month: "Feb",
-                                },
-                                {
-                                  cantForType: 106,
-                                  cantClaims: 41,
-                                  month: "Mar",
-                                },
-                                {
-                                  cantForType: 92,
-                                  cantClaims: 73,
-                                  month: "Abr",
-                                },
-                                {
-                                  cantForType: 92,
-                                  cantClaims: 99,
-                                  month: "May",
-                                },
-                                {
-                                  cantForType: 103,
-                                  cantClaims: 144,
-                                  month: "Jun",
-                                },
-                                {
-                                  cantForType: 105,
-                                  cantClaims: 319,
-                                  month: "Jul",
-                                },
-                                {
-                                  cantForType: 65,
-                                  cantClaims: 60,
-                                  month: "Ago",
-                                },
-                                {
-                                  cantForType: 95,
-                                  cantClaims: 131,
-                                  month: "Sept",
-                                },
-                                {
-                                  cantForType: 97,
-                                  cantClaims: 55,
-                                  month: "Oct",
-                                },
-                                {
-                                  cantForType: 76,
-                                  cantClaims: 48,
-                                  month: "Nov",
-                                },
-                                {
-                                  cantForType: 10,
-                                  cantClaims: 25,
-                                  month: "Dic",
-                                },
+                                ...(suppliersData?.data.suppliers.data || []),
+                                // Agregar posiciones vacías hasta 10
+                                ...[...Array(10 - (suppliersData?.data.suppliers.data.length || 0))].map((_, index) => ({
+                                  name: `Top ${(suppliersData?.data.suppliers.data.length || 0) + index + 1}`,
+                                  value: 0,
+                                  position: (suppliersData?.data.suppliers.data.length || 0) + index + 1
+                                }))
                               ]}
-                              xAxis={[{ scaleType: "band", dataKey: "month",width: 100 }]}
-                              series={[
-                                {
-                                  dataKey: "cantClaims",
-                                  label: "Cantidad de reclamos mensuales",
-                                  color: "#417099",
-                                },
-                              ]}
-                              margin={{ top: 10 }}
-                              layout="vertical"
-                              yAxis={[{ label: "Reclamos"},]}
-                              height={isChartFull ? 500 : 450}
+                              yAxis={[{ 
+                                scaleType: "band",
+                                dataKey: "name"
+                              }]}
+                              xAxis={[{
+                                scaleType: "linear",
+                                min: 0
+                              }]}
+                              series={[{
+                                dataKey: "value",
+                                label: "Cantidad de reclamos",
+                                color: "#417099",
+                                valueFormatter: (value) => value || ""
+                              }]}
+                              margin={{ left: 150, right: 20, top: 10, bottom: 30 }}
+                              layout="horizontal"
+                              height={300}
                               slotProps={{
-                                legend: {
-                                  hidden: true,
-                                },
+                                legend: { hidden: true }
                               }}
                             />
                           </Box>
@@ -1400,20 +1352,6 @@ function ReportsComponent({
                       </Box>
                     )}
                   </Box>
-                ) : (
-                  <Box
-                    sx={{
-                      height: "100%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Alert severity="info">
-                      No hay datos disponibles para mostrar en el gráfico
-                    </Alert>
-                  </Box>
-                )}
                 {!isChartFull && (
                   <Box
                     sx={{

@@ -83,8 +83,8 @@ function ReportsContainer() {
   const handleGenerateSuppliersCharts = async (yearSelected, monthSelected) => {
     try {
       const formattedYear = format(new Date(yearSelected), 'yyyy');
-      const formattedMonth = format(new Date(monthSelected), 'MM');
-      const response = await api(`v1/reports/generate-suppliers-charts/?year=${formattedYear}&month=${formattedMonth}`, {
+      const monthParam = monthSelected ? `&month=${format(new Date(monthSelected), 'MM')}` : '';
+      const response = await api(`v1/reports/generate-suppliers-charts/?year=${formattedYear}${monthParam}`, {
         method: "GET"
       });
       setSuppliersData(response.body);
@@ -106,6 +106,7 @@ function ReportsContainer() {
         reportData={reportData}
         chartsData={chartsData}
         suppliersData={suppliersData}
+        setSuppliersData={setSuppliersData}
         handleGenerateSuppliersCharts={handleGenerateSuppliersCharts}
         page={page}
         pageSize={pageSize}
