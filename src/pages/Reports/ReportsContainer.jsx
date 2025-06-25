@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState,useEffect } from "react";
 import { format } from 'date-fns';
 import dayjs from "dayjs";
 import ReportsComponent from "./ReportsComponent";
@@ -13,11 +13,12 @@ function ReportsContainer() {
   const [reportData, setReportData] = useState(null);
   const [chartsData, setChartsData] = useState(null);
   const [suppliersData, setSuppliersData] = useState(null);
+  const [selectSuppliers,setSelectSuppliers] = useState(null)
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [filters, setFilters] = useState({
     claim_status: "Todo",
-    supplier: "Todo",
+    suppliers: "Todo",
     omic: "Todo",
     claim_access: "Todo",
     type_of_claim: "Todo",
@@ -41,7 +42,6 @@ function ReportsContainer() {
       const filtersParam = Object.keys(activeFilters).length > 0 
         ? `&filters=${JSON.stringify(activeFilters)}` 
         : '';
-
       const response = await api(`v1/reports/generate/?page=${newPage}&page_size=${pageSize}&start_date=${formattedStartDate}&finish_date=${formattedEndDate}${filtersParam}`, {
         method: "GET"
       });
@@ -80,6 +80,51 @@ function ReportsContainer() {
       setIsLoading(false);
     }
   };
+  const handleGenerateCsv = async () => {
+    setIsLoading(true);
+    try {
+      const formattedStartDate = format(new Date(startDate), 'yyyy-MM-dd');
+      const formattedEndDate = format(new Date(endDate), 'yyyy-MM-dd');
+
+      const activeFilters = Object.fromEntries(
+        Object.entries(filters)
+          .filter(([_, value]) => value !== "Todo")
+      );
+
+      const filtersParam = Object.keys(activeFilters).length > 0 
+        ? `&filters=${JSON.stringify(activeFilters)}` 
+        : '';
+
+      const response = await api(`v1/reports/generate-csv/?start_date=${formattedStartDate}&finish_date=${formattedEndDate}${filtersParam}`, {
+        method: "GET"
+      });
+
+      if (response.body) {
+        // Crear un blob con el contenido CSV
+        const blob = new Blob([response.body], { type: 'text/csv;charset=utf-8;' });
+        
+        // Crear URL para el blob
+        const url = window.URL.createObjectURL(blob);
+        
+        // Crear elemento <a> temporal
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `reporte-${formattedStartDate}-${formattedEndDate}.csv`);
+        
+        // Agregar al DOM, hacer clic y remover
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Liberar la URL del objeto
+        window.URL.revokeObjectURL(url);
+      }
+    } catch (error) {
+      console.error('Error generating CSV:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const handleGenerateSuppliersCharts = async (yearSelected, monthSelected) => {
     try {
       const formattedYear = format(new Date(yearSelected), 'yyyy');
@@ -95,6 +140,15 @@ function ReportsContainer() {
     }
   };
 
+  useEffect(() =>{
+    api(`v1/reports/suppliers`)
+        .then(({ ok, body }) => {
+          if (ok) {
+            setSelectSuppliers(body.data)
+          }
+        })
+  },[api])
+  
   return (
       <ReportsComponent 
         startDate={startDate}
@@ -104,6 +158,8 @@ function ReportsContainer() {
         onGenerateReport={handleGenerateReport}
         isLoading={isLoading}
         reportData={reportData}
+        selectSuppliers={selectSuppliers}
+        handleGenerateCsv={handleGenerateCsv}
         chartsData={chartsData}
         suppliersData={suppliersData}
         setSuppliersData={setSuppliersData}

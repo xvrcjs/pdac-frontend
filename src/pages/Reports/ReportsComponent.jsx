@@ -1,4 +1,11 @@
 import React, { useState } from "react";
+
+const meses = [
+  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+];
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 import {
   Box,
   Typography,
@@ -56,7 +63,9 @@ function ReportsComponent({
   onPageChange,
   onFilterChange,
   handleGenerateSuppliersCharts,
-  setSuppliersData
+  setSuppliersData,
+  selectSuppliers,
+  handleGenerateCsv
 }) {
   // Estados para cada filtro
   const handleFilterChange = (filterName, value) => {
@@ -147,6 +156,62 @@ function ReportsComponent({
   const handleFullScreenChart = () => {};
   const [isChartFull, setIsChartFull] = useState(false);
   const [showPieHv, setShowPieHv] = useState(false);
+
+  const handleDownloadPdf = async () => {
+    let chartId;
+    if (chartSelected === "Tipos de reclamo") {
+      if (!showPieHv){
+        chartId = 'chart1';
+      }else{
+        chartId = 'chart2';
+      }
+    } else if (chartSelected === "Reclamos por mes") {
+      chartId = 'chart3';
+    } else if (chartSelected === "Empresas mas reclamadas por periodo (Anual/Mensual)") {
+      chartId = 'chart4';
+    }
+
+    const chartElement = document.getElementById(chartId);
+    // Obtener el contenedor que incluye el gráfico y las leyendas
+    const chartContainer = chartElement?.closest('.MuiBox-root');
+    
+    if (chartContainer) {
+      const doc = new jsPDF({
+        orientation: "landscape",
+        unit: "px",
+        format: [400, 400]
+      });
+
+      try {
+        const options = { 
+          scale: 2,
+          backgroundColor: '#FFFFFF',
+          logging: true
+        };
+
+        const canvas = await html2canvas(chartContainer, options);
+        const imgData = canvas.toDataURL("image/png");
+        const imgProps = doc.getImageProperties(imgData);
+        const pdfWidth = doc.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        // Agregar la imagen al PDF centrada
+        doc.addImage(
+          imgData, 
+          "PNG", 
+          10, // margen izquierdo
+          (doc.internal.pageSize.getHeight() - pdfHeight) / 2, // centrar verticalmente
+          pdfWidth - 20, // ancho menos márgenes
+          pdfHeight
+        );
+
+        // Descargar el PDF
+        doc.save(`grafico-${chartSelected.toLowerCase().replace(/ /g, '-')}.pdf`);
+      } catch (error) {
+        console.error('Error al generar el PDF:', error);
+      }
+    }
+  };
 
   const handleDownloadSvg = () => {
     let chartId;
@@ -405,9 +470,9 @@ function ReportsComponent({
                     Empresa:
                   </Typography>
                   <Select
-                    value={filters.company}
+                    value={filters.suppliers}
                     onChange={(e) =>
-                      handleFilterChange("company", e.target.value)
+                      handleFilterChange("suppliers", e.target.value)
                     }
                     MenuProps={{
                       anchorOrigin: {
@@ -442,9 +507,9 @@ function ReportsComponent({
                     }}
                   >
                     <MenuItem value="Todo">Todo</MenuItem>
-                    {type_of_claim.map((item, index) => (
-                      <MenuItem key={index} value={item}>
-                        {item}
+                    {selectSuppliers.map((item, index) => (
+                      <MenuItem key={index} value={item.fullname}>
+                        {item.fullname}
                       </MenuItem>
                     ))}
                   </Select>
@@ -951,7 +1016,6 @@ function ReportsComponent({
                     </Box>
                   </FormControl>
                 </Box>
-                {/* {pieData.total_claims > 0 ? ( */}
                   <Box
                     sx={{
                       display: "flex",
@@ -963,7 +1027,8 @@ function ReportsComponent({
                       height: "100%",
                     }}
                   >
-                    {chartSelected === "Tipos de reclamo" && pieData.total_claims > 0 &&
+                    {chartSelected === "Tipos de reclamo" &&
+                      (pieData.total_claims > 0 ? (
                       (!showPieHv ? (
                         <PieChart
                           id="chart1"
@@ -1189,7 +1254,24 @@ function ReportsComponent({
                             Volver
                           </Button>
                         </>
-                      ))}
+                      ))
+                      ) : (
+                        <Box
+                          display="flex"
+                          height="100%"
+                          minHeight="400px"
+                          width="100%"
+                          gap={2}
+                          flexDirection="column"
+                          justifyContent="center"
+                          alignItems="center"
+                        >
+                          <Typography variant="h6" color="text.primary">
+                            No hay datos para mostrar
+                          </Typography>
+                        </Box>
+                      ))
+                    }
                     {chartSelected === "Reclamos por mes" && barData && (
                       <BarChart
                         id="chart3"
@@ -1311,7 +1393,7 @@ function ReportsComponent({
                                   }
                                 }}
                                 onClick={() => handleGenerateSuppliersCharts(yearSelected, showMonthPicker ? monthSelected : null)}
-                                disabled={!yearSelected}
+                                disabled={!yearSelected || (showMonthPicker && !monthSelected)}
                               >
                                 Generar
                               </Button>
@@ -1333,16 +1415,14 @@ function ReportsComponent({
                               mb={2}
                             >
                               <Box sx={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center",color:"rgb(134, 143, 160)",fontWeight:"500",fontSize:"20px",gap:"10px"}}>
-                                <LocalizationProvider adapterLocale={es}>
                                 <Typography sx={{fontSize:"20px"}}>
-                                  Año {format(new Date(yearSelected), 'yyyy')} 
+                                    Año {format(new Date(yearSelected), 'yyyy')} 
                                 </Typography>
                                 {monthSelected && (
                                   <Typography sx={{fontSize:"20px"}}>
-                                    / Mes de {format(new Date(monthSelected), 'MMMM')}
+                                      / Mes de {meses[format(new Date(monthSelected), 'M') - 1]}
                                   </Typography>
                                 )}
-                                </LocalizationProvider>
                               </Box>
                               <Button
                                 startIcon={<FilterAltOutlinedIcon />}
@@ -1366,7 +1446,7 @@ function ReportsComponent({
                                 Filtrar
                               </Button>
                             </Box>
-                            <LineChart
+                            <BarChart
                               id="chart4"
                               dataset={[
                                 ...(suppliersData?.data.suppliers.data || []),
@@ -1486,6 +1566,7 @@ function ReportsComponent({
                   border: "unset",
                 },
               }}
+              onClick={handleGenerateCsv}
             >
               Descargar informe .csv
             </Button>
@@ -1511,6 +1592,7 @@ function ReportsComponent({
               Descargar gráfico .svg
             </Button>
             <Button
+              onClick={handleDownloadPdf}
               sx={{
                 borderRadius: "20px",
                 backgroundColor: "#00AEC3",
@@ -1524,7 +1606,7 @@ function ReportsComponent({
                 },
               }}
             >
-              Descargar grafico PDF{" "}
+              Descargar gráfico PDF
             </Button>
           </Box>
           </Box>
