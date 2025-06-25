@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 import { PieChart, BarChart, LineChart } from "@mui/x-charts";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { format } from 'date-fns';
 import Content from "components/Content";
 import DataGrid from "./DataGrid";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -146,6 +147,37 @@ function ReportsComponent({
   const handleFullScreenChart = () => {};
   const [isChartFull, setIsChartFull] = useState(false);
   const [showPieHv, setShowPieHv] = useState(false);
+
+  const handleDownloadSvg = () => {
+    let chartId;
+    if (chartSelected === "Tipos de reclamo") {
+      if (!showPieHv){
+        chartId = 'chart1';
+      }else{
+        chartId = 'chart2';
+      }
+    } else if (chartSelected === "Reclamos por mes") {
+      chartId = 'chart3';
+    } else if (chartSelected === "Empresas mas reclamadas por periodo (Anual/Mensual)") {
+      chartId = 'chart4';
+    }
+
+    const chartElement = document.getElementById(chartId);
+    const svgElement = chartElement?.querySelector('svg');
+
+    if (svgElement) {
+      const svgData = new XMLSerializer().serializeToString(svgElement);
+      const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+      const svgUrl = URL.createObjectURL(svgBlob);
+      const link = document.createElement('a');
+      link.href = svgUrl;
+      link.download = `grafico-${chartSelected.toLowerCase().replace(/ /g, '-')}.svg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(svgUrl);
+    }
+  };
 
   const [yearSelected, setYearSelected] = useState(null);
   const [monthSelected, setMonthSelected] = useState(null);
@@ -934,6 +966,7 @@ function ReportsComponent({
                     {chartSelected === "Tipos de reclamo" && pieData.total_claims > 0 &&
                       (!showPieHv ? (
                         <PieChart
+                          id="chart1"
                           onClick={(event, itemData) => {
                             const fillColor = event.target.getAttribute("fill");
                             if (fillColor === "#000") {
@@ -992,7 +1025,7 @@ function ReportsComponent({
                               direction: "row",
                               position: {
                                 vertical: "bottom",
-                                horizontal: "center",
+                                horizontal: "middle",
                               },
                               padding: 20,
                               itemMarkWidth: 20,
@@ -1029,75 +1062,76 @@ function ReportsComponent({
                             </defs>
                           </svg>
                           <PieChart
+                            id="chart2"
                             skipAnimation
                             series={[
                               {
                                 data: [
                                   {
                                     id: 0,
-                                    value: 75,
+                                    value: pieData.hv_subcategories.nnya,
                                     label:
                                       "HV - Por afectacion de derechos de NNyA",
                                     color: "grey",
                                   },
                                   {
                                     id: 1,
-                                    value: 15,
+                                    value: pieData.hv_subcategories.jubilados,
                                     label: "HV - Jubilados o pensionados",
                                     color: "grey",
                                   },
                                   {
                                     id: 2,
-                                    value: 5,
+                                    value: pieData.hv_subcategories.estado_fisico,
                                     label: "HV - Por estado físico o mental",
                                     color: "grey",
                                   },
                                   {
                                     id: 3,
-                                    value: 3,
+                                    value: pieData.hv_subcategories.ruralidad,
                                     label: "HV - Por ruralidad",
                                     color: "grey",
                                   },
                                   {
                                     id: 4,
-                                    value: 75,
+                                    value: pieData.hv_subcategories.socioeconomico,
                                     label:
                                       "HV - Por razones, sociales, económicas o culturales",
                                     color: "grey",
                                   },
                                   {
                                     id: 5,
-                                    value: 15,
+                                    value: pieData.hv_subcategories.turista,
                                     label: "HV - Por turista",
                                     color: "grey",
                                   },
                                   {
                                     id: 6,
-                                    value: 5,
+                                    value: pieData.hv_subcategories.migrante,
                                     label: "HV - Por migrante",
                                     color: "grey",
                                   },
                                   {
                                     id: 7,
-                                    value: 3,
+                                    value: pieData.hv_subcategories.lgtb,
                                     label: "HV - Por colectivo LGTB+",
                                     color: "grey",
                                   },
                                   {
                                     id: 8,
-                                    value: 75,
+                                    value: pieData.hv_subcategories.pueblos_originarios,
                                     label: "HV - Por pueblos originarios",
                                     color: "grey",
                                   },
                                   {
                                     id: 9,
-                                    value: 15,
+                                    value: pieData.hv_subcategories.mayores_70,
                                     label: "HV - Mayores de 70años",
                                     color: "grey",
                                   },
                                   {
                                     id: 10,
-                                    value: 5,
+                                    value: pieData.hv_subcategories.otro,
                                     label: "HV - Otro",
                                     color: "grey",
                                   },
@@ -1158,6 +1192,7 @@ function ReportsComponent({
                       ))}
                     {chartSelected === "Reclamos por mes" && barData && (
                       <BarChart
+                        id="chart3"
                         dataset={barData.data}
                         yAxis={[{ scaleType: "band", dataKey: "name" }]}
                         series={[
@@ -1291,8 +1326,24 @@ function ReportsComponent({
                           >
                             <Box
                               display="flex"
-                              justifyContent="flex-end"
+                              justifyContent="space-between"
+                              alignItems="center"
+                              width="100%"
+                              px={2}
+                              mb={2}
                             >
+                              <Box sx={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center",color:"rgb(134, 143, 160)",fontWeight:"500",fontSize:"20px",gap:"10px"}}>
+                                <LocalizationProvider adapterLocale={es}>
+                                <Typography sx={{fontSize:"20px"}}>
+                                  Año {format(new Date(yearSelected), 'yyyy')} 
+                                </Typography>
+                                {monthSelected && (
+                                  <Typography sx={{fontSize:"20px"}}>
+                                    / Mes de {format(new Date(monthSelected), 'MMMM')}
+                                  </Typography>
+                                )}
+                                </LocalizationProvider>
+                              </Box>
                               <Button
                                 startIcon={<FilterAltOutlinedIcon />}
                                 sx={{
@@ -1304,7 +1355,6 @@ function ReportsComponent({
                                   fontSize: "12px",
                                   textTransform: "capitalize",
                                   border: "1px solid #000",
-                                  mt: 2,
                                   ":hover": {
                                     backgroundColor: "#00AEC3",
                                     color: "#fff",
@@ -1316,7 +1366,8 @@ function ReportsComponent({
                                 Filtrar
                               </Button>
                             </Box>
-                            <BarChart
+                            <LineChart
+                              id="chart4"
                               dataset={[
                                 ...(suppliersData?.data.suppliers.data || []),
                                 // Agregar posiciones vacías hasta 10
@@ -1436,29 +1487,10 @@ function ReportsComponent({
                 },
               }}
             >
-              Realizar otra busqueda
-            </Button>
-            <Button
-              sx={{
-                borderRadius: "20px",
-                backgroundColor: "#fff",
-                color: "#000",
-                padding: "9px 30px",
-                fontFamily: "Encode Sans",
-                fontSize: "16px",
-                textTransform: "capitalize",
-                border: "1px solid #000",
-                ":hover": {
-                  color: "#FFF",
-                  backgroundColor: "#00AEC3",
-                  transform: "scale(1.01)",
-                  border: "unset",
-                },
-              }}
-            >
               Descargar informe .csv
             </Button>
             <Button
+              onClick={handleDownloadSvg}
               sx={{
                 borderRadius: "20px",
                 backgroundColor: "#fff",
@@ -1476,7 +1508,7 @@ function ReportsComponent({
                 },
               }}
             >
-              Descargar informe .svg
+              Descargar gráfico .svg
             </Button>
             <Button
               sx={{
