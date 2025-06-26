@@ -86,9 +86,10 @@ const { formData, handleInputChange, handleSubmit } = useForm(initialState, onSu
 | `AppContext.Provider` | `value`        | `object`    | Valores globales (api, account, etc.) |
 | `useForm`      | `initialState` | `object`   | Estado inicial del formulario          |
 |                | `onSubmit`     | `Function` | Callback al enviar el formulario       |
-
-## 6. Enlaces Cruzados
-
-- [Componentes](components.md)
-- [Páginas](pages.md)
+## Enlaces Cruzados
 - [Arquitectura](architecture.md)
+- [Componentes](components.md)
+- [Constantes](constants.md)
+- [Despliegue](deployment.md)
+- [Páginas](pages.md)
+- [Utilidades](utils.md)

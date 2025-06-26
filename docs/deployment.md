@@ -95,9 +95,10 @@ También se recomienda habilitar técnicas de *cache busting* y considerar el us
 [Local Repo] → docker build → [Docker Registry] → docker-compose pull → [Prod Server]
             → docker-compose up → [Nginx] → [Client Browser]
 ```
-
-## 6. Enlaces Cruzados
-
+## Enlaces Cruzados
 - [Arquitectura](architecture.md)
-- [Variables de Entorno](constants.md)
-- [Docker Compose](../docker/docker-compose.yml)
+- [Componentes](components.md)
+- [Constantes](constants.md)
+- [Contextos y Hooks](context-hooks.md)
+- [Páginas](pages.md)
+- [Utilidades](utils.md)

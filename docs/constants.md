@@ -70,12 +70,10 @@ El código lee automáticamente la variable adecuada al ejecutar la app:
 ```ts
 const baseUrl = process.env.REACT_APP_API_URL;
 ```
-
-## 4. Enlaces Cruzados
-
-- [Componentes](components.md)
-- [Páginas](pages.md)
-- [Contextos y Hooks](context-hooks.md)
+## Enlaces Cruzados
 - [Arquitectura](architecture.md)
+- [Componentes](components.md)
+- [Contextos y Hooks](context-hooks.md)
+- [Despliegue](deployment.md)
+- [Páginas](pages.md)
 - [Utilidades](utils.md)
-

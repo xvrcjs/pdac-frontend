@@ -120,11 +120,10 @@ import Topbar from 'components/Topbar';
 | Variable | Descripción | Archivo de configuración |
 |----------|-------------|-------------------------|
 | `REACT_APP_BACKEND_URL_MEDIA` | URL para cargar imágenes de usuario. | `src/components/Topbar/Topbar.jsx` |
-
-## 5. Enlaces Cruzados
-
-- [Listado de Componentes Reutilizables](#1-listado-de-componentes-reutilizables)
-- [Props y API](#2-props-y-api-de-cada-componente)
-- [Ejemplos de Uso](#3-ejemplos-de-uso)
-- [Variables de Entorno](#4-variables-de-entorno)
-
+## Enlaces Cruzados
+- [Arquitectura](architecture.md)
+- [Constantes](constants.md)
+- [Contextos y Hooks](context-hooks.md)
+- [Despliegue](deployment.md)
+- [Páginas](pages.md)
+- [Utilidades](utils.md)

@@ -211,3 +211,11 @@ export const CREATE_USER = "/v1/account";
 | `AssignClaimContainer`  | `claimSelected`    | `Object`  | Reclamo actual para asignación                  |
 
 Consulta también el [Flujo de Datos](#flujo-de-datos) para entender cómo se transmiten estas props.
+
+## Enlaces Cruzados
+- [Componentes](components.md)
+- [Constantes](constants.md)
+- [Contextos y Hooks](context-hooks.md)
+- [Despliegue](deployment.md)
+- [Páginas](pages.md)
+- [Utilidades](utils.md)

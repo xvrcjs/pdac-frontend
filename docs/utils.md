@@ -92,10 +92,10 @@ import { notificationIcon } from 'src/utils/icons';
 ## 4. Variables de Entorno
 
 Actualmente las utilidades no requieren variables de entorno específicas.
-
-## 5. Enlaces Cruzados
-
-- [Componentes](components.md)
-- [Páginas](pages.md)
-- [Contextos y Hooks](context-hooks.md)
+## Enlaces Cruzados
 - [Arquitectura](architecture.md)
+- [Componentes](components.md)
+- [Constantes](constants.md)
+- [Contextos y Hooks](context-hooks.md)
+- [Despliegue](deployment.md)
+- [Páginas](pages.md)

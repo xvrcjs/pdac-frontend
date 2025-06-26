@@ -94,8 +94,10 @@ Si alguna página exporta props particulares, se indican a continuación:
 |--------|------|------|-------------|
 |`ProfilePage`|`signout`|`Function`|Callback para cerrar sesión.|
 |`TicketsViewPage`|`ticket`|`Object`|Datos del ticket cargados desde la API.|
-
-## 6. Enlaces Cruzados
-
-- [Listado de Componentes](components.md)
+## Enlaces Cruzados
 - [Arquitectura](architecture.md)
+- [Componentes](components.md)
+- [Constantes](constants.md)
+- [Contextos y Hooks](context-hooks.md)
+- [Despliegue](deployment.md)
+- [Utilidades](utils.md)
