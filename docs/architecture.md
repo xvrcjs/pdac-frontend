@@ -153,57 +153,14 @@ Las URL de los servicios se definen en `src/constant/endpoints.js` y son consumi
             onError('Error durante la configuración de la solicitud');
 ```
 
-## Utilidades
-
-```javascript
-import { numberToString, dateToString, timeToString } from '@danielcbezerra/utils'
-import moment from 'moment-timezone'
-
-moment.locale(Intl.DateTimeFormat().resolvedOptions().locale)
-
-
-// Numbers
-export const renderInt = numberToString
-
-export const renderFloat = (value) => numberToString(value, true)
-
-// Dates
-export const renderDate = dateToString
-
-export const renderTime = timeToString
-
-export const renderDatetime = (value, options) => {
-  const { short = false, showDate = true, showTime = true, timezone = null } = options || {}
-  const date = !value ? "" : timezone ? moment.tz(value, timezone) : moment(value)
-  const timezoneAbbr = !(date && timezone && date.utcOffset() !== moment().utcOffset()) ? "" :
-```
-
-## Endpoints
-
-```javascript
-// AUTENTICACION-REGISTRO-RESTAURAR CONTRASEÑA
-export const LOGOUT_ENDPOINT = "/v1/logout/";
-export const SINGIN_ENDPOINT = "/v1/login/";
-// export const SINGIN_GOOGLE_ENDPOINT = "auth/v1/login/google";
-export const SINGUP_ENDPOINT = "/v1/register/";
-export const FORGOT_PASSWORD_ENDPOINT = "/v1/forgot-password/";
-export const CREATE_PASSWORD_ENDPOINT = "/v1/create-password/";
-
-// INFORMACION DE USUARIO
-export const GET_PROFILE_ENDPOINT = "/v1/profile";
-export const GET_PERMISSIONS = "/v1/permissions";
-export const CREATE_USER = "/v1/account";
-```
-
-## Props y API de Componentes
-
-| Componente              | Prop               | Tipo      | Descripción                                     |
-| ----------------------- | ------------------ | --------- | ----------------------------------------------- |
-| `Layout`                | `title`            | `string`  | Título de la página que envuelve                |
-| `EntranceTableComponent`| `claims`           | `Array`   | Listado de reclamos obtenidos del backend       |
-| `AssignClaimContainer`  | `claimSelected`    | `Object`  | Reclamo actual para asignación                  |
-
 Consulta también el [Flujo de Datos](#flujo-de-datos) para entender cómo se transmiten estas props.
+
+### Notas adicionales
+
+- Las variables de entorno se definen en archivos `.env.development`, `.env.staging` y `.env.production` según el entorno, como se detalla en [Constantes](constants.md).
+- Los hooks personalizados documentados en [Contextos y Hooks](context-hooks.md) manejan alertas (`useAlert`), peticiones (`useApi`) y formularios (`useForm`).
+- Las utilidades siguen principios de **pure functions**, inmutabilidad y testabilidad, descritos en [Utilidades](utils.md).
+- El proceso de despliegue utiliza *multistage builds* de Docker y puede incluir healthchecks opcionales; consulta [Despliegue](deployment.md) para más detalles.
 
 ## Enlaces Cruzados
 - [Componentes](components.md)
