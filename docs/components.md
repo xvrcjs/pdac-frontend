@@ -38,7 +38,7 @@ src/components/
 
 | Componente | Ruta | Propósito breve |
 |------------|------|-----------------|
-| `ContentComponent` | `Content/ContentComponent.jsx` | Contenedor que define ancho máximo y opcionalmente un pie de página. |
+| `ContentComponent` | `Content/ContentComponent.jsx` | Contenedor con ancho máximo configurable que guarda el modo de tema en una cookie. |
 | `DataGrid` | `DataGrid/DataGridComponent.jsx` | Tabla con paginación, ordenamiento y filtros básicos. |
 | `DropzoneComponent` | `DragAndDrop/DropzoneComponent.jsx` | Área de carga de archivos mediante drag & drop. |
 | `Layout` | `Layout/Layout.jsx` | Envoltura general con Topbar y Navbar. |
@@ -47,13 +47,27 @@ src/components/
 | `RouterContainer` | `Router/RouterContainer.jsx` | Declaración principal de rutas de la aplicación. |
 | `Topbar` | `Topbar/Topbar.jsx` | Barra superior con logo y perfil de usuario. |
 
+### Detalles adicionales de implementación
+
+- **ContentComponent**: guarda en una cookie llamada `theme` el modo de la interfaz cada vez que cambia la paleta.
+- **DataGrid**: permite ordenar, paginar y expandir filas con un filtro opcional por estado usando círculos de colores.
+- **DropzoneComponent**: solo acepta archivos JPEG/JPG/PNG de hasta 5MB.
+- **Layout**: utiliza `AppContext` para obtener cuenta y servicios de API, y muestra un pie con `footer.png`.
+- **Layout**: renderiza el contenido de cada página mediante `<Outlet />` de React Router.
+- **Navbar**: filtra las opciones según el rol y consulta `CANT_CLAIM_HV_IVE` para mostrar reclamos HV.
+- **Navbar**: también actualiza el título y subtítulo de la cabecera en función de la ruta actual.
+- **ProfileMenuComponent**: la lógica de cierre y cierre de sesión se maneja en `ProfileMenuContainer`.
+- **ProfileMenuContainer**: al cerrar sesión llama a `LOGOUT_ENDPOINT`, elimina la cookie `token` y redirige al inicio.
+- **RouterContainer**: organiza rutas privadas y públicas. `PrivateRoute` envuelve el contenido con `<Layout>`, guarda la última URL visitada y, si no hay cuenta, redirige al inicio. `PublicRoute` envía al usuario autenticado a `/inicio` o a `/reg-updater/activity-logs` según permisos.
+- **Topbar**: enlaza con la Biblioteca y utiliza `REACT_APP_BACKEND_URL_MEDIA` para cargar la imagen de perfil.
+
+
 ## 2. Props y API de Cada Componente
 
 | Componente | Prop | Tipo | Descripción | Requerido |
 |------------|------|------|-------------|-----------|
 | `ContentComponent` | `minWidth` | `string` | Ancho mínimo del contenedor. | Opcional |
 | | `maxWidth` | `string` | Ancho máximo del contenedor. | Opcional |
-| | `showFooter` | `boolean` | Muestra o no el pie de página. | Opcional |
 | | `className` | `string` | Clases CSS adicionales. | Opcional |
 | `DataGrid` | `columns` | `Array` | Definición de columnas. | Sí |
 | | `rows` | `Array` | Datos a mostrar. | Sí |
@@ -64,7 +78,6 @@ src/components/
 | | `backgroundColor` | `string` | Color de fondo de la tabla. | Opcional |
 | `DropzoneComponent` | `setFiles` | `(files) => void` | Función para guardar los archivos seleccionados. | Sí |
 | | `setIsDragActive` | `(flag) => void` | Indica si se está arrastrando un archivo. | Sí |
-| `Layout` | `title` | `string` | Título de la página o sección. | Opcional |
 | `Navbar` | `api` | `Function` | Función para llamadas a la API. | Sí |
 | | `navMenuData` | `Array` | Datos de navegación actuales. | Sí |
 | | `setNavMenuData` | `(data) => void` | Actualiza las opciones de menú. | Sí |
@@ -86,7 +99,7 @@ src/components/
 ```jsx
 import ContentComponent from 'components/Content';
 
-<ContentComponent maxWidth="1200px" showFooter={false}>
+<ContentComponent maxWidth="1200px">
   {children}
 </ContentComponent>
 ```
