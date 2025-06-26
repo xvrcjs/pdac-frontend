@@ -51,7 +51,6 @@ http {
   gzip on;
   add_header X-Frame-Options "DENY";
   ...
-}
 ```
 
 ### Healthchecks en `docker-compose.yml`

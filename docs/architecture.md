@@ -63,17 +63,13 @@ function EntranceTableContainer() {
         if (ok) {
           setClaims(body.data);
           setCantElement(body.data_size)
-        }
       })
-    }
     else{
       api(CLAIM+"?search="+account.uuid+"&page="+currentPage).then(({ ok, body }) => {
         if (ok) {
           setClaims(body.data);
           setCantElement(body.data_size)
-        }
       })
-    }
   }, [currentPage]);
 
   return (
@@ -141,7 +137,6 @@ Las URL de los servicios se definen en `src/constant/endpoints.js` y son consumi
               detail: "Algo no salió como esperabamos, por favor intentá nuevamente.",
               life: 4000  
             })  
-          }
           if (jwtAxios.isCancel(error)) {
             // Manejar cancelaciones si es necesario
           } else if (error.response) { 
@@ -151,13 +146,11 @@ Las URL de los servicios se definen en `src/constant/endpoints.js` y son consumi
               //   title: "Upss!",
               //   life: 5000  
               // })    
-            }    
             onError(error.response.data);
           } else if (error.request) {
             onError('No se recibió respuesta del servidor');
           } else {
             onError('Error durante la configuración de la solicitud');
-          }
 ```
 
 ## Utilidades

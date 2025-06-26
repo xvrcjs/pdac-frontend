@@ -48,7 +48,6 @@ function ViewTicketContainer() {
   const { id } = useParams();
   const navigate = useNavigate();
   // ...
-}
 ```
 
 ## 3. Data Fetching
@@ -60,7 +59,6 @@ useEffect(() => {
   api(CLAIM + '?page=' + currentPage).then(({ ok, body }) => {
     if (ok) {
       setClaims(body.data);
-    }
   });
 }, [currentPage]);
 ```

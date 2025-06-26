@@ -1,144 +1,100 @@
 # AUKAN
+Breve descripción de alto nivel sobre el propósito del proyecto.
 
-Este proyecto fue iniciado con [Create React App](https://github.com/facebook/create-react-app).
+## Tabla de Contenidos
+- [Instalación y Primeros Pasos](#instalación-y-primeros-pasos)
+- [Estructura de Directorios](#estructura-de-directorios)
+- [Tecnologías y Dependencias Clave](#tecnologías-y-dependencias-clave)
+- [Componentes Clave y Flujo de Datos](#componentes-clave-y-flujo-de-datos)
+- [Comandos de Desarrollo y Build](#comandos-de-desarrollo-y-build)
+- [Despliegue y Docker](#despliegue-y-docker)
+- [Documentación Complementaria](#documentación-complementaria)
 
-## Descripción del proyecto
+## Instalación y Primeros Pasos
+**Requisitos**  
+- Node.js ≥ 18  
+- Docker & Docker Compose  
 
-Frontend del portal PDAC desarrollado en React. Incluye un conjunto de componentes, páginas y utilidades para la gestión de reclamos, autenticación de usuarios y reportes. Se provee configuración para su ejecución tanto en entorno local como mediante contenedores Docker.
-
-## Estructura del proyecto
-
-```text
-.
-├── public/                # Recursos estáticos que se sirven directamente
-├── src/                   # Código fuente principal de React
-│   ├── components/        # Componentes reutilizables (Navbar, Layout, etc.)
-│   ├── pages/             # Vistas y contenedores de cada módulo de la aplicación
-│   ├── context/           # Contextos de React utilizados globalmente
-│   ├── hooks/             # Hooks personalizados
-│   ├── utils/             # Funciones y estilos compartidos
-│   └── constant/          # Constantes y endpoints
-├── docker/                # Archivos de despliegue en Docker
-│   ├── Dockerfile         # Construcción de la imagen
-│   ├── nginx/             # Configuración de Nginx
-│   └── scripts/           # Scripts de inicialización
-├── package.json           # Dependencias y scripts de NPM
-├── jsconfig.json          # Configuración de rutas para el editor
-└── README.md
+**Clonar repositorio**  
+```bash
+git clone <repo-url>
+cd <repo-folder>
 ```
 
-## Tecnologías utilizadas
-
-- **React** con Create React App
-- **JavaScript** (algunas utilidades en TypeScript)
-- **Sass** para estilos
-- **Material UI (MUI)** y **@mui/x-data-grid** para componentes de interfaz
-- **Redux Toolkit** para manejo de estado global
-- **Axios** para solicitudes HTTP
-- **Docker** y **Nginx** para despliegue
-
-Consulta los archivos [`package.json`](package.json) y [`jsconfig.json`](jsconfig.json) para más detalles de dependencias y configuración.
-
-## Comandos disponibles
-
-| Comando                | Descripción                                                         |
-|----------------------- |-------------------------------------------------------------------- |
-| `npm install`          | Instala todas las dependencias definidas en `package.json`.         |
-| `npm start`            | Ejecuta la aplicación en modo desarrollo (`react-scripts start`).  |
-| `npm run build`        | Genera una versión optimizada para producción.                      |
-| `npm test`             | Ejecuta las pruebas con `react-scripts`.                            |
-| `npm run eject`        | Expone la configuración interna de Create React App.                |
-
-## Instalación y primeros pasos
-
-1. Clona este repositorio.
-2. Crea un archivo `.env` en la raíz y define las variables de entorno:
-
-| Variable                        | Valor por defecto              | Descripción                                                                 |
-|---------------------------------|--------------------------------|----------------------------------------------------------------------------|
-| `GENERATE_SOURCEMAP`            | `false`                        | Desactiva la generación de sourcemaps en el build.                         |
-| `REACT_APP_VERSION`             | `$npm_package_version`         | Versión de la aplicación obtenida de `package.json`.                        |
-| `REACT_APP_BACKEND_URL`         | `http://localhost:8000/api/`   | URL base de la API backend.                                                |
-| `REACT_APP_BACKEND_URL_MEDIA`   | `http://localhost:8000`        | Ruta para recursos multimedia del backend.                                 |
-| `PORT`                          | `3000`                         | Puerto local de la aplicación React.                                       |
-| `REACT_APP_IMAGES_PATH`         | `"public/images"`              | Ruta de imágenes estáticas utilizadas en la app.                           |
-
-3. Instala las dependencias:
-
+**Instalar dependencias**  
 ```bash
 npm install
 ```
 
-Si se generan errores de dependencias ejecuta:
+**Configurar variables de entorno**  
+- Copiar `.env.example` a `.env` y completar los valores.
 
+**Arrancar en modo desarrollo**  
 ```bash
-npm install --legacy-peer-deps
+npm run dev
 ```
 
-4. Inicia la aplicación en modo desarrollo:
-
+## Estructura de Directorios
 ```bash
-npm start
+.
+├── docker/
+│   ├── nginx/
+│   └── scripts/
+├── docs/
+├── public/
+│   ├── assets/
+│   └── icons/
+├── src/
+│   ├── components/
+│   ├── constant/
+│   ├── context/
+│   ├── hooks/
+│   ├── pages/
+│   └── utils/
 ```
+- `public/` – Recursos estáticos  
+- `src/` – Código fuente  
+- `docker/` – Configuración de despliegue  
 
-Abre [http://localhost:3000](http://localhost:3000) para verla en el navegador. La página se recargará automáticamente con cada cambio.
+## Tecnologías y Dependencias Clave
+| Tecnología        | Versión Mínima | Propósito               |
+| ----------------- | -------------- | ----------------------- |
+| React             | 18.x           | UI y lógica frontend    |
+| Django            | 4.x            | API y backend           |
+| PostgreSQL        | 13.x           | Base de datos           |
+| Docker            | 20.x           | Contenerización         |
 
-### Uso con Docker
+## Componentes Clave y Flujo de Datos
+- Diagrama de alto nivel:  
+  ```ascii
+  [Browser] → [React App] → [API (Django)] → [DB (PostgreSQL)]
+  ```
+- Ejemplo de uso de `Navbar` en `src/components/Navbar.tsx`
+- Cómo funcionan `context/` y `hooks/` (ver `docs/context-hooks.md`)
 
-1. Construye la imagen:
-
+## Comandos de Desarrollo y Build
 ```bash
-docker-compose build
+npm run build       # Empaqueta la app para producción
+docker-compose up   # Levanta servicios en contenedores
 ```
 
-2. Inicia el contenedor:
+## Despliegue y Docker
+- **Resumen**: Configuración en `docker/`
+- **Construir imagen**:  
+  ```bash
+  docker build -t myapp-frontend -f docker/Dockerfile .
+  ```
+- **Arrancar servicios**:  
+  ```bash
+  docker-compose up --build -d
+  ```
+- Variables de entorno: ver `docs/deployment.md` para detalle completo.
 
-```bash
-docker-compose up
-```
-
-Accede a la aplicación en [http://localhost:3000](http://localhost:3000). Para detenerla usa:
-
-```bash
-docker-compose down
-```
-
-#### Configuración de Nginx
-
-Si necesitas servir el frontend y backend bajo el mismo dominio, puedes usar la siguiente configuración (ver también [`docker/nginx/nginx.conf`](docker/nginx/nginx.conf)):
-
-```nginx
-server {
-    listen 80;
-    server_name aukan.localhost;
-
-    location / {
-        proxy_pass http://pdac-frontend:80;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-
-    location /api/ {
-        proxy_pass http://pdac-web:8000/api/;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-
-    location /panel/ {
-        proxy_pass http://pdac-web:8000/panel/;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-```
-
-## Aprende más
-
-- [Guía de Create React App](https://facebook.github.io/create-react-app/docs/getting-started)
-- [Documentación de React](https://reactjs.org/)
+## Documentación Complementaria
+- [Arquitectura](docs/architecture.md)  
+- [Componentes](docs/components.md)  
+- [Páginas](docs/pages.md)  
+- [Context & Hooks](docs/context-hooks.md)  
+- [Utils](docs/utils.md)  
+- [Constants](docs/constants.md)  
+- [Deployment](docs/deployment.md)  
