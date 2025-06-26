@@ -2,84 +2,116 @@
 
 Este proyecto fue iniciado con [Create React App](https://github.com/facebook/create-react-app).
 
-## ¿Cómo usarlo?
+## Descripción del proyecto
 
-### Entorno de Desarrollo local
+Frontend del portal PDAC desarrollado en React. Incluye un conjunto de componentes, páginas y utilidades para la gestión de reclamos, autenticación de usuarios y reportes. Se provee configuración para su ejecución tanto en entorno local como mediante contenedores Docker.
 
-### Creacion de variables de entorno
+## Estructura del proyecto
 
-Para configurar el proyecto, crea un archivo `.env` en la raíz del proyecto con las siguientes variables de entorno. A continuación, se incluye una tabla con las variables, sus valores por defecto y una descripción de su función:
+```text
+.
+├── public/                # Recursos estáticos que se sirven directamente
+├── src/                   # Código fuente principal de React
+│   ├── components/        # Componentes reutilizables (Navbar, Layout, etc.)
+│   ├── pages/             # Vistas y contenedores de cada módulo de la aplicación
+│   ├── context/           # Contextos de React utilizados globalmente
+│   ├── hooks/             # Hooks personalizados
+│   ├── utils/             # Funciones y estilos compartidos
+│   └── constant/          # Constantes y endpoints
+├── docker/                # Archivos de despliegue en Docker
+│   ├── Dockerfile         # Construcción de la imagen
+│   ├── nginx/             # Configuración de Nginx
+│   └── scripts/           # Scripts de inicialización
+├── package.json           # Dependencias y scripts de NPM
+├── jsconfig.json          # Configuración de rutas para el editor
+└── README.md
+```
 
-| Variable                        | Valor por defecto                    | Descripción                                                                 |
-|---------------------------------|--------------------------------------|-----------------------------------------------------------------------------|
-| `GENERATE_SOURCEMAP`           | `false`                              | Desactiva la generación de mapas de fuente en el build para optimizar el rendimiento. |
-| `REACT_APP_VERSION`            | `$npm_package_version`               | Define la versión de la aplicación basada en la versión especificada en `package.json`. |
-| `REACT_APP_BACKEND_URL`        | `http://localhost:8000/api/`         | URL base de la API backend utilizada por el proyecto.                                   |
-| `REACT_APP_BACKEND_URL_MEDIA`  | `http://localhost:8000`              | URL base para acceder a los recursos multimedia desde el backend.                       |
-| `PORT`                         | `3000`                               | Especifica el puerto en el que se ejecuta la aplicación React.                          |
-| `REACT_APP_IMAGES_PATH`        | `"public/images"`                   | Ruta relativa donde se encuentran las imágenes estáticas utilizadas por la aplicación.   |
+## Tecnologías utilizadas
 
-#### Instalación
+- **React** con Create React App
+- **JavaScript** (algunas utilidades en TypeScript)
+- **Sass** para estilos
+- **Material UI (MUI)** y **@mui/x-data-grid** para componentes de interfaz
+- **Redux Toolkit** para manejo de estado global
+- **Axios** para solicitudes HTTP
+- **Docker** y **Nginx** para despliegue
+
+Consulta los archivos [`package.json`](package.json) y [`jsconfig.json`](jsconfig.json) para más detalles de dependencias y configuración.
+
+## Comandos disponibles
+
+| Comando                | Descripción                                                         |
+|----------------------- |-------------------------------------------------------------------- |
+| `npm install`          | Instala todas las dependencias definidas en `package.json`.         |
+| `npm start`            | Ejecuta la aplicación en modo desarrollo (`react-scripts start`).  |
+| `npm run build`        | Genera una versión optimizada para producción.                      |
+| `npm test`             | Ejecuta las pruebas con `react-scripts`.                            |
+| `npm run eject`        | Expone la configuración interna de Create React App.                |
+
+## Instalación y primeros pasos
+
+1. Clona este repositorio.
+2. Crea un archivo `.env` en la raíz y define las variables de entorno:
+
+| Variable                        | Valor por defecto              | Descripción                                                                 |
+|---------------------------------|--------------------------------|----------------------------------------------------------------------------|
+| `GENERATE_SOURCEMAP`            | `false`                        | Desactiva la generación de sourcemaps en el build.                         |
+| `REACT_APP_VERSION`             | `$npm_package_version`         | Versión de la aplicación obtenida de `package.json`.                        |
+| `REACT_APP_BACKEND_URL`         | `http://localhost:8000/api/`   | URL base de la API backend.                                                |
+| `REACT_APP_BACKEND_URL_MEDIA`   | `http://localhost:8000`        | Ruta para recursos multimedia del backend.                                 |
+| `PORT`                          | `3000`                         | Puerto local de la aplicación React.                                       |
+| `REACT_APP_IMAGES_PATH`         | `"public/images"`              | Ruta de imágenes estáticas utilizadas en la app.                           |
+
+3. Instala las dependencias:
 
 ```bash
 npm install
 ```
 
-#### Si se generan errores de dependencias
+Si se generan errores de dependencias ejecuta:
 
 ```bash
 npm install --legacy-peer-deps
 ```
 
-#### Ejecutar el proyecto
+4. Inicia la aplicación en modo desarrollo:
 
 ```bash
-npm run start
+npm start
 ```
 
-Esto iniciará la aplicación en modo de desarrollo.  
-Abre [http://localhost:3000](http://localhost:3000) en tu navegador para verla.
+Abre [http://localhost:3000](http://localhost:3000) para verla en el navegador. La página se recargará automáticamente con cada cambio.
 
-La página se recargará automáticamente si realizas cambios en el código.  
-También podrás ver errores de lint en la consola.
+### Uso con Docker
 
-### Entorno de Desarrollo Dockerizado
-
-#### Requisitos previos
-
-- Docker
-- Docker Compose
-
-#### Construir la imagen Docker
+1. Construye la imagen:
 
 ```bash
 docker-compose build
 ```
 
-#### Iniciar el contenedor
+2. Inicia el contenedor:
 
 ```bash
 docker-compose up
 ```
 
-La aplicación estará disponible en [http://localhost:3000](http://localhost:3000).
-
-Para detener el contenedor:
+Accede a la aplicación en [http://localhost:3000](http://localhost:3000). Para detenerla usa:
 
 ```bash
 docker-compose down
 ```
 
-#### Configuracion del Nginx
+#### Configuración de Nginx
 
-En el caso de querer levantar el frontend con un dominio y en conjunto el backend en la misma url, esta es la configuracion:
+Si necesitas servir el frontend y backend bajo el mismo dominio, puedes usar la siguiente configuración (ver también [`docker/nginx/nginx.conf`](docker/nginx/nginx.conf)):
 
-```bash
+```nginx
 server {
     listen 80;
     server_name aukan.localhost;
 
-    #FRONTEND REACT
     location / {
         proxy_pass http://pdac-frontend:80;
         proxy_set_header Host $host;
@@ -88,7 +120,6 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
-    #API DE DJANGO
     location /api/ {
         proxy_pass http://pdac-web:8000/api/;
         proxy_set_header Host $host;
@@ -97,7 +128,6 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
-    #PANEL DE DJANGO
     location /panel/ {
         proxy_pass http://pdac-web:8000/panel/;
         proxy_set_header Host $host;
@@ -106,10 +136,9 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
-
 ```
-## Aprende Más
 
-Puedes obtener más información en la [documentación de Create React App](https://facebook.github.io/create-react-app/docs/getting-started).
+## Aprende más
 
-Para aprender React, visita la [documentación de React](https://reactjs.org/).
+- [Guía de Create React App](https://facebook.github.io/create-react-app/docs/getting-started)
+- [Documentación de React](https://reactjs.org/)
