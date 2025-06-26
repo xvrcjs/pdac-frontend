@@ -1,115 +1,100 @@
 # AUKAN
+Breve descripción de alto nivel sobre el propósito del proyecto.
 
-Este proyecto fue iniciado con [Create React App](https://github.com/facebook/create-react-app).
+## Tabla de Contenidos
+- [Instalación y Primeros Pasos](#instalación-y-primeros-pasos)
+- [Estructura de Directorios](#estructura-de-directorios)
+- [Tecnologías y Dependencias Clave](#tecnologías-y-dependencias-clave)
+- [Componentes Clave y Flujo de Datos](#componentes-clave-y-flujo-de-datos)
+- [Comandos de Desarrollo y Build](#comandos-de-desarrollo-y-build)
+- [Despliegue y Docker](#despliegue-y-docker)
+- [Documentación Complementaria](#documentación-complementaria)
 
-## ¿Cómo usarlo?
+## Instalación y Primeros Pasos
+**Requisitos**  
+- Node.js ≥ 18  
+- Docker & Docker Compose  
 
-### Entorno de Desarrollo local
+**Clonar repositorio**  
+```bash
+git clone <repo-url>
+cd <repo-folder>
+```
 
-### Creacion de variables de entorno
-
-Para configurar el proyecto, crea un archivo `.env` en la raíz del proyecto con las siguientes variables de entorno. A continuación, se incluye una tabla con las variables, sus valores por defecto y una descripción de su función:
-
-| Variable                        | Valor por defecto                    | Descripción                                                                 |
-|---------------------------------|--------------------------------------|-----------------------------------------------------------------------------|
-| `GENERATE_SOURCEMAP`           | `false`                              | Desactiva la generación de mapas de fuente en el build para optimizar el rendimiento. |
-| `REACT_APP_VERSION`            | `$npm_package_version`               | Define la versión de la aplicación basada en la versión especificada en `package.json`. |
-| `REACT_APP_BACKEND_URL`        | `http://localhost:8000/api/`         | URL base de la API backend utilizada por el proyecto.                                   |
-| `REACT_APP_BACKEND_URL_MEDIA`  | `http://localhost:8000`              | URL base para acceder a los recursos multimedia desde el backend.                       |
-| `PORT`                         | `3000`                               | Especifica el puerto en el que se ejecuta la aplicación React.                          |
-| `REACT_APP_IMAGES_PATH`        | `"public/images"`                   | Ruta relativa donde se encuentran las imágenes estáticas utilizadas por la aplicación.   |
-
-#### Instalación
-
+**Instalar dependencias**  
 ```bash
 npm install
 ```
 
-#### Si se generan errores de dependencias
+**Configurar variables de entorno**  
+- Copiar `.env.example` a `.env` y completar los valores.
 
+**Arrancar en modo desarrollo**  
 ```bash
-npm install --legacy-peer-deps
+npm run dev
 ```
 
-#### Ejecutar el proyecto
-
+## Estructura de Directorios
 ```bash
-npm run start
+.
+├── docker/
+│   ├── nginx/
+│   └── scripts/
+├── docs/
+├── public/
+│   ├── assets/
+│   └── icons/
+├── src/
+│   ├── components/
+│   ├── constant/
+│   ├── context/
+│   ├── hooks/
+│   ├── pages/
+│   └── utils/
+```
+- `public/` – Recursos estáticos  
+- `src/` – Código fuente  
+- `docker/` – Configuración de despliegue  
+
+## Tecnologías y Dependencias Clave
+| Tecnología        | Versión Mínima | Propósito               |
+| ----------------- | -------------- | ----------------------- |
+| React             | 18.x           | UI y lógica frontend    |
+| Django            | 4.x            | API y backend           |
+| PostgreSQL        | 13.x           | Base de datos           |
+| Docker            | 20.x           | Contenerización         |
+
+## Componentes Clave y Flujo de Datos
+- Diagrama de alto nivel:  
+  ```ascii
+  [Browser] → [React App] → [API (Django)] → [DB (PostgreSQL)]
+  ```
+- Ejemplo de uso de `Navbar` en `src/components/Navbar.tsx`
+- Cómo funcionan `context/` y `hooks/` (ver `docs/context-hooks.md`)
+
+## Comandos de Desarrollo y Build
+```bash
+npm run build       # Empaqueta la app para producción
+docker-compose up   # Levanta servicios en contenedores
 ```
 
-Esto iniciará la aplicación en modo de desarrollo.  
-Abre [http://localhost:3000](http://localhost:3000) en tu navegador para verla.
+## Despliegue y Docker
+- **Resumen**: Configuración en `docker/`
+- **Construir imagen**:  
+  ```bash
+  docker build -t myapp-frontend -f docker/Dockerfile .
+  ```
+- **Arrancar servicios**:  
+  ```bash
+  docker-compose up --build -d
+  ```
+- Variables de entorno: ver `docs/deployment.md` para detalle completo.
 
-La página se recargará automáticamente si realizas cambios en el código.  
-También podrás ver errores de lint en la consola.
-
-### Entorno de Desarrollo Dockerizado
-
-#### Requisitos previos
-
-- Docker
-- Docker Compose
-
-#### Construir la imagen Docker
-
-```bash
-docker-compose build
-```
-
-#### Iniciar el contenedor
-
-```bash
-docker-compose up
-```
-
-La aplicación estará disponible en [http://localhost:3000](http://localhost:3000).
-
-Para detener el contenedor:
-
-```bash
-docker-compose down
-```
-
-#### Configuracion del Nginx
-
-En el caso de querer levantar el frontend con un dominio y en conjunto el backend en la misma url, esta es la configuracion:
-
-```bash
-server {
-    listen 80;
-    server_name aukan.localhost;
-
-    #FRONTEND REACT
-    location / {
-        proxy_pass http://pdac-frontend:80;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-
-    #API DE DJANGO
-    location /api/ {
-        proxy_pass http://pdac-web:8000/api/;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-
-    #PANEL DE DJANGO
-    location /panel/ {
-        proxy_pass http://pdac-web:8000/panel/;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-
-```
-## Aprende Más
-
-Puedes obtener más información en la [documentación de Create React App](https://facebook.github.io/create-react-app/docs/getting-started).
-
-Para aprender React, visita la [documentación de React](https://reactjs.org/).
+## Documentación Complementaria
+- [Arquitectura](docs/architecture.md)  
+- [Componentes](docs/components.md)  
+- [Páginas](docs/pages.md)  
+- [Context & Hooks](docs/context-hooks.md)  
+- [Utils](docs/utils.md)  
+- [Constants](docs/constants.md)  
+- [Deployment](docs/deployment.md)  
